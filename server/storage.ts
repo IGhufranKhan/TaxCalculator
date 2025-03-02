@@ -1,13 +1,50 @@
 import type { TaxCalculation, TaxBreakdown } from "@shared/schema";
 
-function calculateBracketTax(income: number): number {
-  // Bracket tax calculation according to the document
-  if (income <= 198350) return 0;
-  if (income <= 279150) return (income - 198350) * 0.017;
-  if (income <= 642950) return (279150 - 198350) * 0.017 + (income - 279150) * 0.04;
-  if (income <= 926800) return (279150 - 198350) * 0.017 + (642950 - 279150) * 0.04 + (income - 642950) * 0.134;
-  if (income <= 1500000) return (279150 - 198350) * 0.017 + (642950 - 279150) * 0.04 + (926800 - 642950) * 0.134 + (income - 926800) * 0.164;
-  return (279150 - 198350) * 0.017 + (642950 - 279150) * 0.04 + (926800 - 642950) * 0.134 + (1500000 - 926800) * 0.164 + (income - 1500000) * 0.174;
+function calculateTrinnskatt(income: number): number {
+  // 2025 tax brackets from the document
+  const brackets = [
+    { limit: 217400, rate: 0.000 },
+    { limit: 306050, rate: 0.017 },
+    { limit: 697150, rate: 0.040 },
+    { limit: 942400, rate: 0.137 },
+    { limit: 1410750, rate: 0.167 },
+    { limit: Infinity, rate: 0.177 }
+  ];
+
+  let tax = 0;
+  let previousLimit = 0;
+
+  for (let i = 0; i < brackets.length; i++) {
+    const { limit, rate } = brackets[i];
+    if (income > previousLimit) {
+      const taxableAmount = Math.min(income, limit) - previousLimit;
+      tax += taxableAmount * rate;
+    }
+    previousLimit = limit;
+  }
+
+  return tax;
+}
+
+function calculateWealthTax(netWealth: number): number {
+  let municipalTax = 0;
+  let stateTax = 0;
+
+  // Municipal tax (kommuneskatt)
+  if (netWealth > 1760000) {
+    municipalTax = (netWealth - 1760000) * 0.007;
+  }
+
+  // State tax (statsskatt)
+  if (netWealth > 1760000) {
+    if (netWealth <= 20700000) {
+      stateTax = (netWealth - 1760000) * 0.003;
+    } else {
+      stateTax = (20700000 - 1760000) * 0.003 + (netWealth - 20700000) * 0.004;
+    }
+  }
+
+  return municipalTax + stateTax;
 }
 
 function calculateMinimumDeduction(income: number): number {
@@ -46,9 +83,17 @@ export function calculateTax(data: TaxCalculation): TaxBreakdown {
   const disabilityDeduction = (data.income.disabilityBenefits || 0) * 0.20;
 
   // Calculate tax components
-  const bracketTax = calculateBracketTax(totalIncome);
+  const bracketTax = calculateTrinnskatt(totalIncome);
   const insuranceContribution = totalIncome * 0.082; // 8.2% social security
   const commonTax = totalIncome * 0.22; // Base tax rate 22%
+
+  // Calculate net wealth for wealth tax
+  const netWealth = 
+    (data.property.propertyValue || 0) +
+    (data.bankAndLoans.bankDeposits || 0) -
+    (data.bankAndLoans.mortgageInterest || 0) * 20; // Approximate mortgage principal
+
+  const wealthTax = calculateWealthTax(netWealth);
 
   // Total deductions
   const totalDeductions = 
@@ -60,14 +105,14 @@ export function calculateTax(data: TaxCalculation): TaxBreakdown {
     disabilityDeduction;
 
   // Calculate total tax after deductions
-  const totalTax = Math.max(0, bracketTax + insuranceContribution + commonTax - totalDeductions);
+  const totalTax = Math.max(0, bracketTax + insuranceContribution + commonTax + wealthTax - totalDeductions);
 
   // Calculate marginal and average tax rates
-  const marginalTaxRate = (totalIncome > 1500000) ? 47.4 : 
-    (totalIncome > 926800) ? 46.4 :
-    (totalIncome > 642950) ? 43.4 :
-    (totalIncome > 279150) ? 34.0 :
-    (totalIncome > 198350) ? 31.7 : 22.0;
+  const marginalTaxRate = (totalIncome > 1410750) ? 47.7 : 
+    (totalIncome > 942400) ? 46.7 :
+    (totalIncome > 697150) ? 43.7 :
+    (totalIncome > 306050) ? 34.0 :
+    (totalIncome > 217400) ? 31.7 : 22.0;
 
   return {
     totalIncome,

@@ -1,6 +1,9 @@
 import { TaxPeriod, type TaxBreakdown } from "@shared/schema";
 
-export function formatCurrency(amount: number): string {
+export function formatCurrency(amount: number | null | undefined): string {
+  if (amount === null || amount === undefined || isNaN(amount)) {
+    return "0 kr";
+  }
   return new Intl.NumberFormat('no-NO', {
     style: 'currency',
     currency: 'NOK',
@@ -10,11 +13,13 @@ export function formatCurrency(amount: number): string {
 }
 
 export function formatPercentage(value: number | null | undefined): string {
-  if (value === null || value === undefined) return '0.0%';
+  if (value === null || value === undefined || isNaN(value)) return '0.0%';
   return `${value.toFixed(1)}%`;
 }
 
-export function annualizeAmount(amount: number, period: string): number {
+export function annualizeAmount(amount: number | undefined | null, period: string): number {
+  if (!amount || isNaN(amount)) return 0;
+
   switch (period) {
     case TaxPeriod.MONTH:
       return amount * 12;
@@ -33,7 +38,7 @@ export function annualizeAmount(amount: number, period: string): number {
 
 export function calculateTaxPercentages(breakdown: TaxBreakdown) {
   const total = breakdown.totalTax;
-  if (!total) return { bracketTax: 0, insuranceContribution: 0, commonTax: 0 };
+  if (!total || isNaN(total)) return { bracketTax: 0, insuranceContribution: 0, commonTax: 0 };
 
   return {
     bracketTax: (breakdown.bracketTax / total) * 100,

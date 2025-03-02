@@ -60,8 +60,26 @@ export function TaxForm({ onCalculate }: TaxFormProps) {
   });
 
   const onSubmit = (data: any) => {
-    console.log('Form data:', data);
-    onCalculate(data);
+    // Ensure all numeric fields are properly converted to numbers
+    const formattedData = {
+      ...data,
+      income: Object.entries(data.income).reduce((acc: any, [key, value]) => {
+        acc[key] = Number(value) || 0;
+        return acc;
+      }, {}),
+      bankAndLoans: Object.entries(data.bankAndLoans).reduce((acc: any, [key, value]) => {
+        acc[key] = Number(value) || 0;
+        return acc;
+      }, {}),
+      property: {
+        ...data.property,
+        rentalIncome: Number(data.property.rentalIncome) || 0,
+        propertyValue: Number(data.property.propertyValue) || 0,
+        propertyExpenses: Number(data.property.propertyExpenses) || 0,
+      }
+    };
+    console.log('Formatted form data:', formattedData);
+    onCalculate(formattedData);
   };
 
   const NumberInput = ({ field, label }: any) => (
@@ -71,7 +89,12 @@ export function TaxForm({ onCalculate }: TaxFormProps) {
         <Input 
           type="number" 
           {...field} 
-          onChange={(e) => field.onChange(Number(e.target.value))}
+          onChange={(e) => {
+            const value = e.target.value === '' ? 0 : Number(e.target.value);
+            field.onChange(value);
+          }}
+          min="0"
+          step="1000"
         />
       </FormControl>
       <FormMessage />

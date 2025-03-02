@@ -3,6 +3,17 @@
     "title": "Skattekalkulator Norge",
     "subtitle": "Finn ut hvor mye din lønn er etter skatt",
     "form": {
+      "personalInfo": "Personlig informasjon",
+      "personalInfo.civilStatus": "Sivilstatus",
+      "personalInfo.civilStatus.single": "Enslig",
+      "personalInfo.civilStatus.married": "Gift",
+      "personalInfo.civilStatus.separated": "Separert",
+      "personalInfo.civilStatus.divorced": "Skilt",
+      "personalInfo.civilStatus.widowed": "Enke/enkemann",
+      "personalInfo.age": "Alder",
+      "personalInfo.hasChildren": "Har du barn?",
+      "personalInfo.numberOfDependents": "Antall forsørgede",
+
       "income": "Arbeid og inntekt",
       "income.salary": "Fast lønn",
       "income.businessIncome": "Næringsinntekt",
@@ -30,10 +41,15 @@
       "calculate": "Beregn"
     },
     "breakdown": {
-      "salary": "Lønn",
+      "salary": "Total inntekt",
       "bracketTax": "Trinnskatt",
       "insurance": "Trygdeavgift",
       "commonTax": "Kommuneskatt",
+      "standardDeduction": "Standardfradrag",
+      "minimumDeduction": "Minstefradrag",
+      "mortgageDeduction": "Boliglånsfradrag",
+      "propertyDeduction": "Eiendomsfradrag",
+      "totalDeductions": "Totale fradrag",
       "totalTax": "Total skatt",
       "netPay": "Nettolønn",
       "taxRates": {

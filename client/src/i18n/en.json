@@ -3,6 +3,17 @@
     "title": "Income tax calculator Norway",
     "subtitle": "Find out how much your salary is after tax",
     "form": {
+      "personalInfo": "Personal Information",
+      "personalInfo.civilStatus": "Civil Status",
+      "personalInfo.civilStatus.single": "Single",
+      "personalInfo.civilStatus.married": "Married",
+      "personalInfo.civilStatus.separated": "Separated",
+      "personalInfo.civilStatus.divorced": "Divorced",
+      "personalInfo.civilStatus.widowed": "Widowed",
+      "personalInfo.age": "Age",
+      "personalInfo.hasChildren": "Do you have children?",
+      "personalInfo.numberOfDependents": "Number of dependents",
+
       "income": "Income and Work",
       "income.salary": "Regular salary",
       "income.businessIncome": "Business income",
@@ -30,12 +41,17 @@
       "calculate": "Calculate"
     },
     "breakdown": {
-      "salary": "Salary",
+      "salary": "Total Income",
       "bracketTax": "Bracket Tax",
       "insurance": "Insurance Contribution",
       "commonTax": "Common Tax",
-      "totalTax": "Total tax",
-      "netPay": "Net pay",
+      "standardDeduction": "Standard Deduction",
+      "minimumDeduction": "Minimum Deduction",
+      "mortgageDeduction": "Mortgage Deduction",
+      "propertyDeduction": "Property Deduction",
+      "totalDeductions": "Total Deductions",
+      "totalTax": "Total Tax",
+      "netPay": "Net Pay",
       "taxRates": {
         "marginal": "Marginal tax rate",
         "average": "Average tax rate"

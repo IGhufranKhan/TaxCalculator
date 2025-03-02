@@ -9,7 +9,16 @@ export const TaxPeriod = {
   HOUR: "Hour"
 } as const;
 
-// Income and Work related fields
+// Civil status
+export const CivilStatus = {
+  SINGLE: "single",
+  MARRIED: "married",
+  SEPARATED: "separated",
+  DIVORCED: "divorced",
+  WIDOWED: "widowed"
+} as const;
+
+// Work Income Schema
 export const workIncomeSchema = z.object({
   salary: z.number().min(0),
   businessIncome: z.number().min(0).optional(),
@@ -21,7 +30,7 @@ export const workIncomeSchema = z.object({
   sickPay: z.number().min(0).optional(),
 });
 
-// Bank and Loan related fields
+// Bank and Loan Schema
 export const bankLoanSchema = z.object({
   savingsInterest: z.number().min(0).optional(),
   bankDeposits: z.number().min(0).optional(),
@@ -29,7 +38,7 @@ export const bankLoanSchema = z.object({
   mortgageInterest: z.number().min(0).optional(),
 });
 
-// Housing and Property related fields
+// Property Schema
 export const propertySchema = z.object({
   primaryResidence: z.boolean().optional(),
   rentalIncome: z.number().min(0).optional(),
@@ -37,7 +46,22 @@ export const propertySchema = z.object({
   propertyExpenses: z.number().min(0).optional(),
 });
 
+// Personal Information Schema
+export const personalInfoSchema = z.object({
+  civilStatus: z.enum([
+    CivilStatus.SINGLE,
+    CivilStatus.MARRIED,
+    CivilStatus.SEPARATED,
+    CivilStatus.DIVORCED,
+    CivilStatus.WIDOWED
+  ]),
+  age: z.number().min(0).optional(),
+  hasChildren: z.boolean().optional(),
+  numberOfDependents: z.number().min(0).optional(),
+});
+
 export const taxCalculationSchema = z.object({
+  personalInfo: personalInfoSchema,
   income: workIncomeSchema,
   bankAndLoans: bankLoanSchema,
   property: propertySchema,
@@ -53,6 +77,7 @@ export const taxCalculationSchema = z.object({
 });
 
 export type TaxCalculation = z.infer<typeof taxCalculationSchema>;
+export type PersonalInfo = z.infer<typeof personalInfoSchema>;
 export type WorkIncome = z.infer<typeof workIncomeSchema>;
 export type BankLoan = z.infer<typeof bankLoanSchema>;
 export type Property = z.infer<typeof propertySchema>;
@@ -65,10 +90,17 @@ export interface TaxBreakdown {
   commonTax: number;
 
   // Deductions
-  mortgageDeduction: number;
   standardDeduction: number;
+  minimumDeduction: number;
+  mortgageDeduction: number;
+  propertyDeduction: number;
+
+  // Special calculations
+  parentalBenefitDeduction: number;
+  disabilityDeduction: number;
 
   // Final calculations
+  totalDeductions: number;
   totalTax: number;
   netPay: number;
   marginalTaxRate: number;

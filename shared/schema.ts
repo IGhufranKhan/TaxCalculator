@@ -55,7 +55,7 @@ export const personalInfoSchema = z.object({
     CivilStatus.DIVORCED,
     CivilStatus.WIDOWED
   ]),
-  age: z.number().min(0).optional(),
+  age: z.number().min(0).max(120).optional(),
   hasChildren: z.boolean().optional(),
   numberOfDependents: z.number().min(0).optional(),
 });

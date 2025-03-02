@@ -60,7 +60,6 @@ export function TaxForm({ onCalculate }: TaxFormProps) {
   });
 
   const onSubmit = (data: any) => {
-    // Ensure all numeric fields are properly converted to numbers
     const formattedData = {
       ...data,
       income: Object.entries(data.income).reduce((acc: any, [key, value]) => {
@@ -82,7 +81,7 @@ export function TaxForm({ onCalculate }: TaxFormProps) {
     onCalculate(formattedData);
   };
 
-  const NumberInput = ({ field, label }: any) => (
+  const NumberInput = ({ field, label, min = "0", max, step = "1" }: any) => (
     <FormItem>
       <FormLabel>{label}</FormLabel>
       <FormControl>
@@ -93,8 +92,9 @@ export function TaxForm({ onCalculate }: TaxFormProps) {
             const value = e.target.value === '' ? 0 : Number(e.target.value);
             field.onChange(value);
           }}
-          min="0"
-          step="1000"
+          min={min}
+          max={max}
+          step={step}
         />
       </FormControl>
       <FormMessage />
@@ -136,7 +136,13 @@ export function TaxForm({ onCalculate }: TaxFormProps) {
               control={form.control}
               name="personalInfo.age"
               render={({ field }) => (
-                <NumberInput field={field} label={t('calculator.form.personalInfo.age')} />
+                <NumberInput 
+                  field={field} 
+                  label={t('calculator.form.personalInfo.age')} 
+                  min="0" 
+                  max="120"
+                  step="1"
+                />
               )}
             />
 

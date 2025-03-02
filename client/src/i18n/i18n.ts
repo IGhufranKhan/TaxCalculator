@@ -10,7 +10,7 @@ i18n
       no: { translation: no },
       en: { translation: en }
     },
-    lng: 'no',
+    lng: 'en', // Change default to English
     fallbackLng: 'en',
     interpolation: {
       escapeValue: false

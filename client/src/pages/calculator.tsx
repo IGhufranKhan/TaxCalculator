@@ -4,13 +4,14 @@ import { useQuery } from "@tanstack/react-query";
 import { TaxForm } from "@/components/TaxCalculator/Form";
 import { TaxBreakdown } from "@/components/TaxCalculator/TaxBreakdown";
 import { Taxberg } from "@/components/TaxCalculator/Taxberg";
+import { LanguageSwitcher } from "@/components/LanguageSwitcher";
 import { apiRequest } from "@/lib/queryClient";
-import type { TaxBreakdown as TaxBreakdownType } from "@shared/schema";
+import type { TaxBreakdown as TaxBreakdownType, TaxCalculation } from "@shared/schema";
 import { annualizeAmount } from "@/components/TaxCalculator/utils";
 
 export default function Calculator() {
   const { t } = useTranslation();
-  const [formData, setFormData] = useState(null);
+  const [formData, setFormData] = useState<TaxCalculation | null>(null);
 
   const { data: breakdown, isLoading } = useQuery({
     queryKey: ['/api/calculate-tax', formData],
@@ -28,6 +29,7 @@ export default function Calculator() {
 
   return (
     <div className="min-h-screen bg-gray-50">
+      <LanguageSwitcher />
       <div className="container mx-auto px-4 py-8">
         <div className="max-w-5xl mx-auto">
           <div className="flex items-center gap-8 mb-8">
@@ -50,7 +52,7 @@ export default function Calculator() {
             <div>
               <TaxForm onCalculate={setFormData} />
             </div>
-            
+
             {breakdown && (
               <div>
                 <TaxBreakdown breakdown={breakdown} />

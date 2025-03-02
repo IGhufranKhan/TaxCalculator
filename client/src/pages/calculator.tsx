@@ -20,7 +20,19 @@ export default function Calculator() {
     queryFn: async () => {
       if (!formData) return null;
       try {
-        const annualizedIncome = annualizeAmount(formData.income, formData.period);
+        // Calculate annual income for each income source
+        const annualizedIncome = {
+          ...formData.income,
+          salary: annualizeAmount(formData.income.salary, formData.period),
+          businessIncome: formData.income.businessIncome ? annualizeAmount(formData.income.businessIncome, formData.period) : 0,
+          freelanceIncome: formData.income.freelanceIncome ? annualizeAmount(formData.income.freelanceIncome, formData.period) : 0,
+          overtimePay: formData.income.overtimePay ? annualizeAmount(formData.income.overtimePay, formData.period) : 0,
+          bonuses: formData.income.bonuses ? annualizeAmount(formData.income.bonuses, formData.period) : 0,
+          disabilityBenefits: formData.income.disabilityBenefits ? annualizeAmount(formData.income.disabilityBenefits, formData.period) : 0,
+          parentalBenefits: formData.income.parentalBenefits ? annualizeAmount(formData.income.parentalBenefits, formData.period) : 0,
+          sickPay: formData.income.sickPay ? annualizeAmount(formData.income.sickPay, formData.period) : 0,
+        };
+
         const response = await apiRequest('POST', '/api/calculate-tax', {
           ...formData,
           income: annualizedIncome

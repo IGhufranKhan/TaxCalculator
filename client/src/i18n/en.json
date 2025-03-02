@@ -1,0 +1,24 @@
+{
+  "calculator": {
+    "title": "Income tax calculator Norway",
+    "subtitle": "Find out how much your salary is after tax",
+    "form": {
+      "income": "Enter gross income",
+      "period": "Period",
+      "location": "Where do you live?",
+      "calculate": "Calculate"
+    },
+    "breakdown": {
+      "salary": "Salary",
+      "bracketTax": "Bracket Tax",
+      "insurance": "Insurance Contribution",
+      "commonTax": "Common Tax",
+      "totalTax": "Total tax",
+      "netPay": "Net pay",
+      "taxRates": {
+        "marginal": "Marginal tax rate",
+        "average": "Average tax rate"
+      }
+    }
+  }
+}

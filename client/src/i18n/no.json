@@ -1,0 +1,24 @@
+{
+  "calculator": {
+    "title": "Skattekalkulator Norge",
+    "subtitle": "Finn ut hvor mye din lønn er etter skatt",
+    "form": {
+      "income": "Skriv inn brutto inntekt",
+      "period": "Periode",
+      "location": "Hvor bor du?",
+      "calculate": "Beregn"
+    },
+    "breakdown": {
+      "salary": "Lønn",
+      "bracketTax": "Trinnskatt",
+      "insurance": "Trygdeavgift",
+      "commonTax": "Kommuneskatt",
+      "totalTax": "Total skatt",
+      "netPay": "Nettolønn",
+      "taxRates": {
+        "marginal": "Marginalskatt",
+        "average": "Gjennomsnittsskatt"
+      }
+    }
+  }
+}

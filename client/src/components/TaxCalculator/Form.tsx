@@ -8,6 +8,7 @@ import {
   FormField,
   FormItem,
   FormLabel,
+  FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
@@ -28,9 +29,18 @@ export function TaxForm({ onCalculate }: TaxFormProps) {
     }
   });
 
+  const onSubmit = (data: any) => {
+    // Convert income to number as form input returns string
+    const formattedData = {
+      ...data,
+      income: Number(data.income)
+    };
+    onCalculate(formattedData);
+  };
+
   return (
     <Form {...form}>
-      <form onSubmit={form.handleSubmit(onCalculate)} className="space-y-6">
+      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
         <FormField
           control={form.control}
           name="income"
@@ -38,8 +48,13 @@ export function TaxForm({ onCalculate }: TaxFormProps) {
             <FormItem>
               <FormLabel>{t('calculator.form.income')}</FormLabel>
               <FormControl>
-                <Input type="number" {...field} />
+                <Input 
+                  type="number" 
+                  {...field} 
+                  onChange={(e) => field.onChange(Number(e.target.value))}
+                />
               </FormControl>
+              <FormMessage />
             </FormItem>
           )}
         />
@@ -62,6 +77,7 @@ export function TaxForm({ onCalculate }: TaxFormProps) {
                   ))}
                 </SelectContent>
               </Select>
+              <FormMessage />
             </FormItem>
           )}
         />

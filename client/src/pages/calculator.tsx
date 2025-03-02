@@ -8,24 +8,42 @@ import { LanguageSwitcher } from "@/components/LanguageSwitcher";
 import { apiRequest } from "@/lib/queryClient";
 import type { TaxBreakdown as TaxBreakdownType, TaxCalculation } from "@shared/schema";
 import { annualizeAmount } from "@/components/TaxCalculator/utils";
+import { useToast } from "@/hooks/use-toast";
 
 export default function Calculator() {
   const { t } = useTranslation();
+  const { toast } = useToast();
   const [formData, setFormData] = useState<TaxCalculation | null>(null);
 
-  const { data: breakdown, isLoading } = useQuery({
+  const { data: breakdown, isLoading, error } = useQuery({
     queryKey: ['/api/calculate-tax', formData],
     queryFn: async () => {
       if (!formData) return null;
-      const annualizedIncome = annualizeAmount(formData.income, formData.period);
-      const response = await apiRequest('POST', '/api/calculate-tax', {
-        ...formData,
-        income: annualizedIncome
-      });
-      return response.json() as Promise<TaxBreakdownType>;
+      try {
+        const annualizedIncome = annualizeAmount(formData.income, formData.period);
+        const response = await apiRequest('POST', '/api/calculate-tax', {
+          ...formData,
+          income: annualizedIncome
+        });
+        const data = await response.json() as TaxBreakdownType;
+        return data;
+      } catch (err) {
+        console.error('Tax calculation error:', err);
+        toast({
+          title: "Error",
+          description: "Failed to calculate tax. Please try again.",
+          variant: "destructive"
+        });
+        throw err;
+      }
     },
     enabled: !!formData
   });
+
+  const handleCalculate = (data: TaxCalculation) => {
+    console.log('Calculating tax for:', data);
+    setFormData(data);
+  };
 
   return (
     <div className="min-h-screen bg-gray-50">
@@ -50,14 +68,18 @@ export default function Calculator() {
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
             <div>
-              <TaxForm onCalculate={setFormData} />
+              <TaxForm onCalculate={handleCalculate} />
             </div>
 
-            {breakdown && (
+            {isLoading ? (
+              <div className="flex items-center justify-center">
+                <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary"></div>
+              </div>
+            ) : breakdown ? (
               <div>
                 <TaxBreakdown breakdown={breakdown} />
               </div>
-            )}
+            ) : null}
           </div>
 
           {breakdown && (

@@ -3,7 +3,28 @@
     "title": "Income tax calculator Norway",
     "subtitle": "Find out how much your salary is after tax",
     "form": {
-      "income": "Enter gross income",
+      "income": "Income and Work",
+      "income.salary": "Regular salary",
+      "income.businessIncome": "Business income",
+      "income.freelanceIncome": "Freelance income",
+      "income.overtimePay": "Overtime pay",
+      "income.bonuses": "Bonuses",
+      "income.disabilityBenefits": "Disability benefits",
+      "income.parentalBenefits": "Parental benefits",
+      "income.sickPay": "Sick pay",
+
+      "bankAndLoans": "Bank and Loans",
+      "bankAndLoans.savingsInterest": "Savings interest",
+      "bankAndLoans.bankDeposits": "Bank deposits",
+      "bankAndLoans.loanInterest": "Loan interest",
+      "bankAndLoans.mortgageInterest": "Mortgage interest",
+
+      "property": "Housing and Property",
+      "property.primaryResidence": "Primary residence",
+      "property.rentalIncome": "Rental income",
+      "property.propertyValue": "Property value",
+      "property.propertyExpenses": "Property expenses",
+
       "period": "Period",
       "location": "Where do you live?",
       "calculate": "Calculate"

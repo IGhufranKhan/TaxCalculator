@@ -3,7 +3,28 @@
     "title": "Skattekalkulator Norge",
     "subtitle": "Finn ut hvor mye din lønn er etter skatt",
     "form": {
-      "income": "Skriv inn brutto inntekt",
+      "income": "Arbeid og inntekt",
+      "income.salary": "Fast lønn",
+      "income.businessIncome": "Næringsinntekt",
+      "income.freelanceIncome": "Frilans inntekt",
+      "income.overtimePay": "Overtidsbetaling",
+      "income.bonuses": "Bonuser",
+      "income.disabilityBenefits": "Uføretrygd",
+      "income.parentalBenefits": "Foreldrepenger",
+      "income.sickPay": "Sykepenger",
+
+      "bankAndLoans": "Bank og lån",
+      "bankAndLoans.savingsInterest": "Renteinntekter",
+      "bankAndLoans.bankDeposits": "Bankinnskudd",
+      "bankAndLoans.loanInterest": "Lånerenter",
+      "bankAndLoans.mortgageInterest": "Boliglånsrenter",
+
+      "property": "Bolig og eiendom",
+      "property.primaryResidence": "Primærbolig",
+      "property.rentalIncome": "Leieinntekter",
+      "property.propertyValue": "Eiendomsverdi",
+      "property.propertyExpenses": "Eiendomsutgifter",
+
       "period": "Periode",
       "location": "Hvor bor du?",
       "calculate": "Beregn"

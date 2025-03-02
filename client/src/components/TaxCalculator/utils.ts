@@ -41,3 +41,41 @@ export function calculateTaxPercentages(breakdown: TaxBreakdown) {
     commonTax: (breakdown.commonTax / total) * 100
   };
 }
+
+export function downloadTaxResults(breakdown: TaxBreakdown) {
+  const results = `
+Norwegian Tax Calculation Results
+===============================
+
+Income and Deductions
+-------------------
+Total Income: ${formatCurrency(breakdown.totalIncome)}
+Standard Deduction: ${formatCurrency(breakdown.standardDeduction)}
+Mortgage Deduction: ${formatCurrency(breakdown.mortgageDeduction)}
+
+Tax Components
+------------
+Bracket Tax: ${formatCurrency(breakdown.bracketTax)}
+Insurance Contribution: ${formatCurrency(breakdown.insuranceContribution)}
+Common Tax: ${formatCurrency(breakdown.commonTax)}
+
+Summary
+-------
+Total Tax: ${formatCurrency(breakdown.totalTax)}
+Net Pay: ${formatCurrency(breakdown.netPay)}
+Marginal Tax Rate: ${formatPercentage(breakdown.marginalTaxRate)}
+Average Tax Rate: ${formatPercentage(breakdown.averageTaxRate)}
+
+Generated on: ${new Date().toLocaleString()}
+`;
+
+  const blob = new Blob([results], { type: 'text/plain' });
+  const url = window.URL.createObjectURL(blob);
+  const link = document.createElement('a');
+  link.href = url;
+  link.download = 'tax-calculation.txt';
+  document.body.appendChild(link);
+  link.click();
+  document.body.removeChild(link);
+  window.URL.revokeObjectURL(url);
+}

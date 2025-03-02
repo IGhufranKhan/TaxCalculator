@@ -9,7 +9,8 @@ export function formatCurrency(amount: number): string {
   }).format(amount);
 }
 
-export function formatPercentage(value: number): string {
+export function formatPercentage(value: number | null | undefined): string {
+  if (value === null || value === undefined) return '0.0%';
   return `${value.toFixed(1)}%`;
 }
 
@@ -32,6 +33,8 @@ export function annualizeAmount(amount: number, period: string): number {
 
 export function calculateTaxPercentages(breakdown: TaxBreakdown) {
   const total = breakdown.totalTax;
+  if (!total) return { bracketTax: 0, insuranceContribution: 0, commonTax: 0 };
+
   return {
     bracketTax: (breakdown.bracketTax / total) * 100,
     insuranceContribution: (breakdown.insuranceContribution / total) * 100,

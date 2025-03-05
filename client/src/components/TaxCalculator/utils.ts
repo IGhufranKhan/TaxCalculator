@@ -2,14 +2,12 @@ import { TaxPeriod, type TaxBreakdown } from "@shared/schema";
 
 export function formatCurrency(amount: number | null | undefined): string {
   if (amount === null || amount === undefined || isNaN(amount)) {
-    return "0 kr";
+    return "0";
   }
   return new Intl.NumberFormat('no-NO', {
-    style: 'currency',
-    currency: 'NOK',
     minimumFractionDigits: 0,
     maximumFractionDigits: 0
-  }).format(amount);
+  }).format(amount) + " kr";
 }
 
 export function formatPercentage(value: number | null | undefined): string {

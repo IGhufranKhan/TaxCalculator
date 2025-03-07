@@ -13,7 +13,6 @@ import {
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { Checkbox } from "@/components/ui/checkbox";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
 
@@ -35,7 +34,7 @@ export function TaxForm({ onCalculate }: TaxFormProps) {
         hasChildren: false,
         numberOfDependents: 0,
         finnmarkDeduction: false,
-        hasRegularEmployment: true,
+        hasRegularEmployment: false, // Changed default value
         hasBeenOnSickLeave: false,
         hasOwnHome: false,
         hasStudentLoans: false,
@@ -112,6 +111,22 @@ export function TaxForm({ onCalculate }: TaxFormProps) {
     </FormItem>
   );
 
+  const YesNoSelect = ({ field, label }: any) => (
+    <FormItem>
+      <FormLabel>{label}</FormLabel>
+      <Select onValueChange={(value) => field.onChange(value === 'yes')} defaultValue={field.value ? 'yes' : 'no'}>
+        <SelectTrigger>
+          <SelectValue />
+        </SelectTrigger>
+        <SelectContent>
+          <SelectItem value="yes">Yes</SelectItem>
+          <SelectItem value="no">No</SelectItem>
+        </SelectContent>
+      </Select>
+      <FormMessage />
+    </FormItem>
+  );
+
   return (
     <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
@@ -157,7 +172,7 @@ export function TaxForm({ onCalculate }: TaxFormProps) {
               )}
             />
 
-            {form.watch('personalInfo.civilStatus') === 'married' && (
+            {form.watch('personalInfo.civilStatus') === CivilStatus.MARRIED && (
               <FormField
                 control={form.control}
                 name="personalInfo.spouseBirthYear"
@@ -177,49 +192,49 @@ export function TaxForm({ onCalculate }: TaxFormProps) {
               control={form.control}
               name="personalInfo.finnmarkDeduction"
               render={({ field }) => (
-                <FormItem className="flex flex-row items-start space-x-3 space-y-0">
-                  <FormControl>
-                    <Checkbox
-                      checked={field.value}
-                      onCheckedChange={field.onChange}
-                    />
-                  </FormControl>
-                  <FormLabel>Finnmark deduction</FormLabel>
-                </FormItem>
+                <YesNoSelect
+                  field={field}
+                  label="Finnmark deduction"
+                />
               )}
             />
 
             {[
-              'hasChildren',
-              'numberOfDependents',
-              'hasRegularEmployment',
-              'hasBeenOnSickLeave',
-              'hasOwnHome',
-              'hasStudentLoans',
-              'hasCarOrBoat',
-              'hasSecondHome',
-              'hasShares'
-            ].map((fieldName) => (
+              { name: 'hasChildren', label: 'Do you have children?' },
+              { name: 'hasRegularEmployment', label: 'Do you receive salary from a regular employer?' },
+              { name: 'hasBeenOnSickLeave', label: 'Have you been on sick leave or taken leave during the year?' },
+              { name: 'hasOwnHome', label: 'Do you own your own home?' },
+              { name: 'hasStudentLoans', label: 'Do you have student loans?' },
+              { name: 'hasCarOrBoat', label: 'Do you own a car or boat?' },
+              { name: 'hasSecondHome', label: 'Do you have a second home?' },
+              { name: 'hasShares', label: 'Do you own shares, funds or other financial instruments?' }
+            ].map(({ name, label }) => (
               <FormField
-                key={fieldName}
+                key={name}
                 control={form.control}
-                name={`personalInfo.${fieldName}`}
+                name={`personalInfo.${name}`}
                 render={({ field }) => (
-                  <FormItem className="flex flex-row items-start space-x-3 space-y-0">
-                    <FormControl>
-                      <Checkbox
-                        checked={field.value}
-                        onCheckedChange={field.onChange}
-                      />
-                    </FormControl>
-                    <FormLabel>{t(`calculator.form.personalInfo.${fieldName}`)}</FormLabel>
-                  </FormItem>
+                  <YesNoSelect field={field} label={label} />
                 )}
               />
             ))}
+
+            {form.watch('personalInfo.hasChildren') && (
+              <FormField
+                control={form.control}
+                name="personalInfo.numberOfDependents"
+                render={({ field }) => (
+                  <NumberInput
+                    field={field}
+                    label="Number of dependents"
+                    min="0"
+                    step="1"
+                  />
+                )}
+              />
+            )}
           </CardContent>
         </Card>
-
         <Card>
           <CardHeader>
             <CardTitle>{t('calculator.form.income')}</CardTitle>
@@ -294,15 +309,10 @@ export function TaxForm({ onCalculate }: TaxFormProps) {
               control={form.control}
               name="property.primaryResidence"
               render={({ field }) => (
-                <FormItem className="flex flex-row items-start space-x-3 space-y-0">
-                  <FormControl>
-                    <Checkbox
-                      checked={field.value}
-                      onCheckedChange={field.onChange}
-                    />
-                  </FormControl>
-                  <FormLabel>{t('calculator.form.property.primaryResidence')}</FormLabel>
-                </FormItem>
+                <YesNoSelect
+                  field={field}
+                  label={t('calculator.form.property.primaryResidence')}
+                />
               )}
             />
             {[

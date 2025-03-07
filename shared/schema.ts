@@ -18,6 +18,29 @@ export const CivilStatus = {
   WIDOWED: "widowed"
 } as const;
 
+// Personal Information Schema
+export const personalInfoSchema = z.object({
+  birthYear: z.number().min(1900).max(new Date().getFullYear()),
+  spouseBirthYear: z.number().min(1900).max(new Date().getFullYear()).optional(),
+  civilStatus: z.enum([
+    CivilStatus.SINGLE,
+    CivilStatus.MARRIED,
+    CivilStatus.SEPARATED,
+    CivilStatus.DIVORCED,
+    CivilStatus.WIDOWED
+  ]),
+  hasChildren: z.boolean(),
+  numberOfDependents: z.number().min(0),
+  finnmarkDeduction: z.boolean(),
+  hasRegularEmployment: z.boolean(),
+  hasBeenOnSickLeave: z.boolean(),
+  hasOwnHome: z.boolean(),
+  hasStudentLoans: z.boolean(),
+  hasCarOrBoat: z.boolean(),
+  hasSecondHome: z.boolean(),
+  hasShares: z.boolean()
+});
+
 // Work Income Schema
 export const workIncomeSchema = z.object({
   salary: z.number().min(0),
@@ -46,19 +69,6 @@ export const propertySchema = z.object({
   propertyExpenses: z.number().min(0).optional(),
 });
 
-// Personal Information Schema
-export const personalInfoSchema = z.object({
-  civilStatus: z.enum([
-    CivilStatus.SINGLE,
-    CivilStatus.MARRIED,
-    CivilStatus.SEPARATED,
-    CivilStatus.DIVORCED,
-    CivilStatus.WIDOWED
-  ]),
-  age: z.number().min(0).max(120).optional(),
-  hasChildren: z.boolean().optional(),
-  numberOfDependents: z.number().min(0).optional(),
-});
 
 export const taxCalculationSchema = z.object({
   personalInfo: personalInfoSchema,

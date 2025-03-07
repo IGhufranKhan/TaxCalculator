@@ -23,14 +23,25 @@ interface TaxFormProps {
 
 export function TaxForm({ onCalculate }: TaxFormProps) {
   const { t } = useTranslation();
+  const currentYear = new Date().getFullYear();
+
   const form = useForm({
     resolver: zodResolver(taxCalculationSchema),
     defaultValues: {
       personalInfo: {
+        birthYear: currentYear - 30,
+        spouseBirthYear: undefined,
         civilStatus: CivilStatus.SINGLE,
-        age: 30,
         hasChildren: false,
         numberOfDependents: 0,
+        finnmarkDeduction: false,
+        hasRegularEmployment: true,
+        hasBeenOnSickLeave: false,
+        hasOwnHome: false,
+        hasStudentLoans: false,
+        hasCarOrBoat: false,
+        hasSecondHome: false,
+        hasShares: false
       },
       income: {
         salary: 500000,
@@ -85,9 +96,9 @@ export function TaxForm({ onCalculate }: TaxFormProps) {
     <FormItem>
       <FormLabel>{label}</FormLabel>
       <FormControl>
-        <Input 
-          type="number" 
-          {...field} 
+        <Input
+          type="number"
+          {...field}
           onChange={(e) => {
             const value = e.target.value === '' ? 0 : Number(e.target.value);
             field.onChange(value);
@@ -111,6 +122,20 @@ export function TaxForm({ onCalculate }: TaxFormProps) {
           <CardContent className="space-y-4">
             <FormField
               control={form.control}
+              name="personalInfo.birthYear"
+              render={({ field }) => (
+                <NumberInput
+                  field={field}
+                  label="In which year were you born (YYYY)?"
+                  min="1900"
+                  max={currentYear}
+                  step="1"
+                />
+              )}
+            />
+
+            <FormField
+              control={form.control}
               name="personalInfo.civilStatus"
               render={({ field }) => (
                 <FormItem>
@@ -132,23 +157,25 @@ export function TaxForm({ onCalculate }: TaxFormProps) {
               )}
             />
 
-            <FormField
-              control={form.control}
-              name="personalInfo.age"
-              render={({ field }) => (
-                <NumberInput 
-                  field={field} 
-                  label={t('calculator.form.personalInfo.age')} 
-                  min="0" 
-                  max="120"
-                  step="1"
-                />
-              )}
-            />
+            {form.watch('personalInfo.civilStatus') === 'married' && (
+              <FormField
+                control={form.control}
+                name="personalInfo.spouseBirthYear"
+                render={({ field }) => (
+                  <NumberInput
+                    field={field}
+                    label="In which year was your spouse born (YYYY)?"
+                    min="1900"
+                    max={currentYear}
+                    step="1"
+                  />
+                )}
+              />
+            )}
 
             <FormField
               control={form.control}
-              name="personalInfo.hasChildren"
+              name="personalInfo.finnmarkDeduction"
               render={({ field }) => (
                 <FormItem className="flex flex-row items-start space-x-3 space-y-0">
                   <FormControl>
@@ -157,18 +184,39 @@ export function TaxForm({ onCalculate }: TaxFormProps) {
                       onCheckedChange={field.onChange}
                     />
                   </FormControl>
-                  <FormLabel>{t('calculator.form.personalInfo.hasChildren')}</FormLabel>
+                  <FormLabel>Finnmark deduction</FormLabel>
                 </FormItem>
               )}
             />
 
-            <FormField
-              control={form.control}
-              name="personalInfo.numberOfDependents"
-              render={({ field }) => (
-                <NumberInput field={field} label={t('calculator.form.personalInfo.numberOfDependents')} />
-              )}
-            />
+            {[
+              'hasChildren',
+              'numberOfDependents',
+              'hasRegularEmployment',
+              'hasBeenOnSickLeave',
+              'hasOwnHome',
+              'hasStudentLoans',
+              'hasCarOrBoat',
+              'hasSecondHome',
+              'hasShares'
+            ].map((fieldName) => (
+              <FormField
+                key={fieldName}
+                control={form.control}
+                name={`personalInfo.${fieldName}`}
+                render={({ field }) => (
+                  <FormItem className="flex flex-row items-start space-x-3 space-y-0">
+                    <FormControl>
+                      <Checkbox
+                        checked={field.value}
+                        onCheckedChange={field.onChange}
+                      />
+                    </FormControl>
+                    <FormLabel>{t(`calculator.form.personalInfo.${fieldName}`)}</FormLabel>
+                  </FormItem>
+                )}
+              />
+            ))}
           </CardContent>
         </Card>
 
@@ -200,9 +248,9 @@ export function TaxForm({ onCalculate }: TaxFormProps) {
                   control={form.control}
                   name={`income.${fieldName}`}
                   render={({ field }) => (
-                    <NumberInput 
-                      field={field} 
-                      label={t(`calculator.form.income.${fieldName}`)} 
+                    <NumberInput
+                      field={field}
+                      label={t(`calculator.form.income.${fieldName}`)}
                     />
                   )}
                 />
@@ -227,9 +275,9 @@ export function TaxForm({ onCalculate }: TaxFormProps) {
                 control={form.control}
                 name={`bankAndLoans.${fieldName}`}
                 render={({ field }) => (
-                  <NumberInput 
-                    field={field} 
-                    label={t(`calculator.form.bankAndLoans.${fieldName}`)} 
+                  <NumberInput
+                    field={field}
+                    label={t(`calculator.form.bankAndLoans.${fieldName}`)}
                   />
                 )}
               />
@@ -267,9 +315,9 @@ export function TaxForm({ onCalculate }: TaxFormProps) {
                 control={form.control}
                 name={`property.${fieldName}`}
                 render={({ field }) => (
-                  <NumberInput 
-                    field={field} 
-                    label={t(`calculator.form.property.${fieldName}`)} 
+                  <NumberInput
+                    field={field}
+                    label={t(`calculator.form.property.${fieldName}`)}
                   />
                 )}
               />

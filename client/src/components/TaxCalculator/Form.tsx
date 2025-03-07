@@ -34,7 +34,7 @@ export function TaxForm({ onCalculate }: TaxFormProps) {
         hasChildren: false,
         numberOfDependents: 0,
         finnmarkDeduction: false,
-        hasRegularEmployment: false, // Changed default value
+        hasRegularEmployment: false, 
         hasBeenOnSickLeave: false,
         hasOwnHome: false,
         hasStudentLoans: false,
@@ -141,7 +141,7 @@ export function TaxForm({ onCalculate }: TaxFormProps) {
               render={({ field }) => (
                 <NumberInput
                   field={field}
-                  label="In which year were you born (YYYY)?"
+                  label={t('calculator.form.personalInfo.birthYear')}
                   min="1900"
                   max={currentYear}
                   step="1"
@@ -179,7 +179,7 @@ export function TaxForm({ onCalculate }: TaxFormProps) {
                 render={({ field }) => (
                   <NumberInput
                     field={field}
-                    label="In which year was your spouse born (YYYY)?"
+                    label={t('calculator.form.personalInfo.spouseBirthYear')}
                     min="1900"
                     max={currentYear}
                     step="1"
@@ -188,26 +188,15 @@ export function TaxForm({ onCalculate }: TaxFormProps) {
               />
             )}
 
-            <FormField
-              control={form.control}
-              name="personalInfo.finnmarkDeduction"
-              render={({ field }) => (
-                <YesNoSelect
-                  field={field}
-                  label="Finnmark deduction"
-                />
-              )}
-            />
-
             {[
-              { name: 'hasChildren', label: 'Do you have children?' },
-              { name: 'hasRegularEmployment', label: 'Do you receive salary from a regular employer?' },
-              { name: 'hasBeenOnSickLeave', label: 'Have you been on sick leave or taken leave during the year?' },
-              { name: 'hasOwnHome', label: 'Do you own your own home?' },
-              { name: 'hasStudentLoans', label: 'Do you have student loans?' },
-              { name: 'hasCarOrBoat', label: 'Do you own a car or boat?' },
-              { name: 'hasSecondHome', label: 'Do you have a second home?' },
-              { name: 'hasShares', label: 'Do you own shares, funds or other financial instruments?' }
+              { name: 'hasChildren', label: t('calculator.form.personalInfo.hasChildren') },
+              { name: 'hasRegularEmployment', label: t('calculator.form.personalInfo.hasRegularEmployment') },
+              { name: 'hasBeenOnSickLeave', label: t('calculator.form.personalInfo.hasBeenOnSickLeave') },
+              { name: 'hasOwnHome', label: t('calculator.form.personalInfo.hasOwnHome') },
+              { name: 'hasStudentLoans', label: t('calculator.form.personalInfo.hasStudentLoans') },
+              { name: 'hasCarOrBoat', label: t('calculator.form.personalInfo.hasCarOrBoat') },
+              { name: 'hasSecondHome', label: t('calculator.form.personalInfo.hasSecondHome') },
+              { name: 'hasShares', label: t('calculator.form.personalInfo.hasShares') }
             ].map(({ name, label }) => (
               <FormField
                 key={name}
@@ -226,7 +215,7 @@ export function TaxForm({ onCalculate }: TaxFormProps) {
                 render={({ field }) => (
                   <NumberInput
                     field={field}
-                    label="Number of dependents"
+                    label={t('calculator.form.personalInfo.numberOfDependents')}
                     min="0"
                     step="1"
                   />

@@ -19,22 +19,12 @@ export default function Calculator() {
     queryFn: async () => {
       if (!formData) return null;
       try {
-        // Calculate annual income for each income source
-        const annualizedIncome = {
-          ...formData.income,
-          salary: annualizeAmount(formData.income.salary, formData.period),
-          businessIncome: formData.income.businessIncome ? annualizeAmount(formData.income.businessIncome, formData.period) : 0,
-          freelanceIncome: formData.income.freelanceIncome ? annualizeAmount(formData.income.freelanceIncome, formData.period) : 0,
-          overtimePay: formData.income.overtimePay ? annualizeAmount(formData.income.overtimePay, formData.period) : 0,
-          bonuses: formData.income.bonuses ? annualizeAmount(formData.income.bonuses, formData.period) : 0,
-          disabilityBenefits: formData.income.disabilityBenefits ? annualizeAmount(formData.income.disabilityBenefits, formData.period) : 0,
-          parentalBenefits: formData.income.parentalBenefits ? annualizeAmount(formData.income.parentalBenefits, formData.period) : 0,
-          sickPay: formData.income.sickPay ? annualizeAmount(formData.income.sickPay, formData.period) : 0,
-        };
-
         const response = await apiRequest('POST', '/api/calculate-tax', {
           ...formData,
-          income: annualizedIncome
+          income: {
+            ...formData.income,
+            salary: annualizeAmount(formData.income.salary, formData.period)
+          }
         });
         return await response.json() as TaxBreakdownType;
       } catch (err) {
@@ -56,25 +46,31 @@ export default function Calculator() {
   };
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen bg-white">
       <div className="absolute top-4 right-4">
         <LanguageSwitcher />
       </div>
       <div className="container mx-auto px-4 py-12">
         <div className="max-w-4xl mx-auto">
-          <div className="text-center mb-12">
-            <h1 className="text-4xl font-bold text-gray-900">
-              Calculate Your Taxes
+          <header className="calculator-header">
+            <img 
+              src="/calculator-illustration.svg" 
+              alt="Calculator" 
+              className="calculator-illustration"
+            />
+            <h1 className="calculator-title">
+              <span>Calculate</span>
+              <span>Your Taxes</span>
             </h1>
-            <p className="text-xl text-blue-600 mt-2">
+            <p className="calculator-subtitle">
               Hassle-free.
             </p>
-            <p className="text-gray-600 mt-4 max-w-2xl mx-auto">
+            <p className="calculator-description">
               {t('calculator.subtitle')}
             </p>
-          </div>
+          </header>
 
-          <div className="bg-white rounded-lg shadow-sm p-6 mb-8">
+          <div className="card mb-8">
             <TaxForm onCalculate={handleCalculate} />
           </div>
 
@@ -83,10 +79,18 @@ export default function Calculator() {
               <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600"></div>
             </div>
           ) : breakdown ? (
-            <div className="bg-white rounded-lg shadow-sm p-6">
+            <div className="card">
               <TaxBreakdown breakdown={breakdown} />
             </div>
           ) : null}
+
+          <div className="mt-12">
+            <img 
+              src="/iceberg-illustration.svg" 
+              alt="Norwegian Iceberg" 
+              className="w-full max-w-2xl mx-auto"
+            />
+          </div>
         </div>
       </div>
     </div>

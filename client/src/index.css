@@ -8,22 +8,9 @@
     --foreground: 222.2 84% 4.9%;
     --card: 0 0% 100%;
     --card-foreground: 222.2 84% 4.9%;
-    --popover: 0 0% 100%;
-    --popover-foreground: 222.2 84% 4.9%;
-    --primary: 221.2 83.2% 53.3%;
+    --border: 210 40% 90%;
+    --primary: 221 83% 53%;
     --primary-foreground: 210 40% 98%;
-    --secondary: 210 40% 96.1%;
-    --secondary-foreground: 222.2 47.4% 11.2%;
-    --muted: 210 40% 96.1%;
-    --muted-foreground: 215.4 16.3% 46.9%;
-    --accent: 210 40% 96.1%;
-    --accent-foreground: 222.2 47.4% 11.2%;
-    --destructive: 0 84.2% 60.2%;
-    --destructive-foreground: 210 40% 98%;
-    --border: 214.3 31.8% 91.4%;
-    --input: 214.3 31.8% 91.4%;
-    --ring: 221.2 83.2% 53.3%;
-    --radius: 0.5rem;
   }
 
   * {
@@ -31,8 +18,59 @@
   }
 
   body {
-    @apply bg-gray-50 font-sans text-foreground antialiased;
+    @apply bg-white font-sans text-foreground antialiased;
   }
+}
+
+.card {
+  @apply bg-white rounded-2xl border border-[#E2E8F0] shadow-sm p-6;
+}
+
+.form-group {
+  @apply mb-6;
+}
+
+.form-label {
+  @apply block text-sm font-medium text-gray-700 mb-2;
+}
+
+.input-field {
+  @apply block w-full px-4 py-3 rounded-lg border border-[#E2E8F0]
+         focus:border-blue-500 focus:ring-1 focus:ring-blue-500;
+}
+
+.select-field {
+  @apply block w-full px-4 py-3 rounded-lg border border-[#E2E8F0]
+         focus:border-blue-500 focus:ring-1 focus:ring-blue-500;
+}
+
+.button-primary {
+  @apply w-full bg-[#3B82F6] text-white font-semibold py-4 px-6 
+         rounded-lg hover:bg-blue-600 transition-colors;
+}
+
+.calculator-header {
+  @apply text-center mb-12;
+}
+
+.calculator-title {
+  @apply text-4xl font-bold text-gray-900;
+}
+
+.calculator-title span {
+  @apply block;
+}
+
+.calculator-subtitle {
+  @apply text-xl text-[#3B82F6] mt-2;
+}
+
+.calculator-description {
+  @apply text-gray-600 mt-4 max-w-2xl mx-auto;
+}
+
+.calculator-illustration {
+  @apply mx-auto mb-8 w-24 h-24;
 }
 
 .iceberg-bg {
@@ -51,45 +89,6 @@
   @apply bg-white/80 backdrop-blur-sm border border-white/20 shadow-lg rounded-xl;
 }
 
-.input-field {
-  @apply block w-full rounded-md border-gray-300 shadow-sm 
-         focus:border-blue-500 focus:ring-blue-500 sm:text-sm;
-}
-
-.select-field {
-  @apply block w-full rounded-md border-gray-300 shadow-sm 
-         focus:border-blue-500 focus:ring-blue-500 sm:text-sm;
-}
-
-.button-primary {
-  @apply w-full bg-blue-600 text-white font-semibold py-3 px-4 
-         rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 
-         focus:ring-blue-500 focus:ring-offset-2 transition-colors;
-}
-
-.form-container {
-  @apply space-y-8;
-}
-
-.form-section {
-  @apply mb-8 last:mb-0;
-}
-
-.form-section-title {
-  @apply text-lg font-medium text-gray-900 mb-4;
-}
-
-.form-group {
-  @apply mb-4 last:mb-0;
-}
-
-.form-label {
-  @apply block text-sm font-medium text-gray-700 mb-1;
-}
-
-.form-hint {
-  @apply mt-1 text-sm text-gray-500;
-}
 
 /* Animations for sparkles */
 .sparkles circle {

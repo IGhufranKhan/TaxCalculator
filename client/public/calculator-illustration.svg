@@ -1,0 +1,25 @@
+<svg width="96" height="96" viewBox="0 0 96 96" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <!-- Base -->
+  <rect x="20" y="12" width="56" height="72" rx="8" fill="#3B82F6"/>
+  
+  <!-- Screen -->
+  <rect x="24" y="16" width="48" height="16" rx="4" fill="white"/>
+  
+  <!-- Buttons -->
+  <g fill="white">
+    <!-- Row 1 -->
+    <rect x="24" y="36" width="12" height="12" rx="2"/>
+    <rect x="40" y="36" width="12" height="12" rx="2"/>
+    <rect x="56" y="36" width="12" height="12" rx="2"/>
+    
+    <!-- Row 2 -->
+    <rect x="24" y="52" width="12" height="12" rx="2"/>
+    <rect x="40" y="52" width="12" height="12" rx="2"/>
+    <rect x="56" y="52" width="12" height="12" rx="2"/>
+    
+    <!-- Row 3 -->
+    <rect x="24" y="68" width="12" height="12" rx="2"/>
+    <rect x="40" y="68" width="12" height="12" rx="2"/>
+    <rect x="56" y="68" width="12" height="12" rx="2"/>
+  </g>
+</svg>

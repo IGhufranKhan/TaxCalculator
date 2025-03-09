@@ -14,7 +14,7 @@ export default function Calculator() {
   const { toast } = useToast();
   const [formData, setFormData] = useState<TaxCalculation | null>(null);
 
-  const { data: breakdown, isLoading, error } = useQuery({
+  const { data: breakdown, isLoading } = useQuery({
     queryKey: ['/api/calculate-tax', formData],
     queryFn: async () => {
       if (!formData) return null;
@@ -56,38 +56,37 @@ export default function Calculator() {
   };
 
   return (
-    <div className="min-h-screen">
+    <div className="min-h-screen bg-gray-50">
       <div className="absolute top-4 right-4">
         <LanguageSwitcher />
       </div>
-      <div className="container mx-auto px-4 py-8">
-        <div className="max-w-6xl mx-auto">
+      <div className="container mx-auto px-4 py-12">
+        <div className="max-w-4xl mx-auto">
           <div className="text-center mb-12">
-            <h1 className="text-4xl font-bold text-gray-900 mb-4">
-              {t('calculator.title')}
+            <h1 className="text-4xl font-bold text-gray-900">
+              Calculate Your Taxes
             </h1>
-            <p className="text-xl text-gray-600">
+            <p className="text-xl text-blue-600 mt-2">
+              Hassle-free.
+            </p>
+            <p className="text-gray-600 mt-4 max-w-2xl mx-auto">
               {t('calculator.subtitle')}
             </p>
           </div>
 
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-            <div className="glass-card rounded-lg p-6">
-              <TaxForm onCalculate={handleCalculate} />
-            </div>
-
-            <div className="space-y-8">
-              {isLoading ? (
-                <div className="flex items-center justify-center h-64">
-                  <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary"></div>
-                </div>
-              ) : breakdown ? (
-                <div className="glass-card rounded-lg">
-                  <TaxBreakdown breakdown={breakdown} />
-                </div>
-              ) : null}
-            </div>
+          <div className="bg-white rounded-lg shadow-sm p-6 mb-8">
+            <TaxForm onCalculate={handleCalculate} />
           </div>
+
+          {isLoading ? (
+            <div className="flex items-center justify-center h-32">
+              <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600"></div>
+            </div>
+          ) : breakdown ? (
+            <div className="bg-white rounded-lg shadow-sm p-6">
+              <TaxBreakdown breakdown={breakdown} />
+            </div>
+          ) : null}
         </div>
       </div>
     </div>

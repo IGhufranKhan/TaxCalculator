@@ -142,12 +142,14 @@ export function TaxForm({ onCalculate }: TaxFormProps) {
 
   return (
     <Form {...form}>
-      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
-        <Card>
+      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
+        <Card className="glass-card border-0">
           <CardHeader>
-            <CardTitle>{t('calculator.form.personalInfo')}</CardTitle>
+            <CardTitle className="text-2xl font-semibold text-gray-900">
+              {t('calculator.form.personalInfo')}
+            </CardTitle>
           </CardHeader>
-          <CardContent className="space-y-4">
+          <CardContent className="space-y-6">
             <FormField
               control={form.control}
               name="personalInfo.birthYear"
@@ -249,11 +251,13 @@ export function TaxForm({ onCalculate }: TaxFormProps) {
           </CardContent>
         </Card>
 
-        <Card>
+        <Card className="glass-card border-0">
           <CardHeader>
-            <CardTitle>{t('calculator.form.income')}</CardTitle>
+            <CardTitle className="text-2xl font-semibold text-gray-900">
+              {t('calculator.form.income')}
+            </CardTitle>
           </CardHeader>
-          <CardContent className="space-y-4">
+          <CardContent className="space-y-6">
             <FormField
               control={form.control}
               name="income.salary"
@@ -288,11 +292,13 @@ export function TaxForm({ onCalculate }: TaxFormProps) {
           </CardContent>
         </Card>
 
-        <Card>
+        <Card className="glass-card border-0">
           <CardHeader>
-            <CardTitle>{t('calculator.form.bankAndLoans')}</CardTitle>
+            <CardTitle className="text-2xl font-semibold text-gray-900">
+              {t('calculator.form.bankAndLoans')}
+            </CardTitle>
           </CardHeader>
-          <CardContent className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <CardContent className="space-y-6">
             {[
               'savingsInterest',
               'bankDeposits',
@@ -314,11 +320,13 @@ export function TaxForm({ onCalculate }: TaxFormProps) {
           </CardContent>
         </Card>
 
-        <Card>
+        <Card className="glass-card border-0">
           <CardHeader>
-            <CardTitle>{t('calculator.form.property')}</CardTitle>
+            <CardTitle className="text-2xl font-semibold text-gray-900">
+              {t('calculator.form.property')}
+            </CardTitle>
           </CardHeader>
-          <CardContent className="space-y-4">
+          <CardContent className="space-y-6">
             <FormField
               control={form.control}
               name="property.primaryResidence"
@@ -349,30 +357,7 @@ export function TaxForm({ onCalculate }: TaxFormProps) {
           </CardContent>
         </Card>
 
-        <FormField
-          control={form.control}
-          name="period"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>{t('calculator.form.period')}</FormLabel>
-              <Select onValueChange={field.onChange} defaultValue={field.value}>
-                <SelectTrigger>
-                  <SelectValue />
-                </SelectTrigger>
-                <SelectContent>
-                  {Object.values(TaxPeriod).map((period) => (
-                    <SelectItem key={period} value={period}>
-                      {period}
-                    </SelectItem>
-                  ))}
-                </SelectContent>
-              </Select>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
-
-        <Button type="submit" className="w-full">
+        <Button type="submit" className="w-full text-lg py-6 bg-primary hover:bg-primary/90">
           {t('calculator.form.calculate')}
         </Button>
       </form>

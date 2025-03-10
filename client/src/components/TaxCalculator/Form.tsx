@@ -311,43 +311,135 @@ export function TaxForm({ onCalculate }: TaxFormProps) {
         </Card>
 
         <Card className="glass-card border-0">
-          <CardHeader>
-            <CardTitle className="text-2xl font-semibold text-gray-900">
-              {t('calculator.form.deductions')}
-            </CardTitle>
-          </CardHeader>
-          <CardContent className="space-y-6">
-            {[
-              'standardDeduction',
-              'unionFee',
-              'ips',
-              'bsu',
-              'parentalDeduction',
-              'numberOfChildren',
-              'otherDeductions',
-              'totalDeductions',
-              'incomeAfterDeductions'
-            ].map((fieldName) => (
+            <CardHeader>
+              <CardTitle className="text-2xl font-semibold text-gray-900">
+                {t('calculator.form.deductions')}
+              </CardTitle>
+            </CardHeader>
+            <CardContent className="space-y-6">
+              {/* Standard deductions */}
               <FormField
-                key={fieldName}
                 control={form.control}
-                name={`deductions.${fieldName}` as keyof TaxCalculation['deductions']}
+                name="deductions.standardDeduction"
                 render={({ field }) => (
                   <NumberInput
                     field={field}
-                    label={t(`calculator.form.deductions.${fieldName}`)}
+                    label={t('calculator.form.deductions.standardDeduction')}
                     min="0"
-                    max={
-                      fieldName === 'unionFee' ? '8000' :
-                      fieldName === 'ips' ? '15000' :
-                      fieldName === 'bsu' ? '27500' : undefined
-                    }
                   />
                 )}
               />
-            ))}
-          </CardContent>
-        </Card>
+
+              {/* Union fee */}
+              <FormField
+                control={form.control}
+                name="deductions.unionFee"
+                render={({ field }) => (
+                  <NumberInput
+                    field={field}
+                    label={t('calculator.form.deductions.unionFee')}
+                    min="0"
+                    max="8000"
+                  />
+                )}
+              />
+
+              {/* IPS */}
+              <FormField
+                control={form.control}
+                name="deductions.ips"
+                render={({ field }) => (
+                  <NumberInput
+                    field={field}
+                    label={t('calculator.form.deductions.ips')}
+                    min="0"
+                    max="15000"
+                  />
+                )}
+              />
+
+              {/* BSU */}
+              <FormField
+                control={form.control}
+                name="deductions.bsu"
+                render={({ field }) => (
+                  <NumberInput
+                    field={field}
+                    label={t('calculator.form.deductions.bsu')}
+                    min="0"
+                    max="27500"
+                  />
+                )}
+              />
+
+              {/* Parental deduction */}
+              <FormField
+                control={form.control}
+                name="deductions.parentalDeduction"
+                render={({ field }) => (
+                  <NumberInput
+                    field={field}
+                    label={t('calculator.form.deductions.parentalDeduction')}
+                    min="0"
+                  />
+                )}
+              />
+
+              {/* Number of children */}
+              <FormField
+                control={form.control}
+                name="deductions.numberOfChildren"
+                render={({ field }) => (
+                  <NumberInput
+                    field={field}
+                    label={t('calculator.form.deductions.numberOfChildren')}
+                    min="0"
+                  />
+                )}
+              />
+
+              <Separator className="my-4" />
+
+              {/* Other deductions */}
+              <FormField
+                control={form.control}
+                name="deductions.otherDeductions"
+                render={({ field }) => (
+                  <NumberInput
+                    field={field}
+                    label={t('calculator.form.deductions.otherDeductions')}
+                    min="0"
+                  />
+                )}
+              />
+
+              {/* Total deductions */}
+              <FormField
+                control={form.control}
+                name="deductions.totalDeductions"
+                render={({ field }) => (
+                  <NumberInput
+                    field={field}
+                    label={t('calculator.form.deductions.totalDeductions')}
+                    min="0"
+                  />
+                )}
+              />
+
+              {/* Income after deductions */}
+              <FormField
+                control={form.control}
+                name="deductions.incomeAfterDeductions"
+                render={({ field }) => (
+                  <NumberInput
+                    field={field}
+                    label={t('calculator.form.deductions.incomeAfterDeductions')}
+                    min="0"
+                  />
+                )}
+              />
+            </CardContent>
+          </Card>
 
         <Card className="glass-card border-0">
           <CardHeader>

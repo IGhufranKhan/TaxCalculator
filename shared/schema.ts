@@ -54,6 +54,15 @@ export const workIncomeSchema = z.object({
   otherIncome: z.number().min(0).optional(),
 });
 
+// Business Income Schema
+export const businessIncomeSchema = z.object({
+  fishingAgricultureIncome: z.number().min(0).optional(),
+  otherBusinessIncome: z.number().min(0).optional(),
+  businessProfit: z.number().min(0).optional(),
+  businessLoss: z.number().min(0).optional(),
+  totalIncome: z.number().min(0).optional(),
+});
+
 // Bank and Loan Schema
 export const bankLoanSchema = z.object({
   savingsInterest: z.number().min(0).optional(),
@@ -74,6 +83,7 @@ export const propertySchema = z.object({
 export const taxCalculationSchema = z.object({
   personalInfo: personalInfoSchema,
   income: workIncomeSchema,
+  businessIncome: businessIncomeSchema,
   bankAndLoans: bankLoanSchema,
   property: propertySchema,
   period: z.enum([
@@ -92,6 +102,7 @@ export type PersonalInfo = z.infer<typeof personalInfoSchema>;
 export type WorkIncome = z.infer<typeof workIncomeSchema>;
 export type BankLoan = z.infer<typeof bankLoanSchema>;
 export type Property = z.infer<typeof propertySchema>;
+export type BusinessIncome = z.infer<typeof businessIncomeSchema>;
 
 export interface TaxBreakdown {
   // Base calculation

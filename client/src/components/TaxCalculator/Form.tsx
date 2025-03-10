@@ -79,7 +79,14 @@ export function TaxForm({ onCalculate }: TaxFormProps) {
         propertyExpenses: 0,
       },
       period: TaxPeriod.ANNUAL,
-      location: "Norway"
+      location: "Norway",
+      businessIncome: {
+        fishingAgricultureIncome: 0,
+        otherBusinessIncome: 0,
+        businessProfit: 0,
+        businessLoss: 0,
+        totalIncome: 0
+      },
     }
   });
 
@@ -278,6 +285,35 @@ export function TaxForm({ onCalculate }: TaxFormProps) {
                   <NumberInput
                     field={field}
                     label={t(`calculator.form.income.${fieldName}`)}
+                  />
+                )}
+              />
+            ))}
+          </CardContent>
+        </Card>
+
+        <Card className="glass-card border-0">
+          <CardHeader>
+            <CardTitle className="text-2xl font-semibold text-gray-900">
+              {t('calculator.form.businessIncome')}
+            </CardTitle>
+          </CardHeader>
+          <CardContent className="space-y-6">
+            {[
+              'fishingAgricultureIncome',
+              'otherBusinessIncome',
+              'businessProfit',
+              'businessLoss',
+              'totalIncome'
+            ].map((fieldName) => (
+              <FormField
+                key={fieldName}
+                control={form.control}
+                name={`businessIncome.${fieldName}` as keyof TaxCalculation['businessIncome']}
+                render={({ field }) => (
+                  <NumberInput
+                    field={field}
+                    label={t(`calculator.form.businessIncome.${fieldName}`)}
                   />
                 )}
               />

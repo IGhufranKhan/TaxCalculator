@@ -22,10 +22,14 @@
       "personalInfo.hasCarOrBoat": "Do you own a car or boat?",
       "personalInfo.hasSecondHome": "Do you have a second home?",
       "personalInfo.hasShares": "Do you own shares, funds or other financial instruments?",
-
       "income": "Income and Work",
       "income.salary": "Salary",
-      "income.businessIncome": "Business income",
+      "income.businessIncome": "Other and business income",
+      "income.businessIncome.fishingAgricultureIncome": "Personal income from fishing/agriculture/forestry",
+      "income.businessIncome.otherBusinessIncome": "Personal income from other businesses",
+      "income.businessIncome.businessProfit": "Profit from business activities",
+      "income.businessIncome.businessLoss": "Loss from business activities",
+      "income.businessIncome.totalIncome": "Total income",
       "income.freelanceIncome": "Freelance income",
       "income.overtimePay": "Overtime pay",
       "income.bonuses": "Bonuses",
@@ -40,20 +44,16 @@
       "income.employerBenefits": "Paid telephone subscription and broadband from employer",
       "income.dividend": "Dividend",
       "income.otherIncome": "Other income",
-
-
       "bankAndLoans": "Bank and Loans",
       "bankAndLoans.savingsInterest": "Savings interest",
       "bankAndLoans.bankDeposits": "Bank deposits",
       "bankAndLoans.loanInterest": "Loan interest",
       "bankAndLoans.mortgageInterest": "Mortgage interest",
-
       "property": "Housing and Property",
       "property.primaryResidence": "Primary residence",
       "property.rentalIncome": "Rental income",
       "property.propertyValue": "Property value",
       "property.propertyExpenses": "Property expenses",
-
       "period": "Period",
       "location": "Where do you live?",
       "calculate": "Calculate"

@@ -25,7 +25,12 @@
 
       "income": "Arbeid og inntekt",
       "income.salary": "Fast lønn",
-      "income.businessIncome": "Næringsinntekt",
+      "income.businessIncome": "Annen og næringsinntekt",
+      "income.businessIncome.fishingAgricultureIncome": "Personinntekt fiske/jord/skog",
+      "income.businessIncome.otherBusinessIncome": "Personinntekt annen næring",
+      "income.businessIncome.businessProfit": "Overskudd av næringsvirksomhet",
+      "income.businessIncome.businessLoss": "Underskudd av næringsvirksomhet",
+      "income.businessIncome.totalIncome": "Sum inntekter",
       "income.freelanceIncome": "Frilans inntekt",
       "income.overtimePay": "Overtidsbetaling",
       "income.bonuses": "Bonuser",

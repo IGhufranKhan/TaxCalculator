@@ -67,7 +67,36 @@
       "property.propertyExpenses": "Eiendomsutgifter",
       "period": "Periode",
       "location": "Hvor bor du?",
-      "calculate": "Beregn"
+      "calculate": "Beregn",
+      "financial": {
+        "title": "Bank, lån, finans og forsikring",
+        "totalBankBalance": "Sum penger på konto per 31. desember",
+        "investmentValue": "Verdi Fond / Aksjer / Krypto",
+        "primaryResidenceValue": "Markedsverdi primærbolig",
+        "secondaryResidenceValue": "Markedsverdi sekundærbolig(er)",
+        "vehicleValue": "Kjøretøy antatt salgsverdi (Bil, motorsykkel, campingvogn m.m.)",
+        "boatValue": "Fritidsbåt antatt salgsverdi (salgsverdi 50 000 eller høyere)",
+        "totalAssets": "Sum formue",
+        "loans": "Lån",
+        "mortgageShare": "Boliglånsandel",
+        "totalMortgage": "Total boliglån inkludert fellesgjeld",
+        "carLoan": "Billån",
+        "studentLoan": "Studielån",
+        "consumerLoan": "Forbrukslån",
+        "otherLoans": "Andre lån",
+        "totalDebt": "Sum gjeld",
+        "capitalSection": "Kapitalinntekter og kapitalkostnader",
+        "interestIncome": "Rente- og kapitalinntekter",
+        "interestExpenses": "Rentekostnader",
+        "investmentGainsLosses": "Netto gevinst og tap ved kjøp og salg av Fond / Aksjer / Krypto (tap skrives med '-' fortegn)",
+        "taxCalculation": "Skatteberegning",
+        "socialSecurityContribution": "Trygdeavgift",
+        "generalIncomeTax": "Skatt på alminnelig inntekt",
+        "bracketTax": "Trinnskatt",
+        "wealthTax": "Formueskatt",
+        "totalTax": "Sum skatt",
+        "withholdingPercentage": "Trekkprosent"
+      }
     }
   }
 }

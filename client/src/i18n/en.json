@@ -73,7 +73,40 @@
 
       "period": "Period",
       "location": "Where do you live?",
-      "calculate": "Calculate"
+      "calculate": "Calculate",
+
+      "financial": {
+        "title": "Bank, loans, finance, and insurance",
+        "totalBankBalance": "Total money in account as of December 31",
+        "investmentValue": "Value of Funds / Stocks / Crypto",
+        "primaryResidenceValue": "Market value of primary residence",
+        "secondaryResidenceValue": "Market value of secondary residence(s)",
+        "vehicleValue": "Estimated sale value of vehicles (Car, motorcycle, camper, etc.)",
+        "boatValue": "Estimated sale value of leisure boat (sale value of 50,000 or higher)",
+        "totalAssets": "Total assets",
+
+        "loans": "Loans",
+        "mortgageShare": "Share of mortgage loan",
+        "totalMortgage": "Total mortgage loan including joint debt",
+        "carLoan": "Car loan",
+        "studentLoan": "Student loan",
+        "consumerLoan": "Consumer loan",
+        "otherLoans": "Other loans",
+        "totalDebt": "Total debt",
+
+        "capitalSection": "Capital income and capital expenses",
+        "interestIncome": "Interest and capital income",
+        "interestExpenses": "Interest expenses",
+        "investmentGainsLosses": "Net gains and losses from buying and selling Funds / Stocks / Crypto (losses are written with a '-' sign)",
+
+        "taxCalculation": "Tax calculation",
+        "socialSecurityContribution": "Social security contribution",
+        "generalIncomeTax": "Tax on general income",
+        "bracketTax": "Bracket tax",
+        "wealthTax": "Wealth tax",
+        "totalTax": "Total tax",
+        "withholdingPercentage": "Withholding tax percentage"
+      }
     },
     "breakdown": {
       "salary": "Total Income",

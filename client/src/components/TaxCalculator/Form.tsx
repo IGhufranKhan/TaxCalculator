@@ -84,13 +84,13 @@ export function TaxForm({ onCalculate }: TaxFormProps) {
         tollAndFerry: 3300,
         totalTravelExpenses: 0
       },
-      bankAndLoans: {
+      bankAndLoans: { //This section will be removed
         savingsInterest: 0,
         bankDeposits: 0,
         loanInterest: 0,
         mortgageInterest: 0,
       },
-      property: {
+      property: { //This section will be removed
         primaryResidence: false,
         rentalIncome: 0,
         propertyValue: 0,
@@ -105,6 +105,31 @@ export function TaxForm({ onCalculate }: TaxFormProps) {
         businessLoss: 0,
         totalIncome: 0
       },
+      financial: { //This section will be added
+        totalBankBalance: 0,
+        investmentValue: 0,
+        primaryResidenceValue: 0,
+        secondaryResidenceValue: 0,
+        vehicleValue: 0,
+        boatValue: 0,
+        totalAssets: 0,
+        mortgageShare: 0,
+        totalMortgage: 0,
+        carLoan: 0,
+        studentLoan: 0,
+        consumerLoan: 0,
+        otherLoans: 0,
+        totalDebt: 0,
+        interestIncome: 0,
+        interestExpenses: 0,
+        investmentGainsLosses: 0,
+        socialSecurityContribution: 0,
+        generalIncomeTax: 0,
+        bracketTax: 0,
+        wealthTax: 0,
+        totalTax: 0,
+        withholdingPercentage: 0,
+      }
     }
   });
 
@@ -115,16 +140,12 @@ export function TaxForm({ onCalculate }: TaxFormProps) {
         acc[key] = Number(value) || 0;
         return acc;
       }, {}),
-      bankAndLoans: Object.entries(data.bankAndLoans).reduce((acc: any, [key, value]) => {
+      //bankAndLoans: removed
+      //property: removed
+      financial: Object.entries(data.financial).reduce((acc: any, [key, value]) => {
         acc[key] = Number(value) || 0;
         return acc;
-      }, {}),
-      property: {
-        ...data.property,
-        rentalIncome: Number(data.property.rentalIncome) || 0,
-        propertyValue: Number(data.property.propertyValue) || 0,
-        propertyExpenses: Number(data.property.propertyExpenses) || 0,
-      }
+      }, {})
     };
     console.log('Formatted form data:', formattedData);
     onCalculate(formattedData);
@@ -472,74 +493,317 @@ export function TaxForm({ onCalculate }: TaxFormProps) {
         </Card>
 
         <Card className="glass-card border-0">
-          <CardHeader>
-            <CardTitle className="text-2xl font-semibold text-gray-900">
-              {t('calculator.form.bankAndLoans')}
-            </CardTitle>
-          </CardHeader>
-          <CardContent className="space-y-6">
-            {[
-              'savingsInterest',
-              'bankDeposits',
-              'loanInterest',
-              'mortgageInterest'
-            ].map((fieldName) => (
-              <FormField
-                key={fieldName}
-                control={form.control}
-                name={`bankAndLoans.${fieldName}` as keyof TaxCalculation['bankAndLoans']}
-                render={({ field }) => (
-                  <NumberInput
-                    field={field}
-                    label={t(`calculator.form.bankAndLoans.${fieldName}`)}
-                  />
-                )}
-              />
-            ))}
-          </CardContent>
-        </Card>
-
-        <Card className="glass-card border-0">
-          <CardHeader>
-            <CardTitle className="text-2xl font-semibold text-gray-900">
-              {t('calculator.form.property')}
-            </CardTitle>
-          </CardHeader>
-          <CardContent className="space-y-6">
-            <FormField
-              control={form.control}
-              name="property.primaryResidence"
-              render={({ field }) => (
-                <YesNoSelect
-                  field={field}
-                  label={t('calculator.form.property.primaryResidence')}
+            <CardHeader>
+              <CardTitle className="text-2xl font-semibold text-gray-900">
+                {t('calculator.form.financial.title')}
+              </CardTitle>
+            </CardHeader>
+            <CardContent>
+              {/* Assets Section */}
+              <div className="space-y-6">
+                <FormField
+                  control={form.control}
+                  name="financial.totalBankBalance"
+                  render={({ field }) => (
+                    <NumberInput
+                      field={field}
+                      label={t('calculator.form.financial.totalBankBalance')}
+                      min="0"
+                    />
+                  )}
                 />
-              )}
-            />
-            {[
-              'rentalIncome',
-              'propertyValue',
-              'propertyExpenses'
-            ].map((fieldName) => (
-              <FormField
-                key={fieldName}
-                control={form.control}
-                name={`property.${fieldName}` as keyof TaxCalculation['property']}
-                render={({ field }) => (
-                  <NumberInput
-                    field={field}
-                    label={t(`calculator.form.property.${fieldName}`)}
-                  />
-                )}
-              />
-            ))}
-          </CardContent>
-        </Card>
 
-        <Button type="submit" className="w-full text-lg py-6 bg-primary hover:bg-primary/90">
-          {t('calculator.form.calculate')}
-        </Button>
-      </form>
-    </Form>
+                <FormField
+                  control={form.control}
+                  name="financial.investmentValue"
+                  render={({ field }) => (
+                    <NumberInput
+                      field={field}
+                      label={t('calculator.form.financial.investmentValue')}
+                      min="0"
+                    />
+                  )}
+                />
+
+                <FormField
+                  control={form.control}
+                  name="financial.primaryResidenceValue"
+                  render={({ field }) => (
+                    <NumberInput
+                      field={field}
+                      label={t('calculator.form.financial.primaryResidenceValue')}
+                      min="0"
+                    />
+                  )}
+                />
+
+                <FormField
+                  control={form.control}
+                  name="financial.secondaryResidenceValue"
+                  render={({ field }) => (
+                    <NumberInput
+                      field={field}
+                      label={t('calculator.form.financial.secondaryResidenceValue')}
+                      min="0"
+                    />
+                  )}
+                />
+
+                <FormField
+                  control={form.control}
+                  name="financial.vehicleValue"
+                  render={({ field }) => (
+                    <NumberInput
+                      field={field}
+                      label={t('calculator.form.financial.vehicleValue')}
+                      min="0"
+                    />
+                  )}
+                />
+
+                <FormField
+                  control={form.control}
+                  name="financial.boatValue"
+                  render={({ field }) => (
+                    <NumberInput
+                      field={field}
+                      label={t('calculator.form.financial.boatValue')}
+                      min="0"
+                    />
+                  )}
+                />
+
+                <FormField
+                  control={form.control}
+                  name="financial.totalAssets"
+                  render={({ field }) => (
+                    <NumberInput
+                      field={field}
+                      label={t('calculator.form.financial.totalAssets')}
+                      min="0"
+                    />
+                  )}
+                />
+
+                <Separator className="my-6" />
+
+                {/* Loans Section */}
+                <h3 className="text-lg font-medium mb-4">
+                  {t('calculator.form.financial.loans')}
+                </h3>
+
+                <FormField
+                  control={form.control}
+                  name="financial.mortgageShare"
+                  render={({ field }) => (
+                    <NumberInput
+                      field={field}
+                      label={t('calculator.form.financial.mortgageShare')}
+                      min="0"
+                      max="100"
+                    />
+                  )}
+                />
+
+                <FormField
+                  control={form.control}
+                  name="financial.totalMortgage"
+                  render={({ field }) => (
+                    <NumberInput
+                      field={field}
+                      label={t('calculator.form.financial.totalMortgage')}
+                      min="0"
+                    />
+                  )}
+                />
+
+                <FormField
+                  control={form.control}
+                  name="financial.carLoan"
+                  render={({ field }) => (
+                    <NumberInput
+                      field={field}
+                      label={t('calculator.form.financial.carLoan')}
+                      min="0"
+                    />
+                  )}
+                />
+
+                <FormField
+                  control={form.control}
+                  name="financial.studentLoan"
+                  render={({ field }) => (
+                    <NumberInput
+                      field={field}
+                      label={t('calculator.form.financial.studentLoan')}
+                      min="0"
+                    />
+                  )}
+                />
+
+                <FormField
+                  control={form.control}
+                  name="financial.consumerLoan"
+                  render={({ field }) => (
+                    <NumberInput
+                      field={field}
+                      label={t('calculator.form.financial.consumerLoan')}
+                      min="0"
+                    />
+                  )}
+                />
+
+                <FormField
+                  control={form.control}
+                  name="financial.otherLoans"
+                  render={({ field }) => (
+                    <NumberInput
+                      field={field}
+                      label={t('calculator.form.financial.otherLoans')}
+                      min="0"
+                    />
+                  )}
+                />
+
+                <FormField
+                  control={form.control}
+                  name="financial.totalDebt"
+                  render={({ field }) => (
+                    <NumberInput
+                      field={field}
+                      label={t('calculator.form.financial.totalDebt')}
+                      min="0"
+                    />
+                  )}
+                />
+
+                <Separator className="my-6" />
+
+                {/* Capital Income and Expenses Section */}
+                <h3 className="text-lg font-medium mb-4">
+                  {t('calculator.form.financial.capitalSection')}
+                </h3>
+
+                <FormField
+                  control={form.control}
+                  name="financial.interestIncome"
+                  render={({ field }) => (
+                    <NumberInput
+                      field={field}
+                      label={t('calculator.form.financial.interestIncome')}
+                    />
+                  )}
+                />
+
+                <FormField
+                  control={form.control}
+                  name="financial.interestExpenses"
+                  render={({ field }) => (
+                    <NumberInput
+                      field={field}
+                      label={t('calculator.form.financial.interestExpenses')}
+                    />
+                  )}
+                />
+
+                <FormField
+                  control={form.control}
+                  name="financial.investmentGainsLosses"
+                  render={({ field }) => (
+                    <NumberInput
+                      field={field}
+                      label={t('calculator.form.financial.investmentGainsLosses')}
+                    />
+                  )}
+                />
+
+                <Separator className="my-6" />
+
+                {/* Tax Calculation Section */}
+                <h3 className="text-lg font-medium mb-4">
+                  {t('calculator.form.financial.taxCalculation')}
+                </h3>
+
+                <FormField
+                  control={form.control}
+                  name="financial.socialSecurityContribution"
+                  render={({ field }) => (
+                    <NumberInput
+                      field={field}
+                      label={t('calculator.form.financial.socialSecurityContribution')}
+                      min="0"
+                    />
+                  )}
+                />
+
+                <FormField
+                  control={form.control}
+                  name="financial.generalIncomeTax"
+                  render={({ field }) => (
+                    <NumberInput
+                      field={field}
+                      label={t('calculator.form.financial.generalIncomeTax')}
+                      min="0"
+                    />
+                  )}
+                />
+
+                <FormField
+                  control={form.control}
+                  name="financial.bracketTax"
+                  render={({ field }) => (
+                    <NumberInput
+                      field={field}
+                      label={t('calculator.form.financial.bracketTax')}
+                      min="0"
+                    />
+                  )}
+                />
+
+                <FormField
+                  control={form.control}
+                  name="financial.wealthTax"
+                  render={({ field }) => (
+                    <NumberInput
+                      field={field}
+                      label={t('calculator.form.financial.wealthTax')}
+                      min="0"
+                    />
+                  )}
+                />
+
+                <FormField
+                  control={form.control}
+                  name="financial.totalTax"
+                  render={({ field }) => (
+                    <NumberInput
+                      field={field}
+                      label={t('calculator.form.financial.totalTax')}
+                      min="0"
+                    />
+                  )}
+                />
+
+                <FormField
+                  control={form.control}
+                  name="financial.withholdingPercentage"
+                  render={({ field }) => (
+                    <NumberInput
+                      field={field}
+                      label={t('calculator.form.financial.withholdingPercentage')}
+                      min="0"
+                      max="100"
+                    />
+                  )}
+                />
+              </div>
+            </CardContent>
+          </Card>
+
+          <Button type="submit" className="w-full text-lg py-6 bg-primary hover:bg-primary/90">
+            {t('calculator.form.calculate')}
+          </Button>
+        </form>
+      </Form>
   );
 }

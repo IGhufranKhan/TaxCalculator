@@ -85,22 +85,39 @@ export const businessIncomeSchema = z.object({
   totalIncome: z.number().min(0).optional(),
 });
 
-// Bank and Loan Schema
-export const bankLoanSchema = z.object({
-  savingsInterest: z.number().min(0).optional(),
-  bankDeposits: z.number().min(0).optional(),
-  loanInterest: z.number().min(0).optional(),
-  mortgageInterest: z.number().min(0).optional(),
-});
 
-// Property Schema
-export const propertySchema = z.object({
-  primaryResidence: z.boolean().optional(),
-  rentalIncome: z.number().min(0).optional(),
-  propertyValue: z.number().min(0).optional(),
-  propertyExpenses: z.number().min(0).optional(),
-});
+// Financial Information Schema
+export const financialSchema = z.object({
+  totalBankBalance: z.number().min(0).optional(),
+  investmentValue: z.number().min(0).optional(),
+  primaryResidenceValue: z.number().min(0).optional(),
+  secondaryResidenceValue: z.number().min(0).optional(),
+  vehicleValue: z.number().min(0).optional(),
+  boatValue: z.number().min(0).optional(),
+  totalAssets: z.number().min(0).optional(),
 
+  // Loans
+  mortgageShare: z.number().min(0).max(100).optional(),
+  totalMortgage: z.number().min(0).optional(),
+  carLoan: z.number().min(0).optional(),
+  studentLoan: z.number().min(0).optional(),
+  consumerLoan: z.number().min(0).optional(),
+  otherLoans: z.number().min(0).optional(),
+  totalDebt: z.number().min(0).optional(),
+
+  // Capital Income and Expenses
+  interestIncome: z.number().optional(),
+  interestExpenses: z.number().optional(),
+  investmentGainsLosses: z.number().optional(),
+
+  // Tax Calculation
+  socialSecurityContribution: z.number().min(0).optional(),
+  generalIncomeTax: z.number().min(0).optional(),
+  bracketTax: z.number().min(0).optional(),
+  wealthTax: z.number().min(0).optional(),
+  totalTax: z.number().min(0).optional(),
+  withholdingPercentage: z.number().min(0).max(100).optional(),
+});
 
 export const taxCalculationSchema = z.object({
   personalInfo: personalInfoSchema,
@@ -108,8 +125,7 @@ export const taxCalculationSchema = z.object({
   businessIncome: businessIncomeSchema,
   deductions: deductionsSchema,
   travelExpenses: travelExpensesSchema,
-  bankAndLoans: bankLoanSchema,
-  property: propertySchema,
+  financial: financialSchema,
   period: z.enum([
     TaxPeriod.ANNUAL,
     TaxPeriod.MONTH,
@@ -124,11 +140,12 @@ export const taxCalculationSchema = z.object({
 export type TaxCalculation = z.infer<typeof taxCalculationSchema>;
 export type PersonalInfo = z.infer<typeof personalInfoSchema>;
 export type WorkIncome = z.infer<typeof workIncomeSchema>;
-export type BankLoan = z.infer<typeof bankLoanSchema>;
-export type Property = z.infer<typeof propertySchema>;
+export type BankLoan = z.infer<typeof bankLoanSchema>; //This line was already present before the edit, and is included here for completeness.
+export type Property = z.infer<typeof propertySchema>; //This line was already present before the edit, and is included here for completeness.
 export type BusinessIncome = z.infer<typeof businessIncomeSchema>;
 export type Deductions = z.infer<typeof deductionsSchema>;
 export type TravelExpenses = z.infer<typeof travelExpensesSchema>;
+export type Financial = z.infer<typeof financialSchema>;
 
 export interface TaxBreakdown {
   // Base calculation

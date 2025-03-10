@@ -165,6 +165,24 @@ export function TaxForm({ onCalculate }: TaxFormProps) {
     form.setValue('businessIncome.totalIncome', totalIncome);
   }, [...relevantIncomeFields, ...additionalIncomeFields, ...businessIncomeFields]);
 
+  // Watch for changes in number of children for parental deduction calculation
+  const numberOfChildren = form.watch('deductions.numberOfChildren');
+
+  // Calculate parental deduction
+  useEffect(() => {
+    const children = Number(numberOfChildren) || 0;
+    let parentalDeduction = 0;
+
+    if (children > 0) {
+      parentalDeduction = 25000; // First child
+      if (children > 1) {
+        parentalDeduction += (children - 1) * 15000; // Additional children
+      }
+    }
+
+    form.setValue('deductions.parentalDeduction', parentalDeduction);
+  }, [numberOfChildren, form]);
+
   const onSubmit = (data: TaxCalculation) => {
     const formattedData = {
       ...data,
@@ -564,6 +582,7 @@ export function TaxForm({ onCalculate }: TaxFormProps) {
                   field={field}
                   label={t('calculator.form.deductions.parentalDeduction')}
                   min="0"
+                  disabled
                 />
               )}
             />
@@ -575,6 +594,7 @@ export function TaxForm({ onCalculate }: TaxFormProps) {
                   field={field}
                   label={t('calculator.form.deductions.numberOfChildren')}
                   min="0"
+                  step="1"
                 />
               )}
             />

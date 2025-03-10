@@ -62,6 +62,9 @@ export const deductionsSchema = z.object({
   bsu: z.number().min(0).max(27500).optional(),
   parentalDeduction: z.number().min(0).optional(),
   numberOfChildren: z.number().min(0).optional(),
+  otherDeductions: z.number().min(0).optional(),
+  totalDeductions: z.number().min(0).optional(),
+  incomeAfterDeductions: z.number().min(0).optional(),
 });
 
 // Travel Expenses Schema

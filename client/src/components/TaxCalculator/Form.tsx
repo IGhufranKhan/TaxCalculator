@@ -72,7 +72,10 @@ export function TaxForm({ onCalculate }: TaxFormProps) {
         ips: 0,
         bsu: 0,
         parentalDeduction: 0,
-        numberOfChildren: 0
+        numberOfChildren: 0,
+        otherDeductions: 0,
+        totalDeductions: 0,
+        incomeAfterDeductions: 0
       },
       travelExpenses: {
         tripsPerYear: 0,
@@ -320,7 +323,10 @@ export function TaxForm({ onCalculate }: TaxFormProps) {
               'ips',
               'bsu',
               'parentalDeduction',
-              'numberOfChildren'
+              'numberOfChildren',
+              'otherDeductions',
+              'totalDeductions',
+              'incomeAfterDeductions'
             ].map((fieldName) => (
               <FormField
                 key={fieldName}

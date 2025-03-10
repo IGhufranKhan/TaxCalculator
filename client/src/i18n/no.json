@@ -22,7 +22,6 @@
       "personalInfo.hasCarOrBoat": "Eier du bil eller båt?",
       "personalInfo.hasSecondHome": "Har du billån?",
       "personalInfo.hasShares": "Eier du aksjer, fond eller andre finansielle instrumenter?",
-
       "income": "Arbeid og inntekt",
       "income.salary": "Lønn",
       "income.disabilityPension": "Uføretrygd",
@@ -33,41 +32,39 @@
       "income.employerBenefits": "Betalt telefonabonnement og bredbånd fra arbeidsgiver",
       "income.dividend": "Utbytte",
       "income.otherIncome": "Øvrig inntekt",
-
       "businessIncome": "Annen og næringsinntekt",
       "businessIncome.fishingAgricultureIncome": "Personinntekt fiske/jord/skog",
       "businessIncome.otherBusinessIncome": "Personinntekt annen næring",
       "businessIncome.businessProfit": "Overskudd av næringsvirksomhet",
       "businessIncome.businessLoss": "Underskudd av næringsvirksomhet",
       "businessIncome.totalIncome": "Sum inntekter",
-
-      "deductions": "Kostnader og fradrag",
-      "deductions.standardDeduction": "Standardfradrag",
-      "deductions.unionFee": "Fagforeningskontingent (maks 8 000 kr per år)",
-      "deductions.ips": "IPS - Individuell pensjonssparing (maks 15 000 kr per år)",
-      "deductions.bsu": "BSU - Boligsparing for ungdom (maks 27 500 kr per år)",
-      "deductions.parentalDeduction": "Foreldrefradrag",
-      "deductions.numberOfChildren": "Antall barn for foreldrefradrag",
-
+      "deductions": {
+        "standardDeduction": "Standardfradrag",
+        "unionFee": "Fagforeningskontingent (maks 8 000 kr per år)",
+        "ips": "IPS - Individuell pensjonssparing (maks 15 000 kr per år)",
+        "bsu": "BSU - Boligsparing for ungdom (maks 27 500 kr per år)",
+        "parentalDeduction": "Foreldrefradrag",
+        "numberOfChildren": "Antall barn for foreldrefradrag",
+        "otherDeductions": "Andre fradrag",
+        "totalDeductions": "Sum fradrag",
+        "incomeAfterDeductions": "Inntekt etter fradrag"
+      },
       "travelExpenses": "Arbeids- og pendlerreiser",
       "travelExpenses.tripsPerYear": "Antall reiser per år",
       "travelExpenses.kilometersPerTrip": "Kilometer tur/retur per reise",
       "travelExpenses.homeVisits": "Besøk til hjemmet",
       "travelExpenses.tollAndFerry": "Bom- og fergeutgifter (over 3 300 kr per år)",
       "travelExpenses.totalTravelExpenses": "Totale reiseutgifter",
-
       "bankAndLoans": "Bank og lån",
       "bankAndLoans.savingsInterest": "Renteinntekter",
       "bankAndLoans.bankDeposits": "Bankinnskudd",
       "bankAndLoans.loanInterest": "Lånerenter",
       "bankAndLoans.mortgageInterest": "Boliglånsrenter",
-
       "property": "Bolig og eiendom",
       "property.primaryResidence": "Primærbolig",
       "property.rentalIncome": "Leieinntekter",
       "property.propertyValue": "Eiendomsverdi",
       "property.propertyExpenses": "Eiendomsutgifter",
-
       "period": "Periode",
       "location": "Hvor bor du?",
       "calculate": "Beregn"

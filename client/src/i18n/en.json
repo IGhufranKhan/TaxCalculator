@@ -48,6 +48,9 @@
       "deductions.bsu": "BSU - Home Savings for Young People (max 27,500 NOK per year)",
       "deductions.parentalDeduction": "Parental deduction",
       "deductions.numberOfChildren": "Number of children for parental deduction",
+      "deductions.otherDeductions": "Other deductions",
+      "deductions.totalDeductions": "Total deductions",
+      "deductions.incomeAfterDeductions": "Income after deductions",
 
       "travelExpenses": "Work and commuter travel",
       "travelExpenses.tripsPerYear": "Number of trips per year",

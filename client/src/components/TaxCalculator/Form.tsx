@@ -66,6 +66,21 @@ export function TaxForm({ onCalculate }: TaxFormProps) {
         dividend: 0,
         otherIncome: 0
       },
+      deductions: {
+        standardDeduction: 0,
+        unionFee: 0,
+        ips: 0,
+        bsu: 0,
+        parentalDeduction: 0,
+        numberOfChildren: 0
+      },
+      travelExpenses: {
+        tripsPerYear: 0,
+        kilometersPerTrip: 0,
+        homeVisits: 0,
+        tollAndFerry: 3300,
+        totalTravelExpenses: 0
+      },
       bankAndLoans: {
         savingsInterest: 0,
         bankDeposits: 0,
@@ -295,25 +310,62 @@ export function TaxForm({ onCalculate }: TaxFormProps) {
         <Card className="glass-card border-0">
           <CardHeader>
             <CardTitle className="text-2xl font-semibold text-gray-900">
-              {t('calculator.form.businessIncome')}
+              {t('calculator.form.deductions')}
             </CardTitle>
           </CardHeader>
           <CardContent className="space-y-6">
             {[
-              'fishingAgricultureIncome',
-              'otherBusinessIncome',
-              'businessProfit',
-              'businessLoss',
-              'totalIncome'
+              'standardDeduction',
+              'unionFee',
+              'ips',
+              'bsu',
+              'parentalDeduction',
+              'numberOfChildren'
             ].map((fieldName) => (
               <FormField
                 key={fieldName}
                 control={form.control}
-                name={`businessIncome.${fieldName}` as keyof TaxCalculation['businessIncome']}
+                name={`deductions.${fieldName}` as keyof TaxCalculation['deductions']}
                 render={({ field }) => (
                   <NumberInput
                     field={field}
-                    label={t(`calculator.form.businessIncome.${fieldName}`)}
+                    label={t(`calculator.form.deductions.${fieldName}`)}
+                    min="0"
+                    max={
+                      fieldName === 'unionFee' ? '8000' :
+                      fieldName === 'ips' ? '15000' :
+                      fieldName === 'bsu' ? '27500' : undefined
+                    }
+                  />
+                )}
+              />
+            ))}
+          </CardContent>
+        </Card>
+
+        <Card className="glass-card border-0">
+          <CardHeader>
+            <CardTitle className="text-2xl font-semibold text-gray-900">
+              {t('calculator.form.travelExpenses')}
+            </CardTitle>
+          </CardHeader>
+          <CardContent className="space-y-6">
+            {[
+              'tripsPerYear',
+              'kilometersPerTrip',
+              'homeVisits',
+              'tollAndFerry',
+              'totalTravelExpenses'
+            ].map((fieldName) => (
+              <FormField
+                key={fieldName}
+                control={form.control}
+                name={`travelExpenses.${fieldName}` as keyof TaxCalculation['travelExpenses']}
+                render={({ field }) => (
+                  <NumberInput
+                    field={field}
+                    label={t(`calculator.form.travelExpenses.${fieldName}`)}
+                    min={fieldName === 'tollAndFerry' ? '3300' : '0'}
                   />
                 )}
               />

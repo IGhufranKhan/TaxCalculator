@@ -24,19 +24,7 @@
       "personalInfo.hasShares": "Eier du aksjer, fond eller andre finansielle instrumenter?",
 
       "income": "Arbeid og inntekt",
-      "income.salary": "Fast lønn",
-      "income.businessIncome": "Annen og næringsinntekt",
-      "income.businessIncome.fishingAgricultureIncome": "Personinntekt fiske/jord/skog",
-      "income.businessIncome.otherBusinessIncome": "Personinntekt annen næring",
-      "income.businessIncome.businessProfit": "Overskudd av næringsvirksomhet",
-      "income.businessIncome.businessLoss": "Underskudd av næringsvirksomhet",
-      "income.businessIncome.totalIncome": "Sum inntekter",
-      "income.freelanceIncome": "Frilans inntekt",
-      "income.overtimePay": "Overtidsbetaling",
-      "income.bonuses": "Bonuser",
-      "income.disabilityBenefits": "Uføretrygd",
-      "income.parentalBenefits": "Foreldrepenger",
-      "income.sickPay": "Sykepenger",
+      "income.salary": "Lønn",
       "income.disabilityPension": "Uføretrygd",
       "income.workAssessmentAllowance": "Arbeidsavklaringspenger",
       "income.unemploymentBenefits": "Dagpenger",
@@ -45,6 +33,28 @@
       "income.employerBenefits": "Betalt telefonabonnement og bredbånd fra arbeidsgiver",
       "income.dividend": "Utbytte",
       "income.otherIncome": "Øvrig inntekt",
+
+      "businessIncome": "Annen og næringsinntekt",
+      "businessIncome.fishingAgricultureIncome": "Personinntekt fiske/jord/skog",
+      "businessIncome.otherBusinessIncome": "Personinntekt annen næring",
+      "businessIncome.businessProfit": "Overskudd av næringsvirksomhet",
+      "businessIncome.businessLoss": "Underskudd av næringsvirksomhet",
+      "businessIncome.totalIncome": "Sum inntekter",
+
+      "deductions": "Kostnader og fradrag",
+      "deductions.standardDeduction": "Standardfradrag",
+      "deductions.unionFee": "Fagforeningskontingent (maks 8 000 kr per år)",
+      "deductions.ips": "IPS - Individuell pensjonssparing (maks 15 000 kr per år)",
+      "deductions.bsu": "BSU - Boligsparing for ungdom (maks 27 500 kr per år)",
+      "deductions.parentalDeduction": "Foreldrefradrag",
+      "deductions.numberOfChildren": "Antall barn for foreldrefradrag",
+
+      "travelExpenses": "Arbeids- og pendlerreiser",
+      "travelExpenses.tripsPerYear": "Antall reiser per år",
+      "travelExpenses.kilometersPerTrip": "Kilometer tur/retur per reise",
+      "travelExpenses.homeVisits": "Besøk til hjemmet",
+      "travelExpenses.tollAndFerry": "Bom- og fergeutgifter (over 3 300 kr per år)",
+      "travelExpenses.totalTravelExpenses": "Totale reiseutgifter",
 
       "bankAndLoans": "Bank og lån",
       "bankAndLoans.savingsInterest": "Renteinntekter",
@@ -61,23 +71,6 @@
       "period": "Periode",
       "location": "Hvor bor du?",
       "calculate": "Beregn"
-    },
-    "breakdown": {
-      "salary": "Total inntekt",
-      "bracketTax": "Trinnskatt",
-      "insurance": "Trygdeavgift",
-      "commonTax": "Kommuneskatt",
-      "standardDeduction": "Standardfradrag",
-      "minimumDeduction": "Minstefradrag",
-      "mortgageDeduction": "Boliglånsfradrag",
-      "propertyDeduction": "Eiendomsfradrag",
-      "totalDeductions": "Totale fradrag",
-      "totalTax": "Total skatt",
-      "netPay": "Nettolønn",
-      "taxRates": {
-        "marginal": "Marginalskatt",
-        "average": "Gjennomsnittsskatt"
-      }
     }
   }
 }

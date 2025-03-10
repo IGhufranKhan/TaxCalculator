@@ -54,6 +54,25 @@ export const workIncomeSchema = z.object({
   otherIncome: z.number().min(0).optional(),
 });
 
+// Deductions Schema
+export const deductionsSchema = z.object({
+  standardDeduction: z.number().min(0).optional(),
+  unionFee: z.number().min(0).max(8000).optional(),
+  ips: z.number().min(0).max(15000).optional(),
+  bsu: z.number().min(0).max(27500).optional(),
+  parentalDeduction: z.number().min(0).optional(),
+  numberOfChildren: z.number().min(0).optional(),
+});
+
+// Travel Expenses Schema
+export const travelExpensesSchema = z.object({
+  tripsPerYear: z.number().min(0).optional(),
+  kilometersPerTrip: z.number().min(0).optional(),
+  homeVisits: z.number().min(0).optional(),
+  tollAndFerry: z.number().min(3300).optional(),
+  totalTravelExpenses: z.number().min(0).optional(),
+});
+
 // Business Income Schema
 export const businessIncomeSchema = z.object({
   fishingAgricultureIncome: z.number().min(0).optional(),
@@ -84,6 +103,8 @@ export const taxCalculationSchema = z.object({
   personalInfo: personalInfoSchema,
   income: workIncomeSchema,
   businessIncome: businessIncomeSchema,
+  deductions: deductionsSchema,
+  travelExpenses: travelExpensesSchema,
   bankAndLoans: bankLoanSchema,
   property: propertySchema,
   period: z.enum([
@@ -103,6 +124,8 @@ export type WorkIncome = z.infer<typeof workIncomeSchema>;
 export type BankLoan = z.infer<typeof bankLoanSchema>;
 export type Property = z.infer<typeof propertySchema>;
 export type BusinessIncome = z.infer<typeof businessIncomeSchema>;
+export type Deductions = z.infer<typeof deductionsSchema>;
+export type TravelExpenses = z.infer<typeof travelExpensesSchema>;
 
 export interface TaxBreakdown {
   // Base calculation

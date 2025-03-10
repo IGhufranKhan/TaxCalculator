@@ -49,7 +49,8 @@ export default function Calculator() {
     <div className="min-h-screen bg-white relative">
     {/* Top Left Section (Logo) */}
     <div className="absolute top-4 left-3">
-      <img src={import.meta.env.BASE_URL + "logo.png"} alt="Logo" className="h-10 w-auto" />
+      <img src={import.meta.env.BASE_URL + "Logo.png"} alt="Logo" className="h-10 w-auto" />
+      
     </div>
   
     {/* Top Right Section (Language Switcher) */}

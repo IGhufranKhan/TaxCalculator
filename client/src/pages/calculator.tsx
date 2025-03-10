@@ -47,49 +47,43 @@ export default function Calculator() {
 
   return (
     <div className="min-h-screen bg-white relative">
-    {/* Top Left Section (Logo) */}
-    <div className="absolute top-4 left-3">
-      <img src={import.meta.env.BASE_URL + "logo.png"} alt="Logo" className="h-10 w-auto" />
-    </div>
-  
-    {/* Top Right Section (Language Switcher) */}
-    <div className="absolute top-4 right-4">
-      <LanguageSwitcher />
-    </div>
+      {/* Top Left Section (Logo) */}
+      <div className="absolute top-4 left-3">
+        <img src={import.meta.env.BASE_URL + "logo.png"} alt="Logo" className="h-10 w-auto" />
+      </div>
 
-  
-
+      {/* Top Right Section (Language Switcher) */}
+      <div className="absolute top-4 right-4">
+        <LanguageSwitcher />
+      </div>
 
       <div className="container mx-auto px-4 py-12">
         <div className="max-w-4xl mx-auto">
-        <header className="flex items-center justify-between py-6 bg-white">
-  {/* Left Section: Text */}
-  <div className="max-w-lg">
-    <h1 className="text-4xl font-bold leading-tight text-gray-900">
-      Calculate <br />
-      <span className="relative text-blue-600">
-        Your <span className="bg-blue-300 px-2 py-1 rounded">Taxes</span>
-      </span>
-      <br />
-      Hassle-free.
-    </h1>
-    <p className="mt-4 text-gray-600 text-lg">
-      An easy-to-use tax calculator designed for Norway. Quick, accurate, and free.
-    </p>
-  </div>
+          <header className="flex items-center justify-between py-6 bg-white">
+            {/* Left Section: Text */}
+            <div className="max-w-lg">
+              <h1 className="text-4xl font-bold leading-tight text-gray-900">
+                Calculate <br />
+                <span className="relative text-blue-600">
+                  Your <span className="bg-blue-300 px-2 py-1 rounded">Taxes</span>
+                </span>
+                <br />
+                Hassle-free.
+              </h1>
+              <p className="mt-4 text-gray-600 text-lg">
+                An easy-to-use tax calculator designed for Norway. Quick, accurate, and free.
+              </p>
+            </div>
 
-  {/* Right Section: Image */}
-  <div className="max-w-sm">
-    
-     <img src={import.meta.env.BASE_URL + "Frame.png"} alt="Tax Calculator" />
-  </div>
-</header>
-
+            {/* Right Section: Image */}
+            <div className="max-w-sm">
+              <img src={import.meta.env.BASE_URL + "Frame.png"} alt="Tax Calculator" />
+            </div>
+          </header>
 
           <div className="mb-8">
-          
-      <h2 className="text-2xl font-bold leading-tight text-gray-900">Tax Calculator</h2>
-      <p className="text-gray-600 text-lg">Calculate your taxes easily through our tax calculator designed specifically for Norway. </p>
+            <h2 className="text-2xl font-bold leading-tight text-gray-900">Tax Calculator</h2>
+            <p className="text-gray-600 text-lg">Calculate your taxes easily through our tax calculator designed specifically for Norway. </p>
             <TaxForm onCalculate={handleCalculate} />
           </div>
 
@@ -104,10 +98,7 @@ export default function Calculator() {
           ) : null}
 
           <div className="mt-12">
-            
-             <img src={"/UI Image for Tax Calculator.png"} alt="Tax Calculator" />
-
-
+            <img src={"/UI Image for Tax Calculator.png"} alt="Tax Calculator" />
           </div>
         </div>
       </div>

@@ -69,8 +69,23 @@
   @apply text-gray-600 mt-4 max-w-2xl mx-auto;
 }
 
-.calculator-illustration {
-  @apply mx-auto mb-8 w-24 h-24;
+.form-container {
+  @apply space-y-8;
+}
+
+.glass-card {
+  @apply bg-white rounded-xl border border-[#4B4AFF] shadow-md;
+}
+
+/* Animation for the tax calculation loading */
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.animate-spin {
+  animation: spin 1s linear infinite;
 }
 
 .iceberg-bg {
@@ -84,12 +99,6 @@
   z-index: -1;
   opacity: 0.8;
 }
-
-.glass-card {
-  @apply bg-white/80 backdrop-blur-sm border border-white/20 shadow-lg rounded-xl;
-  border-color: #4B4AFF;
-}
-
 
 /* Animations for sparkles */
 .sparkles circle {

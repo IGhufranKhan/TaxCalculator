@@ -56,14 +56,15 @@ export function TaxForm({ onCalculate }: TaxFormProps) {
         hasShares: false
       },
       income: {
-        salary: 500000,
-        businessIncome: 0,
-        freelanceIncome: 0,
-        overtimePay: 0,
-        bonuses: 0,
-        disabilityBenefits: 0,
-        parentalBenefits: 0,
-        sickPay: 0,
+        salary: 0,
+        disabilityPension: 0,
+        workAssessmentAllowance: 0,
+        unemploymentBenefits: 0,
+        maternityBenefits: 0,
+        sicknessBenefits: 0,
+        employerBenefits: 0,
+        dividend: 0,
+        otherIncome: 0
       },
       bankAndLoans: {
         savingsInterest: 0,
@@ -258,37 +259,29 @@ export function TaxForm({ onCalculate }: TaxFormProps) {
             </CardTitle>
           </CardHeader>
           <CardContent className="space-y-6">
-            <FormField
-              control={form.control}
-              name="income.salary"
-              render={({ field }) => (
-                <NumberInput field={field} label={t('calculator.form.income.salary')} />
-              )}
-            />
-            <Separator className="my-4" />
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              {[
-                'businessIncome',
-                'freelanceIncome',
-                'overtimePay',
-                'bonuses',
-                'disabilityBenefits',
-                'parentalBenefits',
-                'sickPay'
-              ].map((fieldName) => (
-                <FormField
-                  key={fieldName}
-                  control={form.control}
-                  name={`income.${fieldName}` as keyof TaxCalculation['income']}
-                  render={({ field }) => (
-                    <NumberInput
-                      field={field}
-                      label={t(`calculator.form.income.${fieldName}`)}
-                    />
-                  )}
-                />
-              ))}
-            </div>
+            {[
+              'salary',
+              'disabilityPension',
+              'workAssessmentAllowance',
+              'unemploymentBenefits',
+              'maternityBenefits',
+              'sicknessBenefits',
+              'employerBenefits',
+              'dividend',
+              'otherIncome'
+            ].map((fieldName) => (
+              <FormField
+                key={fieldName}
+                control={form.control}
+                name={`income.${fieldName}` as keyof TaxCalculation['income']}
+                render={({ field }) => (
+                  <NumberInput
+                    field={field}
+                    label={t(`calculator.form.income.${fieldName}`)}
+                  />
+                )}
+              />
+            ))}
           </CardContent>
         </Card>
 

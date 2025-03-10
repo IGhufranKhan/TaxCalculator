@@ -24,7 +24,7 @@
       "personalInfo.hasShares": "Do you own shares, funds or other financial instruments?",
 
       "income": "Income and Work",
-      "income.salary": "Regular salary",
+      "income.salary": "Salary",
       "income.businessIncome": "Business income",
       "income.freelanceIncome": "Freelance income",
       "income.overtimePay": "Overtime pay",
@@ -32,6 +32,15 @@
       "income.disabilityBenefits": "Disability benefits",
       "income.parentalBenefits": "Parental benefits",
       "income.sickPay": "Sick pay",
+      "income.disabilityPension": "Disability pension",
+      "income.workAssessmentAllowance": "Work assessment allowance",
+      "income.unemploymentBenefits": "Unemployment benefits",
+      "income.maternityBenefits": "Maternity benefits",
+      "income.sicknessBenefits": "Sickness benefits from NAV",
+      "income.employerBenefits": "Paid telephone subscription and broadband from employer",
+      "income.dividend": "Dividend",
+      "income.otherIncome": "Other income",
+
 
       "bankAndLoans": "Bank and Loans",
       "bankAndLoans.savingsInterest": "Savings interest",

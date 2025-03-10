@@ -44,13 +44,14 @@ export const personalInfoSchema = z.object({
 // Work Income Schema
 export const workIncomeSchema = z.object({
   salary: z.number().min(0),
-  businessIncome: z.number().min(0).optional(),
-  freelanceIncome: z.number().min(0).optional(),
-  overtimePay: z.number().min(0).optional(),
-  bonuses: z.number().min(0).optional(),
-  disabilityBenefits: z.number().min(0).optional(),
-  parentalBenefits: z.number().min(0).optional(),
-  sickPay: z.number().min(0).optional(),
+  disabilityPension: z.number().min(0).optional(),
+  workAssessmentAllowance: z.number().min(0).optional(),
+  unemploymentBenefits: z.number().min(0).optional(),
+  maternityBenefits: z.number().min(0).optional(),
+  sicknessBenefits: z.number().min(0).optional(),
+  employerBenefits: z.number().min(0).optional(),
+  dividend: z.number().min(0).optional(),
+  otherIncome: z.number().min(0).optional(),
 });
 
 // Bank and Loan Schema

@@ -66,7 +66,7 @@ export function TaxForm({ onCalculate }: TaxFormProps) {
         otherIncome: 0
       },
       deductions: {
-        standardDeduction: 0,
+        standardDeduction: 0, 
         unionFee: 0,
         ips: 0,
         bsu: 0,
@@ -123,16 +123,21 @@ export function TaxForm({ onCalculate }: TaxFormProps) {
   const hasRegularEmployment = form.watch('personalInfo.hasRegularEmployment');
   const hasBeenOnSickLeave = form.watch('personalInfo.hasBeenOnSickLeave');
 
-  const incomeFields = form.watch([
+  // Watch income fields for minimum deduction calculation
+  const relevantIncomeFields = form.watch([
     'income.salary',
     'income.disabilityPension',
     'income.workAssessmentAllowance',
     'income.unemploymentBenefits',
     'income.maternityBenefits',
     'income.sicknessBenefits',
-    'income.employerBenefits',
-    'income.dividend',
     'income.otherIncome'
+  ]);
+
+  // Watch additional income fields for total income calculation
+  const additionalIncomeFields = form.watch([
+    'income.employerBenefits',
+    'income.dividend'
   ]);
 
   const businessIncomeFields = form.watch([
@@ -142,14 +147,23 @@ export function TaxForm({ onCalculate }: TaxFormProps) {
     'businessIncome.businessLoss'
   ]);
 
+  // Calculate minimum deduction
+  useEffect(() => {
+    const totalRelevantIncome = relevantIncomeFields.reduce((sum, value) => sum + (Number(value) || 0), 0);
+    const minimumDeduction = totalRelevantIncome < 200000 ? totalRelevantIncome * 0.46 : 92000;
+    form.setValue('deductions.standardDeduction', minimumDeduction);
+  }, [...relevantIncomeFields]);
+
+  // Calculate total income
   useEffect(() => {
     const totalIncome = [
-      ...incomeFields,
+      ...relevantIncomeFields,
+      ...additionalIncomeFields,
       ...businessIncomeFields
     ].reduce((sum, value) => sum + (Number(value) || 0), 0);
 
     form.setValue('businessIncome.totalIncome', totalIncome);
-  }, [...incomeFields, ...businessIncomeFields]);
+  }, [...relevantIncomeFields, ...additionalIncomeFields, ...businessIncomeFields]);
 
   const onSubmit = (data: TaxCalculation) => {
     const formattedData = {
@@ -502,6 +516,7 @@ export function TaxForm({ onCalculate }: TaxFormProps) {
                   field={field}
                   label={t('calculator.form.deductions.standardDeduction')}
                   min="0"
+                  disabled
                 />
               )}
             />

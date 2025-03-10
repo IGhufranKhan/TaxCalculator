@@ -11,48 +11,61 @@ export function TaxBreakdown({ breakdown }: TaxBreakdownProps) {
   const { t } = useTranslation();
 
   return (
-    <Card className="p-6 bg-white shadow-sm">
-      <div className="space-y-6">
-        <div>
-          <h2 className="text-xl font-semibold mb-1">Total Income</h2>
-          <p className="text-3xl font-bold">
-            {formatCurrency(breakdown.totalIncome)}
-          </p>
-        </div>
-
-        <div>
-          <h2 className="text-lg font-medium mb-1">Bracket Tax</h2>
-          <p className="text-xl">
-            {formatCurrency(-breakdown.bracketTax)} kr
-          </p>
-        </div>
-
-        <div>
-          <h2 className="text-lg font-medium mb-1">Insurance Contribution</h2>
-          <p className="text-xl">
-            {formatCurrency(-breakdown.insuranceContribution)} kr
-          </p>
-        </div>
-
-        <div>
-          <h2 className="text-lg font-medium mb-1">Common Tax</h2>
-          <p className="text-xl">
-            {formatCurrency(-breakdown.commonTax)} kr
-          </p>
-        </div>
-
-        <div className="pt-4 border-t border-gray-200">
-          <h2 className="text-lg font-medium mb-1">Net Pay</h2>
-          <p className="text-3xl font-bold text-red-600">
-            {formatCurrency(breakdown.netPay)} kr
-          </p>
-        </div>
-
-        <div className="text-right text-gray-600 text-sm pt-2">
-          <p>Marginal tax rate: {formatPercentage(breakdown.marginalTaxRate)}</p>
-          <p>Average tax rate: {formatPercentage(breakdown.averageTaxRate)}</p>
-        </div>
+    <Card className="p-6 bg-white shadow-md border border-gray-300 rounded-lg">
+    <div className="space-y-4">
+      {/* Withholding Title */}
+      <h2 className="text-lg font-bold text-[#4B4AFF]">Withholding</h2>
+  
+      {/* Total Income */}
+      <div className="flex justify-between">
+        <h2 className="text-md font-semibold text-[#4B4AFF]">Total Income</h2>
+        <p className="text-md font-bold text-[#4B4AFF]">
+          {formatCurrency(breakdown.totalIncome)} kr
+        </p>
       </div>
-    </Card>
+  
+      {/* Total Deductions */}
+      <div className="flex justify-between text-gray-600">
+        <h2 className="text-md font-medium">Total Deductions</h2>
+        <p className="text-md">{formatCurrency(-breakdown.bracketTax)} kr</p>
+      </div>
+  
+      {/* Income After Deductions */}
+      <div className="flex justify-between text-gray-600">
+        <h2 className="text-md font-medium">Income After Deductions</h2>
+        <p className="text-md">{formatCurrency(breakdown.netPay)} kr</p>
+      </div>
+  
+      {/* Divider */}
+      <div className="border-t border-gray-200 pt-4"></div>
+  
+      {/* Total Tax */}
+      <div className="flex justify-between">
+        <h2 className="text-md font-semibold text-[#4B4AFF]">Total Tax</h2>
+        <p className="text-md font-bold text-[#4B4AFF]">
+          {formatCurrency(breakdown.totalTax)} kr
+        </p>
+      </div>
+  
+      {/* Net Income */}
+      <div className="flex justify-between">
+        <h2 className="text-md font-bold text-[#4B4AFF]">Net Income</h2>
+        <p className="text-md font-bold text-[#4B4AFF]">
+          {formatCurrency(breakdown.netPay)} kr
+        </p>
+      </div>
+  
+      {/* Divider */}
+      <div className="border-t border-gray-200 pt-2"></div>
+  
+      {/* Tax Rates */}
+      <div className="text-gray-600 text-sm text-right">
+        <p>Marginal tax rate: {formatPercentage(breakdown.marginalTaxRate)}</p>
+        <p>Average tax rate: {formatPercentage(breakdown.averageTaxRate)}</p>
+      </div>
+    </div>
+  </Card>
+  
+
   );
 }

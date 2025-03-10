@@ -3,7 +3,7 @@
     "title": "Income tax calculator Norway",
     "subtitle": "Find out how much your salary is after tax",
     "form": {
-      "personalInfo": "Personal Information",
+      "personalInfo": "General Information",
       "personalInfo.birthYear": "In which year were you born (YYYY)?",
       "personalInfo.spouseBirthYear": "In which year was your spouse born (YYYY)?",
       "personalInfo.civilStatus": "Civil Status",

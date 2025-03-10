@@ -66,7 +66,7 @@ export function TaxForm({ onCalculate }: TaxFormProps) {
         otherIncome: 0
       },
       deductions: {
-        standardDeduction: 0, 
+        standardDeduction: 0,
         unionFee: 0,
         ips: 0,
         bsu: 0,
@@ -165,7 +165,7 @@ export function TaxForm({ onCalculate }: TaxFormProps) {
     form.setValue('businessIncome.totalIncome', totalIncome);
   }, [...relevantIncomeFields, ...additionalIncomeFields, ...businessIncomeFields]);
 
-  // Watch for changes in number of children for parental deduction calculation
+  const hasChildren = form.watch('personalInfo.hasChildren');
   const numberOfChildren = form.watch('deductions.numberOfChildren');
 
   // Calculate parental deduction
@@ -173,7 +173,7 @@ export function TaxForm({ onCalculate }: TaxFormProps) {
     const children = Number(numberOfChildren) || 0;
     let parentalDeduction = 0;
 
-    if (children > 0) {
+    if (hasChildren && children > 0) {
       parentalDeduction = 25000; // First child
       if (children > 1) {
         parentalDeduction += (children - 1) * 15000; // Additional children
@@ -181,7 +181,7 @@ export function TaxForm({ onCalculate }: TaxFormProps) {
     }
 
     form.setValue('deductions.parentalDeduction', parentalDeduction);
-  }, [numberOfChildren, form]);
+  }, [numberOfChildren, hasChildren, form]);
 
   const onSubmit = (data: TaxCalculation) => {
     const formattedData = {
@@ -574,30 +574,34 @@ export function TaxForm({ onCalculate }: TaxFormProps) {
                 />
               )}
             />
-            <FormField
-              control={form.control}
-              name="deductions.parentalDeduction"
-              render={({ field }) => (
-                <NumberInput
-                  field={field}
-                  label={t('calculator.form.deductions.parentalDeduction')}
-                  min="0"
-                  disabled
+            {hasChildren && (
+              <>
+                <FormField
+                  control={form.control}
+                  name="deductions.numberOfChildren"
+                  render={({ field }) => (
+                    <NumberInput
+                      field={field}
+                      label={t('calculator.form.deductions.numberOfChildren')}
+                      min="0"
+                      step="1"
+                    />
+                  )}
                 />
-              )}
-            />
-            <FormField
-              control={form.control}
-              name="deductions.numberOfChildren"
-              render={({ field }) => (
-                <NumberInput
-                  field={field}
-                  label={t('calculator.form.deductions.numberOfChildren')}
-                  min="0"
-                  step="1"
+                <FormField
+                  control={form.control}
+                  name="deductions.parentalDeduction"
+                  render={({ field }) => (
+                    <NumberInput
+                      field={field}
+                      label={t('calculator.form.deductions.parentalDeduction')}
+                      min="0"
+                      disabled
+                    />
+                  )}
                 />
-              )}
-            />
+              </>
+            )}
             <Separator className="my-4" />
             <FormField
               control={form.control}

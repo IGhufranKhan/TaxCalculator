@@ -105,7 +105,8 @@ export default function Calculator() {
 
           <div className="mt-12">
             
-              <img src={import.meta.env.BASE_URL + "UI Image for Tax Calculator.png"} alt="Tax Calculator" />
+             <img src={"/UI Image for Tax Calculator.png"} alt="Tax Calculator" />
+
 
           </div>
         </div>

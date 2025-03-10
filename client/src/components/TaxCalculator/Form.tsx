@@ -35,13 +35,11 @@ interface YesNoSelectProps {
 
 export function TaxForm({ onCalculate }: TaxFormProps) {
   const { t } = useTranslation();
-  const currentYear = new Date().getFullYear();
-
   const form = useForm<TaxCalculation>({
     resolver: zodResolver(taxCalculationSchema),
     defaultValues: {
       personalInfo: {
-        birthYear: currentYear - 30,
+        birthYear: new Date().getFullYear() - 30,
         spouseBirthYear: undefined,
         civilStatus: CivilStatus.SINGLE,
         hasChildren: false,
@@ -84,18 +82,6 @@ export function TaxForm({ onCalculate }: TaxFormProps) {
         tollAndFerry: 3300,
         totalTravelExpenses: 0
       },
-      bankAndLoans: { //This section will be removed
-        savingsInterest: 0,
-        bankDeposits: 0,
-        loanInterest: 0,
-        mortgageInterest: 0,
-      },
-      property: { //This section will be removed
-        primaryResidence: false,
-        rentalIncome: 0,
-        propertyValue: 0,
-        propertyExpenses: 0,
-      },
       period: TaxPeriod.ANNUAL,
       location: "Norway",
       businessIncome: {
@@ -105,7 +91,7 @@ export function TaxForm({ onCalculate }: TaxFormProps) {
         businessLoss: 0,
         totalIncome: 0
       },
-      financial: { //This section will be added
+      financial: {
         totalBankBalance: 0,
         investmentValue: 0,
         primaryResidenceValue: 0,
@@ -133,6 +119,9 @@ export function TaxForm({ onCalculate }: TaxFormProps) {
     }
   });
 
+  const hasRegularEmployment = form.watch('personalInfo.hasRegularEmployment');
+  const hasBeenOnSickLeave = form.watch('personalInfo.hasBeenOnSickLeave');
+
   const onSubmit = (data: TaxCalculation) => {
     const formattedData = {
       ...data,
@@ -140,8 +129,6 @@ export function TaxForm({ onCalculate }: TaxFormProps) {
         acc[key] = Number(value) || 0;
         return acc;
       }, {}),
-      //bankAndLoans: removed
-      //property: removed
       financial: Object.entries(data.financial).reduce((acc: any, [key, value]) => {
         acc[key] = Number(value) || 0;
         return acc;
@@ -205,7 +192,7 @@ export function TaxForm({ onCalculate }: TaxFormProps) {
                   field={field}
                   label={t('calculator.form.personalInfo.birthYear')}
                   min="1900"
-                  max={String(currentYear)}
+                  max={String(new Date().getFullYear())}
                   step="1"
                 />
               )}
@@ -243,7 +230,7 @@ export function TaxForm({ onCalculate }: TaxFormProps) {
                     field={field}
                     label={t('calculator.form.personalInfo.spouseBirthYear')}
                     min="1900"
-                    max={String(currentYear)}
+                    max={String(new Date().getFullYear())}
                     step="1"
                   />
                 )}
@@ -305,29 +292,105 @@ export function TaxForm({ onCalculate }: TaxFormProps) {
             </CardTitle>
           </CardHeader>
           <CardContent className="space-y-6">
-            {[
-              'salary',
-              'disabilityPension',
-              'workAssessmentAllowance',
-              'unemploymentBenefits',
-              'maternityBenefits',
-              'sicknessBenefits',
-              'employerBenefits',
-              'dividend',
-              'otherIncome'
-            ].map((fieldName) => (
+            <FormField
+              control={form.control}
+              name="income.salary"
+              render={({ field }) => (
+                <NumberInput
+                  field={field}
+                  label={t('calculator.form.income.salary')}
+                />
+              )}
+            />
+
+            {!hasRegularEmployment && hasBeenOnSickLeave && (
+              <>
+                <FormField
+                  control={form.control}
+                  name="income.disabilityPension"
+                  render={({ field }) => (
+                    <NumberInput
+                      field={field}
+                      label={t('calculator.form.income.disabilityPension')}
+                    />
+                  )}
+                />
+                <FormField
+                  control={form.control}
+                  name="income.workAssessmentAllowance"
+                  render={({ field }) => (
+                    <NumberInput
+                      field={field}
+                      label={t('calculator.form.income.workAssessmentAllowance')}
+                    />
+                  )}
+                />
+                <FormField
+                  control={form.control}
+                  name="income.unemploymentBenefits"
+                  render={({ field }) => (
+                    <NumberInput
+                      field={field}
+                      label={t('calculator.form.income.unemploymentBenefits')}
+                    />
+                  )}
+                />
+                <FormField
+                  control={form.control}
+                  name="income.maternityBenefits"
+                  render={({ field }) => (
+                    <NumberInput
+                      field={field}
+                      label={t('calculator.form.income.maternityBenefits')}
+                    />
+                  )}
+                />
+                <FormField
+                  control={form.control}
+                  name="income.sicknessBenefits"
+                  render={({ field }) => (
+                    <NumberInput
+                      field={field}
+                      label={t('calculator.form.income.sicknessBenefits')}
+                    />
+                  )}
+                />
+              </>
+            )}
+
+            {hasRegularEmployment && (
               <FormField
-                key={fieldName}
                 control={form.control}
-                name={`income.${fieldName}` as keyof TaxCalculation['income']}
+                name="income.employerBenefits"
                 render={({ field }) => (
                   <NumberInput
                     field={field}
-                    label={t(`calculator.form.income.${fieldName}`)}
+                    label={t('calculator.form.income.employerBenefits')}
                   />
                 )}
               />
-            ))}
+            )}
+
+            <FormField
+              control={form.control}
+              name="income.dividend"
+              render={({ field }) => (
+                <NumberInput
+                  field={field}
+                  label={t('calculator.form.income.dividend')}
+                />
+              )}
+            />
+            <FormField
+              control={form.control}
+              name="income.otherIncome"
+              render={({ field }) => (
+                <NumberInput
+                  field={field}
+                  label={t('calculator.form.income.otherIncome')}
+                />
+              )}
+            />
           </CardContent>
         </Card>
 
@@ -338,7 +401,6 @@ export function TaxForm({ onCalculate }: TaxFormProps) {
               </CardTitle>
             </CardHeader>
             <CardContent className="space-y-6">
-              {/* Standard deductions */}
               <FormField
                 control={form.control}
                 name="deductions.standardDeduction"
@@ -350,8 +412,6 @@ export function TaxForm({ onCalculate }: TaxFormProps) {
                   />
                 )}
               />
-
-              {/* Union fee */}
               <FormField
                 control={form.control}
                 name="deductions.unionFee"
@@ -364,8 +424,6 @@ export function TaxForm({ onCalculate }: TaxFormProps) {
                   />
                 )}
               />
-
-              {/* IPS */}
               <FormField
                 control={form.control}
                 name="deductions.ips"
@@ -378,8 +436,6 @@ export function TaxForm({ onCalculate }: TaxFormProps) {
                   />
                 )}
               />
-
-              {/* BSU */}
               <FormField
                 control={form.control}
                 name="deductions.bsu"
@@ -392,8 +448,6 @@ export function TaxForm({ onCalculate }: TaxFormProps) {
                   />
                 )}
               />
-
-              {/* Parental deduction */}
               <FormField
                 control={form.control}
                 name="deductions.parentalDeduction"
@@ -405,8 +459,6 @@ export function TaxForm({ onCalculate }: TaxFormProps) {
                   />
                 )}
               />
-
-              {/* Number of children */}
               <FormField
                 control={form.control}
                 name="deductions.numberOfChildren"
@@ -418,10 +470,7 @@ export function TaxForm({ onCalculate }: TaxFormProps) {
                   />
                 )}
               />
-
               <Separator className="my-4" />
-
-              {/* Other deductions */}
               <FormField
                 control={form.control}
                 name="deductions.otherDeductions"
@@ -433,8 +482,6 @@ export function TaxForm({ onCalculate }: TaxFormProps) {
                   />
                 )}
               />
-
-              {/* Total deductions */}
               <FormField
                 control={form.control}
                 name="deductions.totalDeductions"
@@ -446,8 +493,6 @@ export function TaxForm({ onCalculate }: TaxFormProps) {
                   />
                 )}
               />
-
-              {/* Income after deductions */}
               <FormField
                 control={form.control}
                 name="deductions.incomeAfterDeductions"
@@ -499,7 +544,6 @@ export function TaxForm({ onCalculate }: TaxFormProps) {
               </CardTitle>
             </CardHeader>
             <CardContent>
-              {/* Assets Section */}
               <div className="space-y-6">
                 <FormField
                   control={form.control}
@@ -512,7 +556,6 @@ export function TaxForm({ onCalculate }: TaxFormProps) {
                     />
                   )}
                 />
-
                 <FormField
                   control={form.control}
                   name="financial.investmentValue"
@@ -524,7 +567,6 @@ export function TaxForm({ onCalculate }: TaxFormProps) {
                     />
                   )}
                 />
-
                 <FormField
                   control={form.control}
                   name="financial.primaryResidenceValue"
@@ -536,7 +578,6 @@ export function TaxForm({ onCalculate }: TaxFormProps) {
                     />
                   )}
                 />
-
                 <FormField
                   control={form.control}
                   name="financial.secondaryResidenceValue"
@@ -548,7 +589,6 @@ export function TaxForm({ onCalculate }: TaxFormProps) {
                     />
                   )}
                 />
-
                 <FormField
                   control={form.control}
                   name="financial.vehicleValue"
@@ -560,7 +600,6 @@ export function TaxForm({ onCalculate }: TaxFormProps) {
                     />
                   )}
                 />
-
                 <FormField
                   control={form.control}
                   name="financial.boatValue"
@@ -572,7 +611,6 @@ export function TaxForm({ onCalculate }: TaxFormProps) {
                     />
                   )}
                 />
-
                 <FormField
                   control={form.control}
                   name="financial.totalAssets"
@@ -584,14 +622,10 @@ export function TaxForm({ onCalculate }: TaxFormProps) {
                     />
                   )}
                 />
-
                 <Separator className="my-6" />
-
-                {/* Loans Section */}
                 <h3 className="text-lg font-medium mb-4">
                   {t('calculator.form.financial.loans')}
                 </h3>
-
                 <FormField
                   control={form.control}
                   name="financial.mortgageShare"
@@ -604,7 +638,6 @@ export function TaxForm({ onCalculate }: TaxFormProps) {
                     />
                   )}
                 />
-
                 <FormField
                   control={form.control}
                   name="financial.totalMortgage"
@@ -616,7 +649,6 @@ export function TaxForm({ onCalculate }: TaxFormProps) {
                     />
                   )}
                 />
-
                 <FormField
                   control={form.control}
                   name="financial.carLoan"
@@ -628,7 +660,6 @@ export function TaxForm({ onCalculate }: TaxFormProps) {
                     />
                   )}
                 />
-
                 <FormField
                   control={form.control}
                   name="financial.studentLoan"
@@ -640,7 +671,6 @@ export function TaxForm({ onCalculate }: TaxFormProps) {
                     />
                   )}
                 />
-
                 <FormField
                   control={form.control}
                   name="financial.consumerLoan"
@@ -652,7 +682,6 @@ export function TaxForm({ onCalculate }: TaxFormProps) {
                     />
                   )}
                 />
-
                 <FormField
                   control={form.control}
                   name="financial.otherLoans"
@@ -664,7 +693,6 @@ export function TaxForm({ onCalculate }: TaxFormProps) {
                     />
                   )}
                 />
-
                 <FormField
                   control={form.control}
                   name="financial.totalDebt"
@@ -676,14 +704,10 @@ export function TaxForm({ onCalculate }: TaxFormProps) {
                     />
                   )}
                 />
-
                 <Separator className="my-6" />
-
-                {/* Capital Income and Expenses Section */}
                 <h3 className="text-lg font-medium mb-4">
                   {t('calculator.form.financial.capitalSection')}
                 </h3>
-
                 <FormField
                   control={form.control}
                   name="financial.interestIncome"
@@ -694,7 +718,6 @@ export function TaxForm({ onCalculate }: TaxFormProps) {
                     />
                   )}
                 />
-
                 <FormField
                   control={form.control}
                   name="financial.interestExpenses"
@@ -705,7 +728,6 @@ export function TaxForm({ onCalculate }: TaxFormProps) {
                     />
                   )}
                 />
-
                 <FormField
                   control={form.control}
                   name="financial.investmentGainsLosses"
@@ -716,14 +738,10 @@ export function TaxForm({ onCalculate }: TaxFormProps) {
                     />
                   )}
                 />
-
                 <Separator className="my-6" />
-
-                {/* Tax Calculation Section */}
                 <h3 className="text-lg font-medium mb-4">
                   {t('calculator.form.financial.taxCalculation')}
                 </h3>
-
                 <FormField
                   control={form.control}
                   name="financial.socialSecurityContribution"
@@ -735,7 +753,6 @@ export function TaxForm({ onCalculate }: TaxFormProps) {
                     />
                   )}
                 />
-
                 <FormField
                   control={form.control}
                   name="financial.generalIncomeTax"
@@ -747,7 +764,6 @@ export function TaxForm({ onCalculate }: TaxFormProps) {
                     />
                   )}
                 />
-
                 <FormField
                   control={form.control}
                   name="financial.bracketTax"
@@ -759,7 +775,6 @@ export function TaxForm({ onCalculate }: TaxFormProps) {
                     />
                   )}
                 />
-
                 <FormField
                   control={form.control}
                   name="financial.wealthTax"
@@ -771,7 +786,6 @@ export function TaxForm({ onCalculate }: TaxFormProps) {
                     />
                   )}
                 />
-
                 <FormField
                   control={form.control}
                   name="financial.totalTax"
@@ -783,7 +797,6 @@ export function TaxForm({ onCalculate }: TaxFormProps) {
                     />
                   )}
                 />
-
                 <FormField
                   control={form.control}
                   name="financial.withholdingPercentage"
@@ -804,6 +817,6 @@ export function TaxForm({ onCalculate }: TaxFormProps) {
             {t('calculator.form.calculate')}
           </Button>
         </form>
-      </Form>
+    </Form>
   );
 }

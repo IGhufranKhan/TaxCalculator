@@ -573,7 +573,7 @@ export function TaxForm({ onCalculate }: TaxFormProps) {
         <Card className="glass-card border-0">
           <CardHeader>
             <CardTitle className="text-2xl font-semibold text-gray-900">
-              Arbeids- og pendlerreiser / reiseutgifter / Work-related and commuting travel / travel expenditures
+              {t('calculator.form.travelExpenses.title')}
             </CardTitle>
           </CardHeader>
           <CardContent className="grid grid-cols-1 gap-4 md:grid-cols-2">
@@ -583,7 +583,7 @@ export function TaxForm({ onCalculate }: TaxFormProps) {
               render={({ field }) => (
                 <NumberInput
                   field={field}
-                  label={t('calculator.form.travelExpenses.tripsPerYear')}
+                  label="Antall reiser per år / Number of trips per year"
                   min="0"
                 />
               )}
@@ -594,7 +594,7 @@ export function TaxForm({ onCalculate }: TaxFormProps) {
               render={({ field }) => (
                 <NumberInput
                   field={field}
-                  label={t('calculator.form.travelExpenses.kilometersPerTrip')}
+                  label="Kilometer tur/retur per reise / Distance in kilometers (round trip) per travel"
                   min="0"
                 />
               )}
@@ -605,7 +605,7 @@ export function TaxForm({ onCalculate }: TaxFormProps) {
               render={({ field }) => (
                 <NumberInput
                   field={field}
-                  label={t('calculator.form.travelExpenses.homeVisits')}
+                  label="Besøksreiser til hjemmet (reisekostnader til egen eller ektefelles bolig ved pendling) / Travel expenses for home visits (commuting to own or spouse's residence)"
                   min="0"
                 />
               )}
@@ -616,7 +616,7 @@ export function TaxForm({ onCalculate }: TaxFormProps) {
               render={({ field }) => (
                 <NumberInput
                   field={field}
-                  label={t('calculator.form.travelExpenses.tollAndFerry')}
+                  label="Bompenger og fergeutgifter (over 3 300 kr i løpet av året) / Road tolls and ferry costs (exceeding 3,300 NOK annually)"
                   min="0"
                 />
               )}
@@ -627,7 +627,7 @@ export function TaxForm({ onCalculate }: TaxFormProps) {
               render={({ field }) => (
                 <NumberInput
                   field={field}
-                  label={t('calculator.form.travelExpenses.totalTravelExpenses')}
+                  label="Sum reiseutgifter / Total travel expenses"
                   min="0"
                   disabled
                 />
@@ -639,7 +639,7 @@ export function TaxForm({ onCalculate }: TaxFormProps) {
         <Card className="glass-card border-0">
           <CardHeader>
             <CardTitle className="text-2xl font-semibold text-gray-900">
-              Andre fradrag (Other deductions)
+              {t('calculator.form.deductions.otherDeductions')}
             </CardTitle>
           </CardHeader>
           <CardContent className="space-y-6">

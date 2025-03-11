@@ -27,6 +27,7 @@ interface NumberInputProps {
   min?: string;
   max?: string;
   step?: string;
+  disabled?: boolean;
 }
 
 interface YesNoSelectProps {
@@ -43,8 +44,6 @@ export function TaxForm({ onCalculate }: TaxFormProps) {
         birthYear: new Date().getFullYear() - 30,
         spouseBirthYear: undefined,
         civilStatus: CivilStatus.SINGLE,
-        hasChildren: false,
-        numberOfDependents: 0,
         finnmarkDeduction: false,
         hasRegularEmployment: false,
         hasBeenOnSickLeave: false,
@@ -153,7 +152,7 @@ export function TaxForm({ onCalculate }: TaxFormProps) {
     onCalculate(formattedData);
   };
 
-  const NumberInput = ({ field, label, min = "0", max, step = "1" }: NumberInputProps) => (
+  const NumberInput = ({ field, label, min = "0", max, step = "1", disabled = false }: NumberInputProps) => (
     <FormItem>
       <FormLabel>{label}</FormLabel>
       <FormControl>
@@ -167,6 +166,7 @@ export function TaxForm({ onCalculate }: TaxFormProps) {
           min={min}
           max={max}
           step={step}
+          disabled={disabled}
         />
       </FormControl>
       <FormMessage />
@@ -235,29 +235,6 @@ export function TaxForm({ onCalculate }: TaxFormProps) {
                 <FormMessage />
               </FormItem>
             )} />
-            <FormField
-              control={form.control}
-              name="personalInfo.hasChildren"
-              render={({ field }) => (
-                <YesNoSelect field={field} label={t('calculator.form.personalInfo.hasChildren')} />
-              )}
-            />
-            {hasChildren && (
-              <FormField
-                control={form.control}
-                name="deductions.numberOfChildren"
-                render={({ field }) => (
-                  <NumberInput field={field} label={t('calculator.form.personalInfo.numberOfChildren')} min="0" step="1" />
-                )}
-              />
-            )}
-            <FormField
-              control={form.control}
-              name="personalInfo.numberOfDependents"
-              render={({ field }) => (
-                <NumberInput field={field} label={t('calculator.form.personalInfo.numberOfDependents')} min="0" step="1" />
-              )}
-            />
             <FormField
               control={form.control}
               name="personalInfo.finnmarkDeduction"
@@ -455,14 +432,14 @@ export function TaxForm({ onCalculate }: TaxFormProps) {
               control={form.control}
               name="deductions.totalDeductions"
               render={({ field }) => (
-                <NumberInput field={field} label={t('calculator.form.deductions.totalDeductions')} min="0" />
+                <NumberInput field={field} label={t('calculator.form.deductions.totalDeductions')} min="0" disabled />
               )}
             />
             <FormField
               control={form.control}
               name="deductions.incomeAfterDeductions"
               render={({ field }) => (
-                <NumberInput field={field} label={t('calculator.form.deductions.incomeAfterDeductions')} min="0" />
+                <NumberInput field={field} label={t('calculator.form.deductions.incomeAfterDeductions')} min="0" disabled />
               )}
             />
           </CardContent>

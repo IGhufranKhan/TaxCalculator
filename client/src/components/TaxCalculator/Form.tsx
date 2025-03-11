@@ -433,9 +433,12 @@ export function TaxForm({ onCalculate }: TaxFormProps) {
     form.setValue('financial.totalTax', Math.round(totalTax));
 
     // Calculate Trekkprosent (Tax deduction percentage)
-    const monthlyTaxRatio = (totalTax / 12) / (totalIncome / 12);
+    let withholdingPercentage = 0;
+    if (totalIncome > 0) {
+      withholdingPercentage = (totalTax / totalIncome) * 100;
+    }
     form.setValue('financial.withholdingPercentage', 
-      Math.round(monthlyTaxRatio * 100) / 100);
+      Number(withholdingPercentage.toFixed(2)));
   }, [
     form.watch('personalInfo.birthYear'),
     form.watch('personalInfo.spouseBirthYear'),

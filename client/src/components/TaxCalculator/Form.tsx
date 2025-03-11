@@ -286,15 +286,13 @@ export function TaxForm({ onCalculate }: TaxFormProps) {
                 <YesNoSelect field={field} label={t('calculator.form.personalInfo.hasRegularEmployment')} />
               )}
             />
-            {form.watch('personalInfo.hasRegularEmployment') && (
-              <FormField
-                control={form.control}
-                name="personalInfo.hasBeenOnSickLeave"
-                render={({ field }) => (
-                  <YesNoSelect field={field} label={t('calculator.form.personalInfo.hasBeenOnSickLeave')} />
-                )}
-              />
-            )}
+            <FormField
+              control={form.control}
+              name="personalInfo.hasBeenOnSickLeave"
+              render={({ field }) => (
+                <YesNoSelect field={field} label={t('calculator.form.personalInfo.hasBeenOnSickLeave')} />
+              )}
+            />
             <FormField
               control={form.control}
               name="personalInfo.hasOwnHome"

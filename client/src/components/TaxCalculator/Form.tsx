@@ -169,6 +169,7 @@ export function TaxForm({ onCalculate }: TaxFormProps) {
   const deductionFields = form.watch([
     'deductions.standardDeduction',
     'deductions.unionFee',
+    'deductions.ips',
     'deductions.bsu',
     'deductions.parentalDeduction',
     'travelExpenses.totalTravelExpenses',
@@ -179,6 +180,7 @@ export function TaxForm({ onCalculate }: TaxFormProps) {
     const [
       standardDeduction,
       unionFee,
+      ips,
       bsu,
       parentalDeduction,
       travelExpenses,
@@ -187,7 +189,7 @@ export function TaxForm({ onCalculate }: TaxFormProps) {
 
     const totalDeductions =
       standardDeduction +
-      (0.22 * unionFee) +
+      (0.22 * (unionFee + ips)) + // Combined unionFee and IPS with 22%
       (0.10 * bsu) +
       (0.22 * parentalDeduction) +
       travelExpenses +
@@ -876,6 +878,7 @@ export function TaxForm({ onCalculate }: TaxFormProps) {
             </div>
           </CardContent>
         </Card>
+
 
         <Button type="submit" className="w-full text-lg py-6 bg-primary hover:bg-primary/90">
           {t('calculator.form.calculate')}

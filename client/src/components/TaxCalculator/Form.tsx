@@ -238,69 +238,6 @@ export function TaxForm({ onCalculate }: TaxFormProps) {
     form.setValue('travelExpenses.totalTravelExpenses', Math.round(totalExpenses));
   }, [...travelFields]);
 
-  const handleCalculate = (formData: TaxCalculation) => {
-    console.log('Form submitted:', formData);
-
-    // Ensure we have all the calculated values
-    const data = {
-      ...formData,
-      businessIncome: {
-        ...formData.businessIncome,
-        totalIncome: form.getValues('businessIncome.totalIncome'),
-      },
-      financial: {
-        ...formData.financial,
-        totalTax: form.getValues('financial.totalTax'),
-      },
-      deductions: {
-        ...formData.deductions,
-        totalDeductions: form.getValues('deductions.totalDeductions'),
-        incomeAfterDeductions: form.getValues('deductions.incomeAfterDeductions'),
-      }
-    };
-
-    setCalculationResults(data);
-    setShowResults(true);
-    onCalculate(data);
-  };
-
-  const NumberInput = ({ field, label, min = "0", max, step = "1", disabled = false, onChange }: NumberInputProps) => (
-    <FormItem>
-      <FormLabel>{label}</FormLabel>
-      <FormControl>
-        <Input
-          type="number"
-          {...field}
-          onChange={onChange || ((e) => {
-            const value = e.target.value === '' ? 0 : Number(e.target.value);
-            field.onChange(value);
-          })}
-          min={min}
-          max={max}
-          step={step}
-          disabled={disabled}
-        />
-      </FormControl>
-      <FormMessage />
-    </FormItem>
-  );
-
-  const YesNoSelect = ({ field, label }: YesNoSelectProps) => (
-    <FormItem>
-      <FormLabel>{label}</FormLabel>
-      <Select onValueChange={(value) => field.onChange(value === 'yes')} defaultValue={field.value ? 'yes' : 'no'}>
-        <SelectTrigger>
-          <SelectValue />
-        </SelectTrigger>
-        <SelectContent>
-          <SelectItem value="yes">Yes</SelectItem>
-          <SelectItem value="no">No</SelectItem>
-        </SelectContent>
-      </Select>
-      <FormMessage />
-    </FormItem>
-  );
-
   const hasRegularEmployment = form.watch('personalInfo.hasRegularEmployment');
   const hasBeenOnSickLeave = form.watch('personalInfo.hasBeenOnSickLeave');
   const hasShares = form.watch('personalInfo.hasShares');
@@ -468,9 +405,47 @@ export function TaxForm({ onCalculate }: TaxFormProps) {
     form.watch('businessIncome.fishingAgricultureIncome')
   ]);
 
+  const NumberInput = ({ field, label, min = "0", max, step = "1", disabled = false, onChange }: NumberInputProps) => (
+    <FormItem>
+      <FormLabel>{label}</FormLabel>
+      <FormControl>
+        <Input
+          type="number"
+          {...field}
+          onChange={onChange || ((e) => {
+            const value = e.target.value === '' ? 0 : Number(e.target.value);
+            field.onChange(value);
+          })}
+          min={min}
+          max={max}
+          step={step}
+          disabled={disabled}
+        />
+      </FormControl>
+      <FormMessage />
+    </FormItem>
+  );
+
+  const YesNoSelect = ({ field, label }: YesNoSelectProps) => (
+    <FormItem>
+      <FormLabel>{label}</FormLabel>
+      <Select onValueChange={(value) => field.onChange(value === 'yes')} defaultValue={field.value ? 'yes' : 'no'}>
+        <SelectTrigger>
+          <SelectValue />
+        </SelectTrigger>
+        <SelectContent>
+          <SelectItem value="yes">Yes</SelectItem>
+          <SelectItem value="no">No</SelectItem>
+        </SelectContent>
+      </Select>
+      <FormMessage />
+    </FormItem>
+  );
+
+
   return (
     <Form {...form}>
-      <form onSubmit={form.handleSubmit(handleCalculate)} className="space-y-8">
+      <form onSubmit={form.handleSubmit(() => {})} className="space-y-8"> {/* Empty handleSubmit */}
         <Card className="glass-card border-0">
           <CardHeader>
             <CardTitle className="text-2xl font-semibold text-gray-900">
@@ -1169,15 +1144,16 @@ export function TaxForm({ onCalculate }: TaxFormProps) {
           </CardContent>
         </Card>
 
-
         <div className="space-y-8">
           <Button 
-            type="submit" 
-            className="w-full text-lg py-6 bg-blue-600 hover:bg-blue-700 text-white font-semibold"
             onClick={(e) => {
               e.preventDefault();
-              form.handleSubmit(handleCalculate)(e);
+              const data = form.getValues();
+              console.log("Calculate clicked with data:", data);
+              setCalculationResults(data);
+              setShowResults(true);
             }}
+            className="w-full text-lg py-6 bg-blue-600 hover:bg-blue-700 text-white font-semibold"
           >
             Calculate
           </Button>

@@ -405,30 +405,34 @@ export function TaxForm({ onCalculate }: TaxFormProps) {
     form.watch('businessIncome.fishingAgricultureIncome')
   ]);
 
-  const NumberInput = ({ field, label, min = "0", max, step = "1", disabled = false, onChange }: NumberInputProps) => (
-    <FormItem>
-      <FormLabel>{label}</FormLabel>
-      <FormControl>
-        <Input
-          type="number"
-          {...field}
-          value={field.value || ''}
-          onChange={(e) => {
-            const value = e.target.value === '' ? '' : Number(e.target.value);
-            field.onChange(value);
-            if (onChange) {
-              onChange(e);
-            }
-          }}
-          min={min}
-          max={max}
-          step={step}
-          disabled={disabled}
-        />
-      </FormControl>
-      <FormMessage />
-    </FormItem>
-  );
+const NumberInput = ({ field, label, min = "0", max, step = "1", disabled = false, onChange }: NumberInputProps) => (
+  <FormItem>
+    <FormLabel>{label}</FormLabel>
+    <FormControl>
+      <Input
+        type="number"
+        {...field}
+        value={field.value === 0 ? '' : field.value}
+        onChange={(e) => {
+          const value = e.target.value === '' ? '' : Number(e.target.value);
+          field.onChange(value);
+          if (onChange) {
+            onChange(e);
+          }
+        }}
+        onBlur={(e) => {
+          const value = e.target.value === '' ? 0 : Number(e.target.value);
+          field.onChange(value);
+        }}
+        min={min}
+        max={max}
+        step={step}
+        disabled={disabled}
+      />
+    </FormControl>
+    <FormMessage />
+  </FormItem>
+);
 
   const YesNoSelect = ({ field, label }: YesNoSelectProps) => (
     <FormItem>
@@ -857,7 +861,7 @@ export function TaxForm({ onCalculate }: TaxFormProps) {
               {hasShares && (
                 <FormField
                   control={form.control}
-                  name="financial.investmentValue"
+                                    name="financial.investmentValue"
                   render={({ field }) => (
                     <NumberInput
                       field={field}

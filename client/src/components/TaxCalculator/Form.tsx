@@ -217,10 +217,8 @@ export function TaxForm({ onCalculate }: TaxFormProps) {
 
   // Calculate total income
   useEffect(() => {
-    const totalIncome = [
-      ...incomeFields,
-      ...businessIncomeFields
-    ].reduce((sum, value) => sum + (Number(value) || 0), 0);
+    const totalIncome = [...incomeFields, ...businessIncomeFields]
+      .reduce((sum, value) => sum + (Number(value) || 0), 0);
 
     form.setValue('businessIncome.totalIncome', totalIncome);
   }, [...incomeFields, ...businessIncomeFields]);
@@ -359,6 +357,25 @@ export function TaxForm({ onCalculate }: TaxFormProps) {
     const totalAssets = form.watch('financial.totalAssets') || 0;
     const totalDebt = form.watch('financial.totalDebt') || 0;
 
+    // Calculate net wealth (W)
+    const W = totalAssets - totalDebt;
+
+    // Calculate Formueskatt (Wealth tax)
+    let wealthTax = 0;
+    if (W > 1760000) {
+      // Municipal tax (kommuneskatt)
+      const kommuneTax = Math.max(0, (W - 1760000) * 0.007);
+
+      // State tax (statsskatt)
+      let stateTax = 0;
+      const portion1 = Math.max(0, Math.min(W, 20700000) - 1760000) * 0.003;
+      const portion2 = Math.max(0, W - 20700000) * 0.004;
+      stateTax = portion1 + portion2;
+
+      wealthTax = kommuneTax + stateTax;
+    }
+    form.setValue('financial.wealthTax', Math.round(wealthTax));
+
     const currentYear = new Date().getFullYear();
     const age = currentYear - birthYear;
 
@@ -404,34 +421,9 @@ export function TaxForm({ onCalculate }: TaxFormProps) {
     trinnskatt = I1 + I2 + I3 + I4 + I5;
     form.setValue('financial.bracketTax', Math.round(trinnskatt));
 
-    // Calculate Formueskatt (Wealth tax)
-    const W = totalAssets - totalDebt; // Net wealth
-    let wealthTax = 0;
-    if (W > 1760000) {
-      // Municipal tax (kommuneskatt)
-      const kommuneTax = Math.max(0, (W - 1760000) * 0.007);
-
-      // State tax (statsskatt)
-      let stateTax = 0;
-      if (W > 1760000) {
-        const portion1 = Math.max(0, Math.min(W, 20700000) - 1760000) * 0.003;
-        const portion2 = Math.max(0, W - 20700000) * 0.004;
-        stateTax = portion1 + portion2;
-      }
-
-      wealthTax = kommuneTax + stateTax;
-    }
-    form.setValue('financial.wealthTax', Math.round(wealthTax));
-
     // Calculate Sum skatt (Total tax)
-    const dividendTax =
-      (form.watch('income.dividend') + form.watch('income.otherIncome')) * 0.22;
-    const totalTax =
-      trygdeavgift +
-      generalIncomeTax +
-      trinnskatt +
-      wealthTax +
-      dividendTax;
+    const dividendTax = (form.watch('income.dividend') + form.watch('income.otherIncome')) * 0.22;
+    const totalTax = trygdeavgift + generalIncomeTax + trinnskatt + wealthTax + dividendTax;
     form.setValue('financial.totalTax', Math.round(totalTax));
 
     // Calculate Trekkprosent (Tax deduction percentage)
@@ -1060,7 +1052,7 @@ export function TaxForm({ onCalculate }: TaxFormProps) {
                   <NumberInput
                     field={field}
                     label={t('calculator.form.financial.interestExpenses')}
-                  />                )}
+                />                )}
               />
               <FormField
                 control={form.control}

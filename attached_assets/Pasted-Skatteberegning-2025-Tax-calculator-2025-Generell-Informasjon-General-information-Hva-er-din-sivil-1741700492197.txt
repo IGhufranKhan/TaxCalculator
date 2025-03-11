@@ -1,0 +1,89 @@
+Skatteberegning 2025	Tax calculator 2025
+Generell Informasjon	General information
+Hva er din sivilstatus?	What is your marital status?
+I hvilket år er du født (åååå)?	Which year were you born (YYYY)?
+I hvilket år er din ektefelle / registrert partner / meldepliktig samboer født (åååå)?	Which year was your spouse / registered partner / spouse - equivalent cohabitant born (YYYY) ? 
+Finnmarksfradrag	Finnmark allowance
+Har du barn?	Do you have kids?
+Får du lønn fra en ordinær arbeidsgiver?	Do you receive salary from a regular employer?
+Har du vært sykemeldt eller hatt permisjon i løpet av året?	Have you been on sick leave or taken leave of absence during the year?
+Eier du egen bolig?	"Do you own your own home?
+"
+Har du studielån?	Do you have a student loan?
+Eier du bil eller båt?	"Do you own a car or a boat?
+"
+Har du billån?	Do you have a car loan?
+Eier du aksjer, fond eller andre finansielle instrumenter?	Do you own shares, funds, or other financial instruments?
+	
+	
+	
+	
+Inntekter:	Income:
+Lønn	Salary
+Uføretrygd	Disability benefit
+Arbeidsavklaringspenger	Work assessment allowance
+Dagpenger	"Unemployment benefits
+"
+Svangerskapspenger	Pregnancy benefits
+Sykepenger fra Nav	Sickness benefits from NAV
+Betalt telefonabonnement og bredbånd fra arbeidsgiver	"Employer-paid telephone subscription and broadband
+"
+Utbytte	Dividends
+Øvrig inntekt	Other income
+Annen og næringsinntekt:	Other and business income:
+Personinntekt fiske/jord/skog	Personal income from fishing , agriculture and forestry
+Personinntekt annen næring	Personal income from other business activities
+Overskudd av næringsvirksomhet	Profit from business activities
+Underskudd av næringsvirksomhet	Deficit from business activities
+	
+Sum inntekter	Total income
+	
+Dine kostnader og fradrag:	Your expenses and decutions:
+Minstefradrag	Minimum standard deduction from own income
+Fagforeningskontigent (maks 8000 i løpet av året)	Union membership dues (annual limit: 8,000 NOK)
+IPS (maks 15 000 i løpet av året)	IPS – Individual Pension Savings (max 15,000 NOK annually)
+BSU (maks 27 500 i løpet av året)	BSU (maximum 27,500 NOK per year)
+Foreldrefradrag (Inntil 25000 kroner for første barn, deretter 15000 kroner per ekstra barn)	Parent tax deduction (Maximum 25,000 NOK for the first child, 15,000 NOK for each additional child)
+Arbeids- og pendlerreiser / reiseutgifter:	Work-related and commuting travel / travel expenditures
+Antall reiser per år	Number of trips per year
+Kilometer tur/retur per reise	Distance in kilometers (round trip) per travel
+Besøksreiser til hjemmet (reisekostnader til egen eller ektefelles bolig ved pendling)	Travel expenses for home visits (commuting to own or spouse’s residence)
+Bompenger og fergeutgifter (over 3 300 kr i løpet av året)	Road tolls and ferry costs (exceeding 3,300 NOK annually)
+Sum reiseutgifter	Total travel expenses
+Andre fradrag	Other deductions
+Sum fradrag	Total deductions
+	
+Inntekt etter fradrag	Income after deductions
+	
+	
+	
+Bank, lån, finans og forsikring:	Bank, loan, finance and insurance
+Sum penger på konto per 31. desember	Total bank deposits on December 31st
+Verdi Fond / Aksjer / Krypto	Value of funds, stocks, and crypto
+Markedsverdi primærbolig	Market value of primary home
+Markedsverdi sekundærbolig(er)	Market value of secondary home(s)
+Kjøretøy antatt salgsverdi (Bil, motorsykkel, campingvogn m.m.)	Vehicle estimated sale value (car, motorcycle, caravan, etc.)
+Fritidsbåt antatt salgsverdi (salgsverdi 50 000 eller høyere)	Recreational boat estimated sale value (sale value 50,000 or higher)
+Sum formue	Sum wealth
+Lån	Loans
+Boliglånsandel	Home equity percentage
+Total boliglån inkludert fellesgjeld	Total home loan including joint debt
+Billån	Car loan
+Studielån	Student loans
+Forbrukslån	Consumer loans
+Andre lån	Other loans
+Sum gjeld	Total debt
+	
+Kapitalinntekter og kapitalkostnader	Capital gains and capital expenses
+Rente- og kapitalinntekter	Interest- and capital income
+Rentekostnader	Interest cost
+Netto gevinst og tap ved kjøp og salg av Fond / Aksjer / Krypto (tap skrives med "-" fortegn)	Net Gain and Loss from Buying and Selling Funds / Stocks / Crypto (losses marked with '-')
+	
+Skatteberegning	Tax calculation
+Trygdeavgift	Social security contribution
+Skatt på alminnelig inntekt	Tax on general income
+Trinnskatt	Bracket tax
+Formueskatt	Wealth tax
+	
+Sum skatt	Total calculated tax
+Trekkprosent	Tax deduction

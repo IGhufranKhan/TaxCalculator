@@ -573,7 +573,7 @@ export function TaxForm({ onCalculate }: TaxFormProps) {
         <Card className="glass-card border-0">
           <CardHeader>
             <CardTitle className="text-2xl font-semibold text-gray-900">
-              {t('calculator.form.travelExpenses.title')}
+              Arbeids- og pendlerreiser / reiseutgifter / Work-related and commuting travel / travel expenditures
             </CardTitle>
           </CardHeader>
           <CardContent className="grid grid-cols-1 gap-4 md:grid-cols-2">

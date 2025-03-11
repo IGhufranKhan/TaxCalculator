@@ -1159,13 +1159,19 @@ export function TaxForm({ onCalculate }: TaxFormProps) {
         </Card>
 
 
-        <Button type="submit" className="w-full text-lg py-6 bg-blue-600 hover:bg-blue-700 text-white">
-          Calculate
-        </Button>
-        {showResults && calculationResults && (
-          <TaxSummary data={calculationResults} />
-        )}
+        <div className="space-y-8">
+          <Button type="submit" className="w-full text-lg py-6 bg-blue-600 hover:bg-blue-700 text-white">
+            Calculate
+          </Button>
+
+          {showResults && calculationResults && (
+            <div className="mt-8">
+              <TaxSummary data={calculationResults} />
+            </div>
+          )}
+        </div>
       </form>
     </Form>
   );
+
 }

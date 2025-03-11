@@ -15,13 +15,7 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import {
-  Tooltip,
-  TooltipContent,
-  TooltipProvider,
-  TooltipTrigger,
-} from "@/components/ui/tooltip";
-import { HelpCircle } from "lucide-react";
+
 
 interface NumberInputProps {
   field: any;
@@ -31,7 +25,6 @@ interface NumberInputProps {
   step?: string;
   disabled?: boolean;
   onChange?: (e: any) => void;
-  tooltip?: string;
 }
 
 interface YesNoSelectProps {
@@ -39,33 +32,9 @@ interface YesNoSelectProps {
   label: string;
 }
 
-const LabelWithTooltip = ({ label, tooltip }: { label: string; tooltip?: string }) => (
-  <div className="flex items-center gap-2">
-    <span>{label}</span>
-    {tooltip && (
-      <TooltipProvider>
-        <Tooltip>
-          <TooltipTrigger asChild>
-            <HelpCircle className="h-4 w-4 text-gray-500 cursor-help" />
-          </TooltipTrigger>
-          <TooltipContent className="bg-white p-4 max-w-sm rounded-lg shadow-lg border border-gray-200">
-            <p className="text-sm text-gray-700 whitespace-pre-line">{tooltip}</p>
-          </TooltipContent>
-        </Tooltip>
-      </TooltipProvider>
-    )}
-  </div>
-);
-
-const NumberInput = ({ field, label, tooltip, min = "0", max, step = "1", disabled = false, onChange }: NumberInputProps) => (
+const NumberInput = ({ field, label, min = "0", max, step = "1", disabled = false, onChange }: NumberInputProps) => (
   <FormItem>
-    <FormLabel>
-      {tooltip ? (
-        <LabelWithTooltip label={label} tooltip={tooltip} />
-      ) : (
-        label
-      )}
-    </FormLabel>
+    <FormLabel>{label}</FormLabel>
     <FormControl>
       <Input
         type="number"
@@ -212,7 +181,6 @@ export function TaxForm() {
                 <NumberInput
                   field={field}
                   label={t('calculator.form.income.salary')}
-                  tooltip={t('tooltips.salary')}
                   min="0"
                 />
               )}
@@ -226,7 +194,6 @@ export function TaxForm() {
                     <NumberInput
                       field={field}
                       label={t('calculator.form.income.disabilityPension')}
-                      tooltip={t('tooltips.disabilityPension')}
                       min="0"
                     />
                   )}
@@ -238,7 +205,6 @@ export function TaxForm() {
                     <NumberInput
                       field={field}
                       label={t('calculator.form.income.workAssessmentAllowance')}
-                      tooltip={t('tooltips.workAssessmentAllowance')}
                       min="0"
                     />
                   )}
@@ -250,7 +216,6 @@ export function TaxForm() {
                     <NumberInput
                       field={field}
                       label={t('calculator.form.income.unemploymentBenefits')}
-                      tooltip={t('tooltips.unemploymentBenefits')}
                       min="0"
                     />
                   )}
@@ -262,7 +227,6 @@ export function TaxForm() {
                     <NumberInput
                       field={field}
                       label={t('calculator.form.income.maternityBenefits')}
-                      tooltip={t('tooltips.maternityBenefits')}
                       min="0"
                     />
                   )}
@@ -274,7 +238,6 @@ export function TaxForm() {
                     <NumberInput
                       field={field}
                       label={t('calculator.form.income.sicknessBenefits')}
-                      tooltip={t('tooltips.sicknessBenefits')}
                       min="0"
                     />
                   )}
@@ -289,7 +252,6 @@ export function TaxForm() {
                   <NumberInput
                     field={field}
                     label={t('calculator.form.income.employerBenefits')}
-                    tooltip={t('tooltips.employerBenefits')}
                     min="0"
                   />
                 )}
@@ -302,7 +264,6 @@ export function TaxForm() {
                 <NumberInput
                   field={field}
                   label={t('calculator.form.income.dividend')}
-                  tooltip={t('tooltips.dividend')}
                   min="0"
                 />
               )}
@@ -314,7 +275,6 @@ export function TaxForm() {
                 <NumberInput
                   field={field}
                   label={t('calculator.form.income.otherIncome')}
-                  tooltip={t('tooltips.otherIncome')}
                   min="0"
                 />
               )}

@@ -28,7 +28,7 @@ interface NumberInputProps {
   max?: string;
   step?: string;
   disabled?: boolean;
-  onChange?: (e: any) => void; // Added onChange prop
+  onChange?: (e: any) => void; 
 }
 
 interface YesNoSelectProps {
@@ -53,7 +53,7 @@ export function TaxForm({ onCalculate }: TaxFormProps) {
         hasStudentLoans: false,
         hasCarOrBoat: false,
         hasShares: false,
-        hasBillån: false // Added hasBillån
+        hasBillån: false 
       },
       income: {
         salary: 0,
@@ -166,9 +166,9 @@ export function TaxForm({ onCalculate }: TaxFormProps) {
     let parentalDeduction = 0;
 
     if (hasChildren && children > 0) {
-      parentalDeduction = 25000; // First child
+      parentalDeduction = 25000; 
       if (children > 1) {
-        parentalDeduction += (children - 1) * 15000; // Additional children
+        parentalDeduction += (children - 1) * 15000; 
       }
     }
 
@@ -196,7 +196,7 @@ export function TaxForm({ onCalculate }: TaxFormProps) {
 
     const totalDeductions =
       standardDeduction +
-      (0.22 * (unionFee + ips)) + // Combined unionFee and IPS with 22%
+      (0.22 * (unionFee + ips)) + 
       (0.10 * bsu) +
       (0.22 * parentalDeduction) +
       (Number(form.watch('travelExpenses.totalTravelExpenses')) || 0) +
@@ -246,7 +246,6 @@ export function TaxForm({ onCalculate }: TaxFormProps) {
         return acc;
       }, {})
     };
-    console.log('Formatted form data:', formattedData);
     onCalculate(formattedData);
   };
 
@@ -292,9 +291,8 @@ export function TaxForm({ onCalculate }: TaxFormProps) {
   const hasShares = form.watch('personalInfo.hasShares');
   const hasOwnHome = form.watch('personalInfo.hasOwnHome');
   const hasCarOrBoat = form.watch('personalInfo.hasCarOrBoat');
-  const hasBillån = form.watch('personalInfo.hasBillån'); // Added hasBillån
-  const hasStudentLoans = form.watch('personalInfo.hasStudentLoans'); // Added hasStudentLoans
-
+  const hasBillån = form.watch('personalInfo.hasBillån'); 
+  const hasStudentLoans = form.watch('personalInfo.hasStudentLoans'); 
 
   useEffect(() => {
     const financialFields = [
@@ -321,7 +319,6 @@ export function TaxForm({ onCalculate }: TaxFormProps) {
     hasCarOrBoat
   ]);
 
-  // Add this useEffect after the assets calculation useEffect
   useEffect(() => {
     const loanFields = [
       ...(hasOwnHome ? ['financial.totalMortgage'] : []),
@@ -347,6 +344,111 @@ export function TaxForm({ onCalculate }: TaxFormProps) {
     form.watch('personalInfo.hasStudentLoans')
   ]);
 
+  // Add these calculations in the useEffect hook
+  useEffect(() => {
+    const birthYear = form.watch('personalInfo.birthYear');
+    const spouseBirthYear = form.watch('personalInfo.spouseBirthYear');
+    const totalIncome = form.watch('businessIncome.totalIncome') || 0;
+    const totalAssets = form.watch('financial.totalAssets') || 0;
+    const totalDebt = form.watch('financial.totalDebt') || 0;
+
+    const currentYear = new Date().getFullYear();
+    const age = currentYear - birthYear;
+
+    // Calculate Trygdeavgift (Social security contribution)
+    let trygdeavgift = 0;
+    if (totalIncome >= 100000) {
+      const regularRate = (age >= 18 && age <= 68) ? 0.077 : 0.051;
+      const businessRate = 0.11;
+      const fishingRate = 0.077;
+
+      trygdeavgift = 
+        (form.watch('income.salary') + 
+         form.watch('income.disabilityPension') +
+         form.watch('income.workAssessmentAllowance') +
+         form.watch('income.unemploymentBenefits') +
+         form.watch('income.maternityBenefits') +
+         form.watch('income.sicknessBenefits') +
+         form.watch('income.employerBenefits') +
+         form.watch('income.dividend') +
+         form.watch('income.otherIncome')) * regularRate +
+        (form.watch('businessIncome.otherBusinessIncome')) * businessRate +
+        (form.watch('businessIncome.fishingAgricultureIncome')) * fishingRate;
+    }
+    form.setValue('financial.socialSecurityContribution', Math.round(trygdeavgift));
+
+    // Calculate Skatt på alminnelig inntekt (Tax on general income)
+    let generalIncomeTax = 0;
+    if (totalIncome >= 100000) {
+      const hasSpouse = spouseBirthYear !== undefined && spouseBirthYear !== null;
+      const taxRate = hasSpouse ? 0.185 : 0.22;
+      generalIncomeTax = totalIncome * taxRate;
+    }
+    form.setValue('financial.generalIncomeTax', Math.round(generalIncomeTax));
+
+    // Calculate Trinnskatt (Bracket tax)
+    let trinnskatt = 0;
+    const I = totalIncome;
+    const I1 = Math.max(0, Math.min(I, 306050) - 217400) * 0.017;
+    const I2 = Math.max(0, Math.min(I, 697150) - 306050) * 0.04;
+    const I3 = Math.max(0, Math.min(I, 942400) - 697150) * 0.137;
+    const I4 = Math.max(0, Math.min(I, 1410750) - 942400) * 0.167;
+    const I5 = Math.max(0, I - 1410750) * 0.177;
+    trinnskatt = I1 + I2 + I3 + I4 + I5;
+    form.setValue('financial.bracketTax', Math.round(trinnskatt));
+
+    // Calculate Formueskatt (Wealth tax)
+    const W = totalAssets - totalDebt; // Net wealth
+    let wealthTax = 0;
+    if (W > 1760000) {
+      // Municipal tax (kommuneskatt)
+      const kommuneTax = Math.max(0, (W - 1760000) * 0.007);
+
+      // State tax (statsskatt)
+      let stateTax = 0;
+      if (W > 1760000) {
+        const portion1 = Math.max(0, Math.min(W, 20700000) - 1760000) * 0.003;
+        const portion2 = Math.max(0, W - 20700000) * 0.004;
+        stateTax = portion1 + portion2;
+      }
+
+      wealthTax = kommuneTax + stateTax;
+    }
+    form.setValue('financial.wealthTax', Math.round(wealthTax));
+
+    // Calculate Sum skatt (Total tax)
+    const dividendTax = 
+      (form.watch('income.dividend') + form.watch('income.otherIncome')) * 0.22;
+    const totalTax = 
+      trygdeavgift + 
+      generalIncomeTax + 
+      trinnskatt + 
+      wealthTax + 
+      dividendTax;
+    form.setValue('financial.totalTax', Math.round(totalTax));
+
+    // Calculate Trekkprosent (Tax deduction percentage)
+    const monthlyTaxRatio = (totalTax / 12) / (totalIncome / 12);
+    form.setValue('financial.withholdingPercentage', 
+      Math.round(monthlyTaxRatio * 100) / 100);
+  }, [
+    form.watch('personalInfo.birthYear'),
+    form.watch('personalInfo.spouseBirthYear'),
+    form.watch('businessIncome.totalIncome'),
+    form.watch('financial.totalAssets'),
+    form.watch('financial.totalDebt'),
+    form.watch('income.salary'),
+    form.watch('income.disabilityPension'),
+    form.watch('income.workAssessmentAllowance'),
+    form.watch('income.unemploymentBenefits'),
+    form.watch('income.maternityBenefits'),
+    form.watch('income.sicknessBenefits'),
+    form.watch('income.employerBenefits'),
+    form.watch('income.dividend'),
+    form.watch('income.otherIncome'),
+    form.watch('businessIncome.otherBusinessIncome'),
+    form.watch('businessIncome.fishingAgricultureIncome')
+  ]);
 
   return (
     <Form {...form}>

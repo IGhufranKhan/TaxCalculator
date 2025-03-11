@@ -37,6 +37,7 @@ interface NumberInputProps {
   step?: string;
   disabled?: boolean;
   onChange?: (e: any) => void;
+  tooltip?: string;
 }
 
 interface YesNoSelectProps {
@@ -60,7 +61,7 @@ const LabelWithTooltip = ({ label, tooltip }: { label: string; tooltip: string }
   </div>
 );
 
-const NumberInput = ({ field, label, tooltip, min = "0", max, step = "1", disabled = false, onChange }: NumberInputProps & { tooltip?: string }) => (
+const NumberInput = ({ field, label, tooltip, min = "0", max, step = "1", disabled = false, onChange }: NumberInputProps) => (
   <FormItem>
     <FormLabel>
       {tooltip ? (
@@ -472,7 +473,7 @@ export function TaxForm({ onCalculate }: TaxFormProps) {
     form.watch('businessIncome.fishingAgricultureIncome')
   ]);
 
-  const NumberInput = ({ field, label, tooltip, min = "0", max, step = "1", disabled = false, onChange }: NumberInputProps & { tooltip?: string }) => (
+  const NumberInput = ({ field, label, tooltip, min = "0", max, step = "1", disabled = false, onChange }: NumberInputProps) => (
     <FormItem>
       <FormLabel>
         {tooltip ? (
@@ -537,7 +538,7 @@ export function TaxForm({ onCalculate }: TaxFormProps) {
               control={form.control}
               name="personalInfo.birthYear"
               render={({ field }) => (
-                <NumberInput field={field} label={t('calculator.form.personalInfo.birthYear')} min="1900" max={new Date().getFullYear().toString()} />
+                <NumberInput field={field} label={t('calculator.form.personalInfo.birthYear')} min="1900" max={new Date().getFullYear().toString()} tooltip={t('tooltips.birthYear')}/>
               )}
             />
             {form.watch('personalInfo.civilStatus') === CivilStatus.MARRIED && (
@@ -545,7 +546,7 @@ export function TaxForm({ onCalculate }: TaxFormProps) {
                 control={form.control}
                 name="personalInfo.spouseBirthYear"
                 render={({ field }) => (
-                  <NumberInput field={field} label={t('calculator.form.personalInfo.spouseBirthYear')} min="1900" max={new Date().getFullYear().toString()} />
+                  <NumberInput field={field} label={t('calculator.form.personalInfo.spouseBirthYear')} min="1900" max={new Date().getFullYear().toString()} tooltip={t('tooltips.spouseBirthYear')}/>
                 )}
               />
             )}
@@ -622,7 +623,7 @@ export function TaxForm({ onCalculate }: TaxFormProps) {
               control={form.control}
               name="personalInfo.hasBillån"
               render={({ field }) => (
-                <YesNoSelect field={field} label="Har du billån?" />
+                <YesNoSelect field={field} label={t('calculator.form.personalInfo.hasBillån')} />
               )}
             />
           </CardContent>
@@ -661,7 +662,7 @@ export function TaxForm({ onCalculate }: TaxFormProps) {
                   control={form.control}
                   name="income.workAssessmentAllowance"
                   render={({ field }) => (
-                    <NumberInput field={field} label={t('calculator.form.income.workAssessmentAllowance')} min="0" />
+                    <NumberInput field={field} label={t('calculator.form.income.workAssessmentAllowance')} tooltip={t('tooltips.workAssessmentAllowance')} min="0" />
                   )}
                 />
                 <FormField
@@ -675,14 +676,14 @@ export function TaxForm({ onCalculate }: TaxFormProps) {
                   control={form.control}
                   name="income.maternityBenefits"
                   render={({ field }) => (
-                    <NumberInput field={field} label={t('calculator.form.income.maternityBenefits')} tooltip={t('tooltips.parentalBenefits')} min="0" />
+                    <NumberInput field={field} label={t('calculator.form.income.maternityBenefits')} tooltip={t('tooltips.maternityBenefits')} min="0" />
                   )}
                 />
                 <FormField
                   control={form.control}
                   name="income.sicknessBenefits"
                   render={({ field }) => (
-                    <NumberInput field={field} label={t('calculator.form.income.sicknessBenefits')} min="0" />
+                    <NumberInput field={field} label={t('calculator.form.income.sicknessBenefits')} tooltip={t('tooltips.sicknessBenefits')} min="0" />
                   )}
                 />
               </>
@@ -693,7 +694,7 @@ export function TaxForm({ onCalculate }: TaxFormProps) {
                 control={form.control}
                 name="income.employerBenefits"
                 render={({ field }) => (
-                  <NumberInput field={field} label={t('calculator.form.income.employerBenefits')} min="0" />
+                  <NumberInput field={field} label={t('calculator.form.income.employerBenefits')} tooltip={t('tooltips.employerBenefits')} min="0" />
                 )}
               />
             )}
@@ -702,14 +703,14 @@ export function TaxForm({ onCalculate }: TaxFormProps) {
               control={form.control}
               name="income.dividend"
               render={({ field }) => (
-                <NumberInput field={field} label={t('calculator.form.income.dividend')} min="0" />
+                <NumberInput field={field} label={t('calculator.form.income.dividend')} tooltip={t('tooltips.dividend')} min="0" />
               )}
             />
             <FormField
               control={form.control}
               name="income.otherIncome"
               render={({ field }) => (
-                <NumberInput field={field} label={t('calculator.form.income.otherIncome')} min="0" />
+                <NumberInput field={field} label={t('calculator.form.income.otherIncome')} tooltip={t('tooltips.otherIncome')} min="0" />
               )}
             />
           </CardContent>
@@ -756,28 +757,28 @@ export function TaxForm({ onCalculate }: TaxFormProps) {
               control={form.control}
               name="deductions.standardDeduction"
               render={({ field }) => (
-                <NumberInput field={field} label={t('calculator.form.deductions.standardDeduction')} min="0" disabled />
+                <NumberInput field={field} label={t('calculator.form.deductions.standardDeduction')} tooltip={t('tooltips.standardDeduction')} min="0" disabled />
               )}
             />
             <FormField
               control={form.control}
               name="deductions.unionFee"
               render={({ field }) => (
-                <NumberInput field={field} label={t('calculator.form.deductions.unionFee')} min="0" max="8000" />
+                <NumberInput field={field} label={t('calculator.form.deductions.unionFee')} tooltip={t('tooltips.unionFee')} min="0" max="8000" />
               )}
             />
             <FormField
               control={form.control}
               name="deductions.ips"
               render={({ field }) => (
-                <NumberInput field={field} label={t('calculator.form.deductions.ips')} min="0" max="15000" />
+                <NumberInput field={field} label={t('calculator.form.deductions.ips')} tooltip={t('tooltips.ips')} min="0" max="15000" />
               )}
             />
             <FormField
               control={form.control}
               name="deductions.bsu"
               render={({ field }) => (
-                <NumberInput field={field} label={t('calculator.form.deductions.bsu')} min="0" max="27500" />
+                <NumberInput field={field} label={t('calculator.form.deductions.bsu')} tooltip={t('tooltips.bsu')} min="0" max="27500" />
               )}
             />
             {hasChildren && (
@@ -789,6 +790,7 @@ export function TaxForm({ onCalculate }: TaxFormProps) {
                     <NumberInput
                       field={field}
                       label={t('calculator.form.deductions.numberOfChildren')}
+                      tooltip={t('tooltips.numberOfChildren')}
                       min="0"
                       step="1"
                     />
@@ -801,6 +803,7 @@ export function TaxForm({ onCalculate }: TaxFormProps) {
                     <NumberInput
                       field={field}
                       label={t('calculator.form.deductions.parentalDeduction')}
+                      tooltip={t('tooltips.parentalDeduction')}
                       min="0"
                       disabled
                     />
@@ -808,6 +811,27 @@ export function TaxForm({ onCalculate }: TaxFormProps) {
                 />
               </>
             )}
+            <FormField
+              control={form.control}
+              name="deductions.otherDeductions"
+              render={({ field }) => (
+                <NumberInput field={field} label={t('calculator.form.deductions.otherDeductions')} tooltip={t('tooltips.otherDeductions')} min="0" />
+              )}
+            />
+            <FormField
+              control={form.control}
+              name="deductions.totalDeductions"
+              render={({ field }) => (
+                <NumberInput field={field} label={t('calculator.form.deductions.totalDeductions')} min="0" disabled />
+              )}
+            />
+            <FormField
+              control={form.control}
+              name="deductions.incomeAfterDeductions"
+              render={({ field }) => (
+                <NumberInput field={field} label={t('calculator.form.deductions.incomeAfterDeductions')} min="0" disabled />
+              )}
+            />
           </CardContent>
         </Card>
 
@@ -817,14 +841,15 @@ export function TaxForm({ onCalculate }: TaxFormProps) {
               Arbeids- og pendlerreiser / reiseutgifter / Work-related and commuting travel / travel expenditures
             </CardTitle>
           </CardHeader>
-          <CardContent className="grid grid-cols-1 gap-4 md:grid-cols-2">
+          <CardContent className="grid grid-cols-1 gap-4 md:gridcols-2">
             <FormField
               control={form.control}
               name="travelExpenses.tripsPerYear"
               render={({ field }) => (
                 <NumberInput
                   field={field}
-                  label="Antall reiser per år / Number of trips per year"
+                  label={t('calculator.form.travelExpenses.tripsPerYear')}
+                  tooltip={t('tooltips.tripsPerYear')}
                   min="0"
                 />
               )}
@@ -835,7 +860,8 @@ export function TaxForm({ onCalculate }: TaxFormProps) {
               render={({ field }) => (
                 <NumberInput
                   field={field}
-                  label="Kilometer tur/retur per reise / Distance in kilometers (round trip) per travel"
+                  label={t('calculator.form.travelExpenses.kilometersPerTrip')}
+                  tooltip={t('tooltips.kilometersPerTrip')}
                   min="0"
                 />
               )}
@@ -846,7 +872,8 @@ export function TaxForm({ onCalculate }: TaxFormProps) {
               render={({ field }) => (
                 <NumberInput
                   field={field}
-                  label="Besøksreiser til hjemmet (reisekostnader til egen eller ektefelles bolig ved pendling) / Travel expenses for home visits (commuting to own or spouse's residence)"
+                  label={t('calculator.form.travelExpenses.homeVisits')}
+                  tooltip={t('tooltips.homeVisits')}
                   min="0" />
               )}
             />
@@ -856,7 +883,8 @@ export function TaxForm({ onCalculate }: TaxFormProps) {
               render={({ field }) => (
                 <NumberInput
                   field={field}
-                  label="Bompenger og fergeutgifter (over 3 300 kr i løpet av året) / Road tolls and ferry costs (exceeding 3,300 NOK annually)"
+                  label={t('calculator.form.travelExpenses.tollAndFerry')}
+                  tooltip={t('tooltips.tollAndFerry')}
                   min="0"
                 />
               )}
@@ -867,7 +895,7 @@ export function TaxForm({ onCalculate }: TaxFormProps) {
               render={({ field }) => (
                 <NumberInput
                   field={field}
-                  label="Sum reiseutgifter / Total travel expenses"
+                  label={t('calculator.form.travelExpenses.totalTravelExpenses')}
                   min="0"
                   disabled
                 />
@@ -887,7 +915,7 @@ export function TaxForm({ onCalculate }: TaxFormProps) {
               control={form.control}
               name="deductions.otherDeductions"
               render={({ field }) => (
-                <NumberInput field={field} label={t('calculator.form.deductions.otherDeductions')} min="0" />
+                <NumberInput field={field} label={t('calculator.form.deductions.otherDeductions')} tooltip={t('tooltips.otherDeductions')} min="0" />
               )}
             />
             <FormField
@@ -921,7 +949,8 @@ export function TaxForm({ onCalculate }: TaxFormProps) {
                 render={({ field }) => (
                   <NumberInput
                     field={field}
-                    label="Sum penger på konto per 31. desember / Total bank deposits on December 31st"
+                    label={t('calculator.form.financial.totalBankBalance')}
+                    tooltip={t('tooltips.totalBankBalance')}
                     min="0"
                   />
                 )}
@@ -934,7 +963,8 @@ export function TaxForm({ onCalculate }: TaxFormProps) {
                   render={({ field }) => (
                     <NumberInput
                       field={field}
-                      label="Verdi Fond / Aksjer / Krypto / Value of funds, stocks, and crypto"
+                      label={t('calculator.form.financial.investmentValue')}
+                      tooltip={t('tooltips.investmentValue')}
                       min="0"
                     />
                   )}
@@ -949,7 +979,8 @@ export function TaxForm({ onCalculate }: TaxFormProps) {
                     render={({ field }) => (
                       <NumberInput
                         field={field}
-                        label="Markedsverdi primærbolig / Market value of primary home"
+                        label={t('calculator.form.financial.primaryResidenceValue')}
+                        tooltip={t('tooltips.primaryResidenceValue')}
                         min="0"
                       />
                     )}
@@ -960,7 +991,8 @@ export function TaxForm({ onCalculate }: TaxFormProps) {
                     render={({ field }) => (
                       <NumberInput
                         field={field}
-                        label="Markedsverdi sekundærbolig(er) / Market value of secondary home(s)"
+                        label={t('calculator.form.financial.secondaryResidenceValue')}
+                        tooltip={t('tooltips.secondaryResidenceValue')}
                         min="0"
                       />
                     )}
@@ -976,7 +1008,8 @@ export function TaxForm({ onCalculate }: TaxFormProps) {
                     render={({ field }) => (
                       <NumberInput
                         field={field}
-                        label="Kjøretøy antatt salgsverdi (Bil, motorsykkel, campingvogn m.m.) / Vehicle estimated sale value (car, motorcycle, caravan, etc.)"
+                        label={t('calculator.form.financial.vehicleValue')}
+                        tooltip={t('tooltips.vehicleValue')}
                         min="0"
                       />
                     )}
@@ -987,7 +1020,8 @@ export function TaxForm({ onCalculate }: TaxFormProps) {
                     render={({ field }) => (
                       <NumberInput
                         field={field}
-                        label="Fritidsbåt antatt salgsverdi (salgsverdi 50 000 eller høyere) / Recreational boat estimated sale value (sale value 50,000 or higher)"
+                        label={t('calculator.form.financial.boatValue')}
+                        tooltip={t('tooltips.boatValue')}
                         min="0"
                       />
                     )}
@@ -1001,7 +1035,7 @@ export function TaxForm({ onCalculate }: TaxFormProps) {
                 render={({ field }) => (
                   <NumberInput
                     field={field}
-                    label="Sum formue / Sum wealth"
+                    label={t('calculator.form.financial.totalAssets')}
                     min="0"
                     disabled
                   />
@@ -1020,7 +1054,8 @@ export function TaxForm({ onCalculate }: TaxFormProps) {
                     render={({ field }) => (
                       <NumberInput
                         field={field}
-                        label="Boliglånsandel / Home equity percentage"
+                        label={t('calculator.form.financial.mortgageShare')}
+                        tooltip={t('tooltips.mortgageShare')}
                         min="0"
                         max="100"
                         onChange={(e) => {
@@ -1041,7 +1076,8 @@ export function TaxForm({ onCalculate }: TaxFormProps) {
                     render={({ field }) => (
                       <NumberInput
                         field={field}
-                        label="Total boliglån inkludert fellesgjeld / Total home loan including joint debt"
+                        label={t('calculator.form.financial.totalMortgage')}
+                        tooltip={t('tooltips.totalMortgage')}
                         min="0"
                       />
                     )}
@@ -1056,7 +1092,8 @@ export function TaxForm({ onCalculate }: TaxFormProps) {
                   render={({ field }) => (
                     <NumberInput
                       field={field}
-                      label="Billån / Car loan"
+                      label={t('calculator.form.financial.carLoan')}
+                      tooltip={t('tooltips.carLoan')}
                       min="0"
                     />
                   )}
@@ -1070,7 +1107,8 @@ export function TaxForm({ onCalculate }: TaxFormProps) {
                   render={({ field }) => (
                     <NumberInput
                       field={field}
-                      label="Studielån / Student loans"
+                      label={t('calculator.form.financial.studentLoan')}
+                      tooltip={t('tooltips.studentLoan')}
                       min="0"
                     />
                   )}
@@ -1083,7 +1121,8 @@ export function TaxForm({ onCalculate }: TaxFormProps) {
                 render={({ field }) => (
                   <NumberInput
                     field={field}
-                    label="Forbrukslån / Consumer loans"
+                    label={t('calculator.form.financial.consumerLoan')}
+                    tooltip={t('tooltips.consumerLoan')}
                     min="0"
                   />
                 )}
@@ -1095,7 +1134,8 @@ export function TaxForm({ onCalculate }: TaxFormProps) {
                 render={({ field }) => (
                   <NumberInput
                     field={field}
-                    label="Andre lån / Other loans"
+                    label={t('calculator.form.financial.otherLoans')}
+                    tooltip={t('tooltips.otherLoans')}
                     min="0"
                   />
                 )}
@@ -1107,7 +1147,7 @@ export function TaxForm({ onCalculate }: TaxFormProps) {
                 render={({ field }) => (
                   <NumberInput
                     field={field}
-                    label="Sum gjeld / Total debt"
+                    label={t('calculator.form.financial.totalDebt')}
                     min="0"
                     disabled
                   />
@@ -1124,6 +1164,7 @@ export function TaxForm({ onCalculate }: TaxFormProps) {
                   <NumberInput
                     field={field}
                     label={t('calculator.form.financial.interestIncome')}
+                    tooltip={t('tooltips.interestIncome')}
                   />
                 )}
               />
@@ -1134,6 +1175,7 @@ export function TaxForm({ onCalculate }: TaxFormProps) {
                   <NumberInput
                     field={field}
                     label={t('calculator.form.financial.interestExpenses')}
+                    tooltip={t('tooltips.interestExpenses')}
                   />                )}
               />
               <FormField
@@ -1143,6 +1185,7 @@ export function TaxForm({ onCalculate }: TaxFormProps) {
                   <NumberInput
                     field={field}
                     label={t('calculator.form.financial.investmentGainsLosses')}
+                    tooltip={t('tooltips.investmentGainsLosses')}
                   />
                 )}
               />

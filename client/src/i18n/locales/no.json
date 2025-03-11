@@ -1,10 +1,25 @@
 {
   "tooltips": {
     "salary": "Her legger du inn lønn fra arbeidsgiver, før skatt (bruttobeløp). Dette kan for eksmepel være:\n- Fast lønn/timelønn/bonus\n- Overtid\n- Feriepenger\n- Tips",
-    "fishingIncome": "Personinntekt annen næring er inntekt fra personlig arbeid knyttet til fiske, landbruk eller skogbruk, som beskattes etter særregler for selvstendig næringsdrivende i disse næringene.",
-    "regularIncome": "Her legger du inn inntekt fra annet personlig arbeid som beskattes etter vanlige regler. Skal ha fylt 70 år for å sette en godtgjørelse.",
-    "disabilityPension": "Trygdeytelser for personer som har fått sin inntektsevne varig nedsatt med minst 50%. Dette kan være fra NAV, andre forsikringer eller pensjonsfond.",
-    "unemploymentBenefits": "Dagpenger under arbeidsløshet, inkludert tiltakspenger og andre ytelser knyttet til arbeidsledighet.",
-    "parentalBenefits": "Foreldrepenger og svangerskapspenger fra NAV, inkludert foreldrepenger ved adopsjon."
+    "disabilityPension": "Skattepliktig inntekt for personer som mottar uføretrygd fra NAV. Det kan også være fradrag for eventuelle utgifter knyttet til sykdom eller funksjonsnedsettelse.",
+    "workAssessmentAllowance": "Her legger du inn arbeidsavklaringspenger før skatt (bruttobeløp) fra Nav. For mer informasjon se 'Min side' på nav.no",
+    "unemploymentBenefits": "Her legger du inn dagpenger før skatt (bruttobeløp) ved arbeidsledighet eller permittering, fra Nav. For mer informasjon se 'Min side' på nav.no",
+    "maternityBenefits": "Her legger du inn svangerskapspenger før skatt (bruttobeløp) fra Nav. For mer informasjon se 'Min side' på nav.no",
+    "sicknessBenefits": "Her legger du inn sykepenger før skatt (bruttobeløp) fra Nav. Mer informasjon finner du på 'Min side' på nav.no",
+    "employerBenefits": "Her legger du inn skattepliktig beløp for betalt telefon og bredbånd. Du skattelegges for inntil 4 392 kroner, selv om verdien av det arbedisgiveren din dekker er høyere",
+    "dividend": "Skattepliktig inntekt fra aksjer eller eierandeler i selskaper, betalt til aksjonærene som andel av overskuddet.",
+    "otherIncome": "Inntekt som ikke passer inn under andre kategorier, som for eksempel gevinster eller inntekter fra kortvarige aktiviteter.\nDette kan for eksempel være:\n- Korttidsutleie av egen bolig (f.eks via Airbnb)\n- Utleie av kjøretøy (f.eks via Getaround)\n- småjobber og tjenester utover 6 000 kroner",
+    "fishingIncome": "Inntekt fra personlig arbeid knyttet til fiske, jordbruk eller skogbruk, som beskattes etter spesifikke regler for næringsdrivende i disse bransjene.",
+    "businessIncome": "Skattepliktig overskudd fra virksomhet eller selvstendig næringsdrift. Dette beskattes som næringsinntekt.",
+    "standardDeduction": "Et standardfradrag som alle skattytere får, for å dekke utgifter til arbeid og pendling.",
+    "unionFee": "Du kan få fradrag for det du har betalt i fagforeningskontingent i løpet av inntektsåret. Du får maksimalt 8 250 kroner i fradrag per år, uavhengig av antall medlemskap.",
+    "ips": "Individuell pensjonssparing (IPS) gir fradrag for innskudd, maks 15 000 kr per år.",
+    "bsu": "Boligsparing for ungdom gir fradrag for innskudd, maks 27 500 kr per år (kun for personer under 34 år).",
+    "parentalDeduction": "Inntil 25 000 kroner for første barn, deretter 15 000 kroner per ekstra barn. Fradrag for barnepassutgifter, barnehage, firitidsordning. Du trenger ikke sende inn dokumentasjon på dette, men du må kunne legge fram dokumentasjon hvis skatteetaten spør.",
+    "travelExpenses": "Arbeidsreiser er reiser mellom hjemmet og arbeidsstedet ditt når du bor hjemme.\nPendlerreiser er reiser mellom hjemmet ditt og en pendlerbolig der du bor på grunn av jobb.\nDu får fradrag for kostnader til arbeids- og pendlerreiser som overstiger et bunnfradrag på 14 950 kroner, og opptil 97 000 kroner før bunnfradraget. Dette betyr at du maksimalt kan få 83 000 kroner i fradrag.",
+    "tripsPerYear": "Her legger du inn det faktiske antallet tur-returreiser du har til arbeidsstedet. Ved fulltidsarbeid regnes normalt 230 arbeidsdager i året. Du skal trekke fra fravær på grunn av sykdom, yrkesreiser, permisjon og lignende hvis det utgjør mer enn 15 arbeidsdager i inntektsåret.",
+    "kilometersPerTrip": "Her legger du inn antall kilometer tur-retur per reise, for den korteste strekning mellom hjemmet og det faste arbeidsstedet ditt.\n\nEksempel: Avstanden fra hjemmet til arbeidsstedet er 35 kilometer én vei, det vil si 70 kilometer tur-retur.",
+    "homeVisits": "Her legger du inn beløp før skatt (bruttobeløp) for godtgjørelse for pendlerreiser (besøksreiser til hjemmet).",
+    "tollAndFerry": "For å få fradrag for kostnadene til bom og ferge må du spare minst to timer hver dag i reise- og ventetid på å bruke bil sammenlignet med offentlig transport. Kostnadene dine må overstige 3 300 kroner per år, og er begrenset til rimeligste betalingsmåte."
   }
 }

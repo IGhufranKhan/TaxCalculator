@@ -1,0 +1,99 @@
+Lønn	"""Her legger du inn lønn fra arbeidsgiver, før skatt (bruttobeløp). Dette kan for eksmepel være:
+- Fast lønn/timelønn/bonus
+- Overtid
+- Feriepenger
+- Tips"	"Here you enter salary from your employer before tax (gross amount). This may include, for example:
+- Fixed salary/hourly wage/bonus
+- Overtime
+- Holiday pay
+- Tips"				
+Uføretrygd	"Skattepliktig inntekt for personer som mottar uføretrygd fra NAV. Det kan også være fradrag for eventuelle utgifter knyttet til sykdom eller funksjonsnedsettelse."	Taxable income for individuals receiving disability benefits from NAV. Deductions may also apply for expenses related to illness or disability.				
+Arbeidsavklaringspenger	"Her legger du inn arbeidsavklaringspenger før skatt (bruttobeløp) fra Nav. For mer informasjon se "Min side" på nav.no	Here you enter work assessment allowance before tax (gross amount) from NAV. For more information, see "My page" at nav.no.				
+Dagpenger	"Her legger du inn dagpenger før skatt (bruttobeløp) ved arbeidsledighet eller permittering, fra Nav. For mer informasjon se "Min side" på nav.no	Here you enter unemployment benefits before tax (gross amount) due to unemployment or layoff from NAV. For more information, see "My page" at nav.no.				
+Svangerskapspenger	"Her legger du inn svangerskapspenger før skatt (bruttobeløp) fra Nav. For mer informasjon se "Min side" på nav.no	Here you enter pregnancy benefits before tax (gross amount) from NAV. For more information, see "My page" at nav.no.				
+Sykepenger fra Nav	"Her legger du inn sykepenger før skatt (bruttobeløp) fra Nav. Mer informasjon finner du på "Min side" på nav.no"	Here you enter sickness benefits before tax (gross amount) from NAV. More information can be found on "Min side" at nav.no.				
+Betalt telefonabonnement og bredbånd fra arbeidsgiver	"Her legger du inn skattepliktig beløp for betalt telefon og bredbånd. Du skattelegges for inntil 4 392 kroner, selv om verdien av det arbedisgiveren din dekker er høyere"	Here you enter the taxable amount for employer-paid telephone and broadband. You are taxed on up to NOK 4,392, even if the value covered by your employer is higher.				
+Utbytte	"Skattepliktig inntekt fra aksjer eller eierandeler i selskaper, betalt til aksjonærene som andel av overskuddet."	"Taxable income from shares or ownership interests in companies, paid to shareholders as a share of the profit.
+
+
+
+
+
+"				
+Øvrig inntekt	"""Inntekt som ikke passer inn under andre kategorier, som for eksempel gevinster eller inntekter fra kortvarige aktiviteter.
+ Dette kan for eksempel være:
+ - Korttidsutleie av egen bolig (f.eks via Airbnb)
+ - Utleie av kjøretøy (f.eks via Getaround)
+ - småjobber og tjenester utover 6 000 kroner"""	"Income that does not fit into other categories, such as gains or income from short-term activities.
+This may include, for example:
+
+Short-term rental of your own home (e.g., via Airbnb)
+Rental of vehicles (e.g., via Getaround)
+Small jobs and services exceeding NOK 6,000"				
+Annen og næringsinntekt:						
+Personinntekt fiske/jord/skog	"Inntekt fra personlig arbeid knyttet til fiske, jordbruk eller skogbruk, som beskattes etter spesifikke regler for næringsdrivende i disse bransjene."	"Income from personal work related to fishing, agriculture, or forestry, which is taxed according to specific rules for self-employed individuals in these industries.
+
+
+
+
+
+"				
+Personinntekt annen næring	"Skattepliktig overskudd fra virksomhet eller selvstendig næringsdrift. Dette beskattes som næringsinntekt."	Income from personal work in other business activities, such as self-employment or freelance work.				
+Overskudd av næringsvirksomhet						
+Underskudd av næringsvirksomhet	"Tap i næringsvirksomhet som kan trekkes fra andre inntekter for å redusere den skattepliktige inntekten"	Loss in business activities that can be deducted from other income to reduce taxable income.				
+						
+Sum inntekter						
+						
+Dine kostnader og fradrag:	Small description box to explain what this column is for. For example a "?" button you press, and it expands with a explanation (Explanations under)					
+Minstefradrag	"Et standardfradrag som alle skattytere får, for å dekke utgifter til arbeid og pendling."	A standard deduction that all taxpayers receive to cover work-related and commuting expenses.				
+Fagforeningskontigent (maks 8000 i løpet av året)	Du kan få fradrag for det du har betalt i fagforeningskontingent i løpet av inntektsåret. Du får maksimalt 8 250 kroner i fradrag per år, uavhengig av antall medlemskap.	You can claim a deduction for the trade union fees you have paid during the income year. The maximum deduction is NOK 8,250 per year, regardless of the number of memberships.				
+IPS (maks 15 000 i løpet av året)	"Individuell pensjonssparing (IPS) gir fradrag for innskudd, maks 15 000 kr per år."	Individual pension savings (IPS) provide a deduction for contributions, up to a maximum of NOK 15,000 per year.				
+BSU (maks 27 500 i løpet av året)	"Boligsparing for ungdom gir fradrag for innskudd, maks 27 500 kr per år (kun for personer under 34 år)."	Housing savings for young people (BSU) provide a deduction for contributions, up to a maximum of NOK 27,500 per year (only for individuals under 34 years old).				
+Foreldrefradrag (Inntil 25000 kroner for første barn, deretter 15000 kroner per ekstra barn)	(Inntil 25 000 kroner for første barn, deretter 15 000 kroner per ekstra barn) – Fradrag for barnepassutgifter, barnehage, firitidsordning inntil 25 000 kr for første barn, og 15 000 kr per ekstra barn. Du trenger ikke sende inn dokumentasjon på dette, men du må kunne legge fram dokumentasjon hvis skatteetaten spør. 	(Up to NOK 25,000 for the first child, then NOK 15,000 per additional child) – Deduction for childcare expenses, kindergarten, and after-school programs, up to NOK 25,000 for the first child and NOK 15,000 per additional child. You do not need to submit documentation, but you must be able to provide it if requested by Skatteetaten.				
+Arbeids- og pendlerreiser / reiseutgifter:	"Arbeidsreiser er reiser mellom hjemmet og arbeidsstedet ditt når du bor hjemme.
+Pendlerreiser er reiser mellom hjemmet ditt og en pendlerbolig der du bor på grunn av jobb.
+Du får fradrag for kostnader til arbeids- og pendlerreiser som overstiger et bunnfradrag på 14 950 kroner, og opptil 97 000 kroner før bunnfradraget. Dette betyr at du maksimalt kan få 83 000 kroner i fradrag.
+"	"Work travel refers to trips between your home and your workplace when you live at home.
+Commuter travel refers to trips between your home and a commuter residence where you stay due to work.
+You can deduct costs for work and commuter travel that exceed a base deduction of NOK 14,950, up to NOK 97,000 before the base deduction. This means the maximum deduction you can receive is NOK 83,000."				
+Antall reiser per år	"Her legger du inn det faktiske antallet tur-returreiser du har til arbeidsstedet. Ved fulltidsarbeid regnes normalt 230 arbeidsdager i året. Du skal trekke fra fravær på grunn av sykdom, yrkesreiser, permisjon og lignende hvis det utgjør mer enn 15 arbeidsdager i inntektsåret. 
+Er du deltidsansatt, jobber du skiftarbeid eller helt eller delvis fra hjemmekontor, skal du legge inn det faktiske antallet tur-returreiser du har til arbeidsstedet ditt."	"Here you enter the actual number of round trips you have to your workplace. For full-time work, 230 working days per year are typically used as a basis. You should deduct absences due to illness, business travel, leave, and similar reasons if they exceed 15 working days in the income year.
+
+If you work part-time, in shifts, or entirely or partially from a home office, you should enter the actual number of round trips you have to your workplace."				
+Kilometer tur/retur per reise	"Her legger du inn antall kilometer tur-retur per reise, for den korteste strekning mellom hjemmet og det faste arbeidsstedet ditt.
+
+Eksempel: Avstanden fra hjemmet til arbeidsstedet er 35 kilometer én vei, det vil si 70 kilometer tur-retur."	"Here you enter the number of kilometers per round trip for the shortest distance between your home and your regular workplace.
+
+Example: The distance from your home to your workplace is 35 kilometers one way, which means 70 kilometers round trip."				
+Besøksreiser til hjemmet (reisekostnader til egen eller ektefelles bolig ved pendling)	"Her legger du inn beløp før skatt (bruttobeløp) for godtgjørelse for pendlerreiser (besøksreiser til hjemmet)."	Here you enter the amount before tax (gross amount) for reimbursement of commuter travel (visits to your home).				
+Bompenger og fergeutgifter (over 3 300 kr i løpet av året)	For å få fradrag for kostnadene til bom og ferge må du spare minst to timer hver dag i reise- og ventetid på å bruke bil sammenlignet med offentlig transport. Kostnadene dine må overstige 3 300 kroner per år, og er begrenset til rimeligste betalingsmåte.	To claim a deduction for toll and ferry expenses, you must save at least two hours per day in travel and waiting time by using a car instead of public transport. Your costs must exceed NOK 3,300 per year and are limited to the cheapest payment option.				
+Sum reiseutgifter	"Totalt beløp for pendler- og reiseutgifter som kan trekkes fra."	Total amount for commuter and travel expenses that can be deducted.				
+Andre fradrag	"Andre fradrag du måtte ha, som ikke er spesifisert i de tidligere punktene."	Other deductions you may have that are not specified in the previous sections.				
+Sum fradrag	"Samlet beløp for alle fradrag, som reduserer skatten."	Total amount for all deductions, which reduce your tax.				
+						
+Inntekt etter fradrag	"Det beløpet som blir brukt til å beregne skatten du skal betale til stat, kommune og fylke."	The amount used to calculate the tax you must pay to the state, municipality, and county.				
+						
+						
+						
+Bank, lån, finans og forsikring:	Small description box to explain what this column is for. For example a "?" button you press, and it expands with a explanation (Explanations under)					
+Sum penger på konto per 31. desember						
+Verdi Fond / Aksjer / Krypto	" Gevinst ved salg av aksjer, fond, kryptovaluta og andre verdipapirer er skattepliktig, mens tap kan gi fradrag. Skatt på aksjegevinst, fond og andre verdipapirer er 37,84%. Skatt på kryptovaluta er 22%."	Gains from the sale of shares, funds, cryptocurrency, and other securities are taxable, while losses may be deductible. The tax rate on gains from shares, funds, and other securities is 37.84%, while the tax rate on cryptocurrency is 22%.				
+Markedsverdi primærbolig	"Verdien av boligen du bor i fast, brukt for formueskattberegning"	The value of the home you permanently reside in, used for wealth tax calculation.				
+Markedsverdi sekundærbolig(er)	"Verdien av boliger du eier, men ikke bor i, som utleieboliger eller fritidsboliger. Disse verdsetter høyere for formueskatt"	The value of properties you own but do not live in, such as rental properties or holiday homes. These are valued higher for wealth tax purposes.				
+Kjøretøy antatt salgsverdi (Bil, motorsykkel, campingvogn m.m.)						
+Fritidsbåt antatt salgsverdi (salgsverdi 50 000 eller høyere)						
+Sum formue						
+Lån						
+Boliglånsandel	"Din andel av boliglånet"	Your share of the mortgage loan.				
+Total boliglån inkludert fellesgjeld	"Samlet gjeld på boliglån, brukes for å beregne fradragsberettigede renter"	Total mortgage debt, used to calculate deductible interest expenses.				
+Billån	"Totalt utestående beløp til bilkjøp"	Total outstanding amount for car purchase.				
+Studielån	"Utestående gjeld på studielån. Renter på studielån er fradragsberettiget"	Outstanding student loan debt. Interest on student loans is tax-deductible.				
+Forbrukslån	"Lån uten sikkerhet, for eksempel kredittkortgjeld eller privatlån"	Unsecured loans, such as credit card debt or private loans.				
+Andre lån	"Eventuelt andre lån, som privatlån"	Any other loans, such as private loans.				
+Sum gjeld						
+						
+Kapitalinntekter og kapitalkostnader						
+Rente- og kapitalinntekter	"Renter fra bankinnskudd, utlån eller andre investeringer er skattepliktig inntekt"	Interest from bank deposits, loans, or other investments is taxable income.				
+Rentekostnader	"Totale renteutgifter på lån, inkludert boliglån, billån og forbrukslån. Dette gir skattefradrag."	Total interest expenses on loans, including mortgages, car loans, and consumer loans. This qualifies for a tax deduction.				
+						
+						

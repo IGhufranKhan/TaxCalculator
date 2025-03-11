@@ -287,6 +287,34 @@ export function TaxForm({ onCalculate }: TaxFormProps) {
 
   const hasRegularEmployment = form.watch('personalInfo.hasRegularEmployment');
   const hasBeenOnSickLeave = form.watch('personalInfo.hasBeenOnSickLeave');
+  const hasShares = form.watch('personalInfo.hasShares');
+  const hasOwnHome = form.watch('personalInfo.hasOwnHome');
+  const hasCarOrBoat = form.watch('personalInfo.hasCarOrBoat');
+
+  useEffect(() => {
+    const financialFields = [
+      'financial.totalBankBalance',
+      ...(hasShares ? ['financial.investmentValue'] : []),
+      ...(hasOwnHome ? ['financial.primaryResidenceValue', 'financial.secondaryResidenceValue'] : []),
+      ...(hasCarOrBoat ? ['financial.vehicleValue', 'financial.boatValue'] : [])
+    ];
+
+    const totalAssets = financialFields
+      .map(field => Number(form.watch(field)) || 0)
+      .reduce((sum, value) => sum + value, 0);
+
+    form.setValue('financial.totalAssets', Math.round(totalAssets));
+  }, [
+    form.watch('financial.totalBankBalance'),
+    form.watch('financial.investmentValue'),
+    form.watch('financial.primaryResidenceValue'),
+    form.watch('financial.secondaryResidenceValue'),
+    form.watch('financial.vehicleValue'),
+    form.watch('financial.boatValue'),
+    hasShares,
+    hasOwnHome,
+    hasCarOrBoat
+  ]);
 
   return (
     <Form {...form}>
@@ -671,7 +699,7 @@ export function TaxForm({ onCalculate }: TaxFormProps) {
         <Card className="glass-card border-0">
           <CardHeader>
             <CardTitle className="text-2xl font-semibold text-gray-900">
-              {t('calculator.form.financial.title')}
+              Bank, lån, finans og forsikring / Bank, loan, finance and insurance
             </CardTitle>
           </CardHeader>
           <CardContent>
@@ -682,77 +710,93 @@ export function TaxForm({ onCalculate }: TaxFormProps) {
                 render={({ field }) => (
                   <NumberInput
                     field={field}
-                    label={t('calculator.form.financial.totalBankBalance')}
+                    label="Sum penger på konto per 31. desember / Total bank deposits on December 31st"
                     min="0"
                   />
                 )}
               />
-              <FormField
-                control={form.control}
-                name="financial.investmentValue"
-                render={({ field }) => (
-                  <NumberInput
-                    field={field}
-                    label={t('calculator.form.financial.investmentValue')}
-                    min="0"
+
+              {hasShares && (
+                <FormField
+                  control={form.control}
+                  name="financial.investmentValue"
+                  render={({ field }) => (
+                    <NumberInput
+                      field={field}
+                      label="Verdi Fond / Aksjer / Krypto / Value of funds, stocks, and crypto"
+                      min="0"
+                    />
+                  )}
+                />
+              )}
+
+              {hasOwnHome && (
+                <>
+                  <FormField
+                    control={form.control}
+                    name="financial.primaryResidenceValue"
+                    render={({ field }) => (
+                      <NumberInput
+                        field={field}
+                        label="Markedsverdi primærbolig / Market value of primary home"
+                        min="0"
+                      />
+                    )}
                   />
-                )}
-              />
-              <FormField
-                control={form.control}
-                name="financial.primaryResidenceValue"
-                render={({ field }) => (
-                  <NumberInput
-                    field={field}
-                    label={t('calculator.form.financial.primaryResidenceValue')}
-                    min="0"
+                  <FormField
+                    control={form.control}
+                    name="financial.secondaryResidenceValue"
+                    render={({ field }) => (
+                      <NumberInput
+                        field={field}
+                        label="Markedsverdi sekundærbolig(er) / Market value of secondary home(s)"
+                        min="0"
+                      />
+                    )}
                   />
-                )}
-              />
-              <FormField
-                control={form.control}
-                name="financial.secondaryResidenceValue"
-                render={({ field }) => (
-                  <NumberInput
-                    field={field}
-                    label={t('calculator.form.financial.secondaryResidenceValue')}
-                    min="0"
+                </>
+              )}
+
+              {hasCarOrBoat && (
+                <>
+                  <FormField
+                    control={form.control}
+                    name="financial.vehicleValue"
+                    render={({ field }) => (
+                      <NumberInput
+                        field={field}
+                        label="Kjøretøy antatt salgsverdi (Bil, motorsykkel, campingvogn m.m.) / Vehicle estimated sale value (car, motorcycle, caravan, etc.)"
+                        min="0"
+                      />
+                    )}
                   />
-                )}
-              />
-              <FormField
-                control={form.control}
-                name="financial.vehicleValue"
-                render={({ field }) => (
-                  <NumberInput
-                    field={field}
-                    label={t('calculator.form.financial.vehicleValue')}
-                    min="0"
+                  <FormField
+                    control={form.control}
+                    name="financial.boatValue"
+                    render={({ field }) => (
+                      <NumberInput
+                        field={field}
+                        label="Fritidsbåt antatt salgsverdi (salgsverdi 50 000 eller høyere) / Recreational boat estimated sale value (sale value 50,000 or higher)"
+                        min="0"
+                      />
+                    )}
                   />
-                )}
-              />
-              <FormField
-                control={form.control}
-                name="financial.boatValue"
-                render={({ field }) => (
-                  <NumberInput
-                    field={field}
-                    label={t('calculator.form.financial.boatValue')}
-                    min="0"
-                  />
-                )}
-              />
+                </>
+              )}
+
               <FormField
                 control={form.control}
                 name="financial.totalAssets"
                 render={({ field }) => (
                   <NumberInput
                     field={field}
-                    label={t('calculator.form.financial.totalAssets')}
+                    label="Sum formue / Sum wealth"
                     min="0"
+                    disabled
                   />
                 )}
               />
+
               <Separator className="my-6" />
               <h3 className="text-lg font-medium mb-4">
                 {t('calculator.form.financial.loans')}
@@ -923,7 +967,7 @@ export function TaxForm({ onCalculate }: TaxFormProps) {
                 render={({ field }) => (
                   <NumberInput
                     field={field}
-                    label={t('calculator.form.financial.totalTax')}
+                    label                    label={t('calculator.form.financial.totalTax')}
                     min="0"
                   />
                 )}

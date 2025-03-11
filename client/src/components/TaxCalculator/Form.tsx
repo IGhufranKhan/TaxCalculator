@@ -211,11 +211,12 @@ export function TaxForm({ onCalculate }: TaxFormProps) {
     const [trips, kilometers, homeVisits] = travelFields.map(v => Number(v) || 0);
 
     // Calculate commuter expenses
-    const commuterBase = trips * kilometers * 1.83;
-    const commuterExpenses = Math.max(0, commuterBase - 14950);
+    const commuterCalc = (trips * kilometers * 1.83) - 14950;
+    const commuterExpenses = commuterCalc < 0 ? 0 : commuterCalc;
 
     // Calculate home visit expenses
-    const homeVisitExpenses = Math.max(0, homeVisits - 3300);
+    const homeVisitCalc = homeVisits - 3300;
+    const homeVisitExpenses = homeVisitCalc < 3300 ? 0 : homeVisitCalc;
 
     // Sum both and cap at 97000
     const totalExpenses = Math.min(97000, commuterExpenses + homeVisitExpenses);

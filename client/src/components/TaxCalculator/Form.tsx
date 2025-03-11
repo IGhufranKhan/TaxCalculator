@@ -70,7 +70,10 @@ export function TaxForm({ onCalculate }: TaxFormProps) {
         numberOfChildren: 0,
         otherDeductions: 0,
         totalDeductions: 0,
-        incomeAfterDeductions: 0
+        incomeAfterDeductions: 0,
+        unionFee: 0,
+        ips: 0,
+        bsu: 0
       },
       period: TaxPeriod.ANNUAL,
       location: "Norway",
@@ -449,6 +452,27 @@ export function TaxForm({ onCalculate }: TaxFormProps) {
                 <NumberInput field={field} label={t('calculator.form.deductions.standardDeduction')} min="0" disabled />
               )}
             />
+            <FormField
+              control={form.control}
+              name="deductions.unionFee"
+              render={({ field }) => (
+                <NumberInput field={field} label={t('calculator.form.deductions.unionFee')} min="0" max="8000" />
+              )}
+            />
+            <FormField
+              control={form.control}
+              name="deductions.ips"
+              render={({ field }) => (
+                <NumberInput field={field} label={t('calculator.form.deductions.ips')} min="0" max="15000" />
+              )}
+            />
+            <FormField
+              control={form.control}
+              name="deductions.bsu"
+              render={({ field }) => (
+                <NumberInput field={field} label={t('calculator.form.deductions.bsu')} min="0" max="27500" />
+              )}
+            />
             {hasChildren && (
               <>
                 <FormField
@@ -477,27 +501,6 @@ export function TaxForm({ onCalculate }: TaxFormProps) {
                 />
               </>
             )}
-            <FormField
-              control={form.control}
-              name="deductions.otherDeductions"
-              render={({ field }) => (
-                <NumberInput field={field} label={t('calculator.form.deductions.otherDeductions')} min="0" />
-              )}
-            />
-            <FormField
-              control={form.control}
-              name="deductions.totalDeductions"
-              render={({ field }) => (
-                <NumberInput field={field} label={t('calculator.form.deductions.totalDeductions')} min="0" disabled />
-              )}
-            />
-            <FormField
-              control={form.control}
-              name="deductions.incomeAfterDeductions"
-              render={({ field }) => (
-                <NumberInput field={field} label={t('calculator.form.deductions.incomeAfterDeductions')} min="0" disabled />
-              )}
-            />
           </CardContent>
         </Card>
 
@@ -534,7 +537,7 @@ export function TaxForm({ onCalculate }: TaxFormProps) {
         <Card className="glass-card border-0">
           <CardHeader>
             <CardTitle className="text-2xl font-semibold text-gray-900">
-              Total Deductions and Income
+              Andre fradrag (Other deductions)
             </CardTitle>
           </CardHeader>
           <CardContent className="space-y-6">
@@ -561,6 +564,7 @@ export function TaxForm({ onCalculate }: TaxFormProps) {
             />
           </CardContent>
         </Card>
+
 
         <Card className="glass-card border-0">
           <CardHeader>

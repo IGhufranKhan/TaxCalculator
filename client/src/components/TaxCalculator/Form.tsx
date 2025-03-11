@@ -212,10 +212,11 @@ export function TaxForm({ onCalculate }: TaxFormProps) {
     'travelExpenses.tripsPerYear',
     'travelExpenses.kilometersPerTrip',
     'travelExpenses.homeVisits',
+    'travelExpenses.tollAndFerry'
   ]);
 
   useEffect(() => {
-    const [trips, kilometers, homeVisits] = travelFields.map(v => Number(v) || 0);
+    const [trips, kilometers, homeVisits, tollAndFerry] = travelFields.map(v => Number(v) || 0);
 
     // Calculate commuter expenses
     const commuterCalc = (trips * kilometers * 1.83) - 14950;
@@ -223,10 +224,10 @@ export function TaxForm({ onCalculate }: TaxFormProps) {
 
     // Calculate home visit expenses
     const homeVisitCalc = homeVisits - 3300;
-    const homeVisitExpenses = homeVisitCalc < 3300 ? 0 : homeVisitCalc;
+    const homeVisitExpenses = homeVisitCalc < 0 ? 0 : homeVisitCalc;
 
-    // Sum both and cap at 97000
-    const totalExpenses = Math.min(97000, commuterExpenses + homeVisitExpenses);
+    // Sum all expenses and cap at 97000
+    const totalExpenses = Math.min(97000, commuterExpenses + homeVisitExpenses + tollAndFerry);
 
     form.setValue('travelExpenses.totalTravelExpenses', Math.round(totalExpenses));
   }, [...travelFields]);
@@ -582,7 +583,7 @@ export function TaxForm({ onCalculate }: TaxFormProps) {
               render={({ field }) => (
                 <NumberInput
                   field={field}
-                  label={t('calculator.form.travelExpenses.tripsPerYear')}
+                  label="Antall reiser per år / Number of trips per year"
                   min="0"
                 />
               )}
@@ -593,7 +594,7 @@ export function TaxForm({ onCalculate }: TaxFormProps) {
               render={({ field }) => (
                 <NumberInput
                   field={field}
-                  label={t('calculator.form.travelExpenses.kilometersPerTrip')}
+                  label="Kilometer tur/retur per reise / Distance in kilometers (round trip) per travel"
                   min="0"
                 />
               )}
@@ -604,7 +605,18 @@ export function TaxForm({ onCalculate }: TaxFormProps) {
               render={({ field }) => (
                 <NumberInput
                   field={field}
-                  label={t('calculator.form.travelExpenses.homeVisits')}
+                  label="Besøksreiser til hjemmet / Travel expenses for home visits"
+                  min="0"
+                />
+              )}
+            />
+            <FormField
+              control={form.control}
+              name="travelExpenses.tollAndFerry"
+              render={({ field }) => (
+                <NumberInput
+                  field={field}
+                  label="Bompenger og fergeutgifter / Road tolls and ferry costs"
                   min="0"
                 />
               )}
@@ -615,7 +627,7 @@ export function TaxForm({ onCalculate }: TaxFormProps) {
               render={({ field }) => (
                 <NumberInput
                   field={field}
-                  label={t('calculator.form.travelExpenses.totalTravelExpenses')}
+                  label="Total travel expenses"
                   min="0"
                   disabled
                 />

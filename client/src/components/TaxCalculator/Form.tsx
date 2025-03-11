@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { useTranslation } from "react-i18next";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -16,6 +16,7 @@ import { Button } from "@/components/ui/button";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
+import { TaxSummary } from "./TaxSummary";
 
 interface TaxFormProps {
   onCalculate: (data: TaxCalculation) => void;
@@ -38,6 +39,8 @@ interface YesNoSelectProps {
 
 export function TaxForm({ onCalculate }: TaxFormProps) {
   const { t } = useTranslation();
+  const [showResults, setShowResults] = useState(false);
+  const [calculationResults, setCalculationResults] = useState<TaxCalculation | null>(null);
   const form = useForm<TaxCalculation>({
     resolver: zodResolver(taxCalculationSchema),
     defaultValues: {
@@ -246,6 +249,8 @@ export function TaxForm({ onCalculate }: TaxFormProps) {
         return acc;
       }, {})
     };
+    setCalculationResults(formattedData);
+    setShowResults(true);
     onCalculate(formattedData);
   };
 
@@ -1155,6 +1160,9 @@ export function TaxForm({ onCalculate }: TaxFormProps) {
         <Button type="submit" className="w-full text-lg py-6 bg-primary hover:bg-primary/90">
           {t('calculator.form.calculate')}
         </Button>
+        {showResults && calculationResults && (
+          <TaxSummary data={calculationResults} />
+        )}
       </form>
     </Form>
   );

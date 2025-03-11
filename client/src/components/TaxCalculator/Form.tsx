@@ -120,51 +120,7 @@ export function TaxForm({ onCalculate }: TaxFormProps) {
     }
   });
 
-  const hasRegularEmployment = form.watch('personalInfo.hasRegularEmployment');
-  const hasBeenOnSickLeave = form.watch('personalInfo.hasBeenOnSickLeave');
   const hasChildren = form.watch('personalInfo.hasChildren');
-  const hasShares = form.watch('personalInfo.hasShares');
-  const hasOwnHome = form.watch('personalInfo.hasOwnHome');
-  const hasCarOrBoat = form.watch('personalInfo.hasCarOrBoat');
-
-  const relevantIncomeFields = form.watch([
-    'income.salary',
-    'income.disabilityPension',
-    'income.workAssessmentAllowance',
-    'income.unemploymentBenefits',
-    'income.maternityBenefits',
-    'income.sicknessBenefits',
-    'income.otherIncome'
-  ]);
-
-  const additionalIncomeFields = form.watch([
-    'income.employerBenefits',
-    'income.dividend'
-  ]);
-
-  const businessIncomeFields = form.watch([
-    'businessIncome.fishingAgricultureIncome',
-    'businessIncome.otherBusinessIncome',
-    'businessIncome.businessProfit',
-    'businessIncome.businessLoss'
-  ]);
-
-  useEffect(() => {
-    const totalRelevantIncome = relevantIncomeFields.reduce((sum, value) => sum + (Number(value) || 0), 0);
-    const minimumDeduction = totalRelevantIncome < 200000 ? totalRelevantIncome * 0.46 : 92000;
-    form.setValue('deductions.standardDeduction', minimumDeduction);
-  }, [...relevantIncomeFields]);
-
-  useEffect(() => {
-    const totalIncome = [
-      ...relevantIncomeFields,
-      ...additionalIncomeFields,
-      ...businessIncomeFields
-    ].reduce((sum, value) => sum + (Number(value) || 0), 0);
-
-    form.setValue('businessIncome.totalIncome', totalIncome);
-  }, [...relevantIncomeFields, ...additionalIncomeFields, ...businessIncomeFields]);
-
   const numberOfChildren = form.watch('deductions.numberOfChildren');
 
   useEffect(() => {
@@ -172,30 +128,14 @@ export function TaxForm({ onCalculate }: TaxFormProps) {
     let parentalDeduction = 0;
 
     if (hasChildren && children > 0) {
-      parentalDeduction = 25000;
+      parentalDeduction = 25000; // First child
       if (children > 1) {
-        parentalDeduction += (children - 1) * 15000;
+        parentalDeduction += (children - 1) * 15000; // Additional children
       }
     }
 
     form.setValue('deductions.parentalDeduction', parentalDeduction);
   }, [numberOfChildren, hasChildren, form]);
-
-  const travelFields = form.watch([
-    'travelExpenses.tripsPerYear',
-    'travelExpenses.kilometersPerTrip',
-    'travelExpenses.homeVisits',
-  ]);
-
-  useEffect(() => {
-    const [trips, kilometers, homeVisits] = travelFields.map(v => Number(v) || 0);
-
-    const commuterExpenses = Math.max(0, (trips * kilometers * 1.83) - 14950);
-    const homeVisitExpenses = Math.max(0, homeVisits * 1.83 - 3300);
-    const totalExpenses = Math.min(97000, commuterExpenses + homeVisitExpenses);
-
-    form.setValue('travelExpenses.totalTravelExpenses', totalExpenses);
-  }, [...travelFields]);
 
   const onSubmit = (data: TaxCalculation) => {
     const formattedData = {
@@ -248,7 +188,6 @@ export function TaxForm({ onCalculate }: TaxFormProps) {
       <FormMessage />
     </FormItem>
   );
-
 
   return (
     <Form {...form}>
@@ -333,7 +272,7 @@ export function TaxForm({ onCalculate }: TaxFormProps) {
                 <YesNoSelect field={field} label={t('calculator.form.personalInfo.hasRegularEmployment')} />
               )}
             />
-            {hasRegularEmployment && (
+            {form.watch('personalInfo.hasRegularEmployment') && (
               <FormField
                 control={form.control}
                 name="personalInfo.hasBeenOnSickLeave"
@@ -387,78 +326,29 @@ export function TaxForm({ onCalculate }: TaxFormProps) {
             </CardTitle>
           </CardHeader>
           <CardContent className="grid grid-cols-1 gap-4 md:grid-cols-2">
-            <FormField
-              control={form.control}
-              name="income.salary"
-              render={({ field }) => (
-                <NumberInput field={field} label={t('calculator.form.income.salary')} min="0" />
-              )}
-            />
-
-            {!hasRegularEmployment && hasBeenOnSickLeave && (
-              <>
-                <FormField
-                  control={form.control}
-                  name="income.disabilityPension"
-                  render={({ field }) => (
-                    <NumberInput field={field} label={t('calculator.form.income.disabilityPension')} min="0" />
-                  )}
-                />
-                <FormField
-                  control={form.control}
-                  name="income.workAssessmentAllowance"
-                  render={({ field }) => (
-                    <NumberInput field={field} label={t('calculator.form.income.workAssessmentAllowance')} min="0" />
-                  )}
-                />
-                <FormField
-                  control={form.control}
-                  name="income.unemploymentBenefits"
-                  render={({ field }) => (
-                    <NumberInput field={field} label={t('calculator.form.income.unemploymentBenefits')} min="0" />
-                  )}
-                />
-                <FormField
-                  control={form.control}
-                  name="income.maternityBenefits"
-                  render={({ field }) => (
-                    <NumberInput field={field} label={t('calculator.form.income.maternityBenefits')} min="0" />
-                  )}
-                />
-                <FormField
-                  control={form.control}
-                  name="income.sicknessBenefits"
-                  render={({ field }) => (
-                    <NumberInput field={field} label={t('calculator.form.income.sicknessBenefits')} min="0" />
-                  )}
-                />
-              </>
-            )}
-
-            {hasRegularEmployment && (
+            {[
+              'salary',
+              'disabilityPension',
+              'workAssessmentAllowance',
+              'unemploymentBenefits',
+              'maternityBenefits',
+              'sicknessBenefits',
+              'employerBenefits',
+              'dividend',
+              'otherIncome'
+            ].map((fieldName) => (
               <FormField
+                key={fieldName}
                 control={form.control}
-                name="income.employerBenefits"
+                name={`income.${fieldName}` as keyof TaxCalculation['income']}
                 render={({ field }) => (
-                  <NumberInput field={field} label={t('calculator.form.income.employerBenefits')} min="0" />
+                  <NumberInput
+                    field={field}
+                    label={t(`calculator.form.income.${fieldName}`)}
+                  />
                 )}
               />
-            )}
-
-            <FormField
-              control={form.control}
-              name="income.dividend"
-              render={({ field }) => (
-                <NumberInput field={field} label={t('calculator.form.income.dividend')} min="0" />
-              )}
-            />
-            <FormField
-              control={form.control}
-              name="income.otherIncome"
-              render={({ field }) => (
-                <NumberInput field={field} label={t('calculator.form.income.otherIncome')} min="0" />
-              )}
-            />
+            ))}
           </CardContent>
         </Card>
 
@@ -469,37 +359,27 @@ export function TaxForm({ onCalculate }: TaxFormProps) {
             </CardTitle>
           </CardHeader>
           <CardContent className="grid grid-cols-1 gap-4 md:grid-cols-2">
-            <FormField
-              control={form.control}
-              name="businessIncome.fishingAgricultureIncome"
-              render={({ field }) => (
-                <NumberInput field={field} label={t('calculator.form.businessIncome.fishingAgricultureIncome')} min="0" />
-              )}
-            />
-            <FormField
-              control={form.control}
-              name="businessIncome.otherBusinessIncome"
-              render={({ field }) => (
-                <NumberInput field={field} label={t('calculator.form.businessIncome.otherBusinessIncome')} min="0" />
-              )}
-            />
-            <FormField
-              control={form.control}
-              name="businessIncome.businessProfit"
-              render={({ field }) => (
-                <NumberInput field={field} label={t('calculator.form.businessIncome.businessProfit')} min="0" />
-              )}
-            />
-            <FormField
-              control={form.control}
-              name="businessIncome.businessLoss"
-              render={({ field }) => (
-                <NumberInput field={field} label={t('calculator.form.businessIncome.businessLoss')} min="0" />
-              )}
-            />
+            {[
+              'fishingAgricultureIncome',
+              'otherBusinessIncome',
+              'businessProfit',
+              'businessLoss',
+              'totalIncome'
+            ].map((fieldName) => (
+              <FormField
+                key={fieldName}
+                control={form.control}
+                name={`businessIncome.${fieldName}` as keyof TaxCalculation['businessIncome']}
+                render={({ field }) => (
+                  <NumberInput
+                    field={field}
+                    label={t(`calculator.form.businessIncome.${fieldName}`)}
+                  />
+                )}
+              />
+            ))}
           </CardContent>
         </Card>
-
 
         <Card className="glass-card border-0">
           <CardHeader>
@@ -512,7 +392,7 @@ export function TaxForm({ onCalculate }: TaxFormProps) {
               control={form.control}
               name="deductions.standardDeduction"
               render={({ field }) => (
-                <NumberInput field={field} label={t('calculator.form.deductions.standardDeduction')} min="0" disabled />
+                <NumberInput field={field} label={t('calculator.form.deductions.standardDeduction')} min="0" />
               )}
             />
             <FormField
@@ -540,7 +420,7 @@ export function TaxForm({ onCalculate }: TaxFormProps) {
               control={form.control}
               name="deductions.parentalDeduction"
               render={({ field }) => (
-                <NumberInput field={field} label={t('calculator.form.deductions.parentalDeduction')} min="0" disabled />
+                <NumberInput field={field} label={t('calculator.form.deductions.parentalDeduction')} min="0" />
               )}
             />
             <FormField
@@ -554,14 +434,14 @@ export function TaxForm({ onCalculate }: TaxFormProps) {
               control={form.control}
               name="deductions.totalDeductions"
               render={({ field }) => (
-                <NumberInput field={field} label={t('calculator.form.deductions.totalDeductions')} min="0" disabled />
+                <NumberInput field={field} label={t('calculator.form.deductions.totalDeductions')} min="0" />
               )}
             />
             <FormField
               control={form.control}
               name="deductions.incomeAfterDeductions"
               render={({ field }) => (
-                <NumberInput field={field} label={t('calculator.form.deductions.incomeAfterDeductions')} min="0" disabled />
+                <NumberInput field={field} label={t('calculator.form.deductions.incomeAfterDeductions')} min="0" />
               )}
             />
           </CardContent>
@@ -573,54 +453,27 @@ export function TaxForm({ onCalculate }: TaxFormProps) {
               {t('calculator.form.travelExpenses')}
             </CardTitle>
           </CardHeader>
-          <CardContent className="space-y-6">
-            <FormField
-              control={form.control}
-              name="travelExpenses.tripsPerYear"
-              render={({ field }) => (
-                <NumberInput
-                  field={field}
-                  label={t('calculator.form.travelExpenses.tripsPerYear')}
-                  min="0"
-                  step="1"
-                />
-              )}
-            />
-            <FormField
-              control={form.control}
-              name="travelExpenses.kilometersPerTrip"
-              render={({ field }) => (
-                <NumberInput
-                  field={field}
-                  label={t('calculator.form.travelExpenses.kilometersPerTrip')}
-                  min="0"
-                  step="1"
-                />
-              )}
-            />
-            <FormField
-              control={form.control}
-              name="travelExpenses.homeVisits"
-              render={({ field }) => (
-                <NumberInput
-                  field={field}
-                  label={t('calculator.form.travelExpenses.homeVisits')}
-                  min="0"
-                />
-              )}
-            />
-            <FormField
-              control={form.control}
-              name="travelExpenses.totalTravelExpenses"
-              render={({ field }) => (
-                <NumberInput
-                  field={field}
-                  label={t('calculator.form.travelExpenses.totalTravelExpenses')}
-                  min="0"
-                  disabled
-                />
-              )}
-            />
+          <CardContent className="grid grid-cols-1 gap-4 md:grid-cols-2">
+            {[
+              'tripsPerYear',
+              'kilometersPerTrip',
+              'homeVisits',
+              'tollAndFerry',
+              'totalTravelExpenses'
+            ].map((fieldName) => (
+              <FormField
+                key={fieldName}
+                control={form.control}
+                name={`travelExpenses.${fieldName}` as keyof TaxCalculation['travelExpenses']}
+                render={({ field }) => (
+                  <NumberInput
+                    field={field}
+                    label={t(`calculator.form.travelExpenses.${fieldName}`)}
+                    min={fieldName === 'tollAndFerry' ? '3300' : '0'}
+                  />
+                )}
+              />
+            ))}
           </CardContent>
         </Card>
 
@@ -643,75 +496,61 @@ export function TaxForm({ onCalculate }: TaxFormProps) {
                   />
                 )}
               />
-
-              {hasShares && (
-                <FormField
-                  control={form.control}
-                  name="financial.investmentValue"
-                  render={({ field }) => (
-                    <NumberInput
-                      field={field}
-                      label={t('calculator.form.financial.investmentValue')}
-                      min="0"
-                    />
-                  )}
-                />
-              )}
-
-              {hasOwnHome && (
-                <>
-                  <FormField
-                    control={form.control}
-                    name="financial.primaryResidenceValue"
-                    render={({ field }) => (
-                      <NumberInput
-                        field={field}
-                        label={t('calculator.form.financial.primaryResidenceValue')}
-                        min="0"
-                      />
-                    )}
+              <FormField
+                control={form.control}
+                name="financial.investmentValue"
+                render={({ field }) => (
+                  <NumberInput
+                    field={field}
+                    label={t('calculator.form.financial.investmentValue')}
+                    min="0"
                   />
-                  <FormField
-                    control={form.control}
-                    name="financial.secondaryResidenceValue"
-                    render={({ field }) => (
-                      <NumberInput
-                        field={field}
-                        label={t('calculator.form.financial.secondaryResidenceValue')}
-                        min="0"
-                      />
-                    )}
+                )}
+              />
+              <FormField
+                control={form.control}
+                name="financial.primaryResidenceValue"
+                render={({ field }) => (
+                  <NumberInput
+                    field={field}
+                    label={t('calculator.form.financial.primaryResidenceValue')}
+                    min="0"
                   />
-                </>
-              )}
-
-              {hasCarOrBoat && (
-                <>
-                  <FormField
-                    control={form.control}
-                    name="financial.vehicleValue"
-                    render={({ field }) => (
-                      <NumberInput
-                        field={field}
-                        label={t('calculator.form.financial.vehicleValue')}
-                        min="0"
-                      />
-                    )}
+                )}
+              />
+              <FormField
+                control={form.control}
+                name="financial.secondaryResidenceValue"
+                render={({ field }) => (
+                  <NumberInput
+                    field={field}
+                    label={t('calculator.form.financial.secondaryResidenceValue')}
+                    min="0"
                   />
-                  <FormField
-                    control={form.control}
-                    name="financial.boatValue"
-                    render={({ field }) => (
-                      <NumberInput
-                        field={field}
-                        label={t('calculator.form.financial.boatValue')}
-                        min="0"
-                      />
-                    )}
+                )}
+              />
+              <FormField
+                control={form.control}
+                name="financial.vehicleValue"
+                render={({ field }) => (
+                  <NumberInput
+                    field={field}
+                    label={t('calculator.form.financial.vehicleValue')}
+                    min="0"
                   />
-                </>
-              )}
-
+                )}
+              />
+              <FormField
+                control={form.control}
+                name="financial.boatValue"
+                render={({ field }) => (
+                  <NumberInput
+                    field={field}
+                    label={t('calculator.form.financial.boatValue')}
+                    min="0"
+                  />
+                )}
+              />
               <FormField
                 control={form.control}
                 name="financial.totalAssets"

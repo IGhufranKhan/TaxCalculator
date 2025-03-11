@@ -210,8 +210,14 @@ export function TaxForm({ onCalculate }: TaxFormProps) {
   useEffect(() => {
     const [trips, kilometers, homeVisits] = travelFields.map(v => Number(v) || 0);
 
-    const commuterExpenses = Math.max(0, (trips * kilometers * 1.83) - 14950);
+    // Calculate commuter expenses
+    const commuterBase = trips * kilometers * 1.83;
+    const commuterExpenses = Math.max(0, commuterBase - 14950);
+
+    // Calculate home visit expenses
     const homeVisitExpenses = Math.max(0, homeVisits - 3300);
+
+    // Sum both and cap at 97000
     const totalExpenses = Math.min(97000, commuterExpenses + homeVisitExpenses);
 
     form.setValue('travelExpenses.totalTravelExpenses', Math.round(totalExpenses));

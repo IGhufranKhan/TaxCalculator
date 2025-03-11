@@ -172,9 +172,9 @@ export function TaxForm({ onCalculate }: TaxFormProps) {
     let parentalDeduction = 0;
 
     if (hasChildren && children > 0) {
-      parentalDeduction = 25000; 
+      parentalDeduction = 25000;
       if (children > 1) {
-        parentalDeduction += (children - 1) * 15000; 
+        parentalDeduction += (children - 1) * 15000;
       }
     }
 
@@ -267,13 +267,15 @@ export function TaxForm({ onCalculate }: TaxFormProps) {
                 <NumberInput field={field} label={t('calculator.form.personalInfo.birthYear')} min="1900" max={new Date().getFullYear().toString()} />
               )}
             />
-            <FormField
-              control={form.control}
-              name="personalInfo.spouseBirthYear"
-              render={({ field }) => (
-                <NumberInput field={field} label={t('calculator.form.personalInfo.spouseBirthYear')} min="1900" max={new Date().getFullYear().toString()} />
-              )}
-            />
+            {form.watch('personalInfo.civilStatus') === CivilStatus.MARRIED && (
+              <FormField
+                control={form.control}
+                name="personalInfo.spouseBirthYear"
+                render={({ field }) => (
+                  <NumberInput field={field} label={t('calculator.form.personalInfo.spouseBirthYear')} min="1900" max={new Date().getFullYear().toString()} />
+                )}
+              />
+            )}
             <FormField control={form.control} name="personalInfo.civilStatus" render={({ field }) => (
               <FormItem>
                 <FormLabel>{t('calculator.form.personalInfo.civilStatus')}</FormLabel>
@@ -285,9 +287,9 @@ export function TaxForm({ onCalculate }: TaxFormProps) {
                     <SelectContent>
                       <SelectItem value={CivilStatus.SINGLE}>{t('calculator.form.personalInfo.civilStatus.single')}</SelectItem>
                       <SelectItem value={CivilStatus.MARRIED}>{t('calculator.form.personalInfo.civilStatus.married')}</SelectItem>
-                      <SelectItem value={CivilStatus.COHABITING}>{t('calculator.form.personalInfo.civilStatus.cohabiting')}</SelectItem>
-                      <SelectItem value={CivilStatus.WIDOWED}>{t('calculator.form.personalInfo.civilStatus.widowed')}</SelectItem>
+                      <SelectItem value={CivilStatus.SEPARATED}>{t('calculator.form.personalInfo.civilStatus.separated')}</SelectItem>
                       <SelectItem value={CivilStatus.DIVORCED}>{t('calculator.form.personalInfo.civilStatus.divorced')}</SelectItem>
+                      <SelectItem value={CivilStatus.WIDOWED}>{t('calculator.form.personalInfo.civilStatus.widowed')}</SelectItem>
                     </SelectContent>
                   </Select>
                 </FormControl>

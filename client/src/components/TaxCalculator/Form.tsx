@@ -183,6 +183,29 @@ export function TaxForm({ onCalculate }: TaxFormProps) {
     form.setValue('deductions.parentalDeduction', parentalDeduction);
   }, [numberOfChildren, hasChildren, form]);
 
+  // Watch travel expense fields for calculation
+  const travelFields = form.watch([
+    'travelExpenses.tripsPerYear',
+    'travelExpenses.kilometersPerTrip',
+    'travelExpenses.homeVisits',
+  ]);
+
+  // Calculate total travel expenses
+  useEffect(() => {
+    const [trips, kilometers, homeVisits] = travelFields.map(v => Number(v) || 0);
+
+    // Calculate commuter expenses
+    const commuterExpenses = Math.max(0, (trips * kilometers * 1.83) - 14950);
+
+    // Calculate home visit expenses
+    const homeVisitExpenses = Math.max(0, homeVisits - 3300);
+
+    // Sum and cap at 97,000
+    const totalExpenses = Math.min(97000, commuterExpenses + homeVisitExpenses);
+
+    form.setValue('travelExpenses.totalTravelExpenses', totalExpenses);
+  }, [...travelFields]);
+
   const onSubmit = (data: TaxCalculation) => {
     const formattedData = {
       ...data,
@@ -243,6 +266,63 @@ export function TaxForm({ onCalculate }: TaxFormProps) {
     <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
         {/* ... other form sections ... */}
+
+        <Card className="glass-card border-0">
+          <CardHeader>
+            <CardTitle className="text-2xl font-semibold text-gray-900">
+              {t('calculator.form.travelExpenses')}
+            </CardTitle>
+          </CardHeader>
+          <CardContent className="space-y-6">
+            <FormField
+              control={form.control}
+              name="travelExpenses.tripsPerYear"
+              render={({ field }) => (
+                <NumberInput
+                  field={field}
+                  label={t('calculator.form.travelExpenses.tripsPerYear')}
+                  min="0"
+                  step="1"
+                />
+              )}
+            />
+            <FormField
+              control={form.control}
+              name="travelExpenses.kilometersPerTrip"
+              render={({ field }) => (
+                <NumberInput
+                  field={field}
+                  label={t('calculator.form.travelExpenses.kilometersPerTrip')}
+                  min="0"
+                  step="1"
+                />
+              )}
+            />
+            <FormField
+              control={form.control}
+              name="travelExpenses.homeVisits"
+              render={({ field }) => (
+                <NumberInput
+                  field={field}
+                  label={t('calculator.form.travelExpenses.homeVisits')}
+                  min="0"
+                />
+              )}
+            />
+            <FormField
+              control={form.control}
+              name="travelExpenses.totalTravelExpenses"
+              render={({ field }) => (
+                <NumberInput
+                  field={field}
+                  label={t('calculator.form.travelExpenses.totalTravelExpenses')}
+                  min="0"
+                  disabled
+                />
+              )}
+            />
+          </CardContent>
+        </Card>
 
         <Card className="glass-card border-0">
           <CardHeader>

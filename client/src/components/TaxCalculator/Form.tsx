@@ -219,6 +219,9 @@ export function TaxForm({ onCalculate }: TaxFormProps) {
     </FormItem>
   );
 
+  const hasRegularEmployment = form.watch('personalInfo.hasRegularEmployment');
+  const hasBeenOnSickLeave = form.watch('personalInfo.hasBeenOnSickLeave');
+
   return (
     <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
@@ -331,29 +334,78 @@ export function TaxForm({ onCalculate }: TaxFormProps) {
             </CardTitle>
           </CardHeader>
           <CardContent className="grid grid-cols-1 gap-4 md:grid-cols-2">
-            {[
-              'salary',
-              'disabilityPension',
-              'workAssessmentAllowance',
-              'unemploymentBenefits',
-              'maternityBenefits',
-              'sicknessBenefits',
-              'employerBenefits',
-              'dividend',
-              'otherIncome'
-            ].map((fieldName) => (
+            <FormField
+              control={form.control}
+              name="income.salary"
+              render={({ field }) => (
+                <NumberInput field={field} label={t('calculator.form.income.salary')} min="0" />
+              )}
+            />
+
+            {!hasRegularEmployment && hasBeenOnSickLeave && (
+              <>
+                <FormField
+                  control={form.control}
+                  name="income.disabilityPension"
+                  render={({ field }) => (
+                    <NumberInput field={field} label={t('calculator.form.income.disabilityPension')} min="0" />
+                  )}
+                />
+                <FormField
+                  control={form.control}
+                  name="income.workAssessmentAllowance"
+                  render={({ field }) => (
+                    <NumberInput field={field} label={t('calculator.form.income.workAssessmentAllowance')} min="0" />
+                  )}
+                />
+                <FormField
+                  control={form.control}
+                  name="income.unemploymentBenefits"
+                  render={({ field }) => (
+                    <NumberInput field={field} label={t('calculator.form.income.unemploymentBenefits')} min="0" />
+                  )}
+                />
+                <FormField
+                  control={form.control}
+                  name="income.maternityBenefits"
+                  render={({ field }) => (
+                    <NumberInput field={field} label={t('calculator.form.income.maternityBenefits')} min="0" />
+                  )}
+                />
+                <FormField
+                  control={form.control}
+                  name="income.sicknessBenefits"
+                  render={({ field }) => (
+                    <NumberInput field={field} label={t('calculator.form.income.sicknessBenefits')} min="0" />
+                  )}
+                />
+              </>
+            )}
+
+            {hasRegularEmployment && (
               <FormField
-                key={fieldName}
                 control={form.control}
-                name={`income.${fieldName}` as keyof TaxCalculation['income']}
+                name="income.employerBenefits"
                 render={({ field }) => (
-                  <NumberInput
-                    field={field}
-                    label={t(`calculator.form.income.${fieldName}`)}
-                  />
+                  <NumberInput field={field} label={t('calculator.form.income.employerBenefits')} min="0" />
                 )}
               />
-            ))}
+            )}
+
+            <FormField
+              control={form.control}
+              name="income.dividend"
+              render={({ field }) => (
+                <NumberInput field={field} label={t('calculator.form.income.dividend')} min="0" />
+              )}
+            />
+            <FormField
+              control={form.control}
+              name="income.otherIncome"
+              render={({ field }) => (
+                <NumberInput field={field} label={t('calculator.form.income.otherIncome')} min="0" />
+              )}
+            />
           </CardContent>
         </Card>
 

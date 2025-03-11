@@ -3,7 +3,7 @@
     "title": "Skattekalkulator Norge",
     "subtitle": "Finn ut hvor mye din lønn er etter skatt",
     "form": {
-      "personalInfo": "Generell informasjon",
+      "personalInfo": "Personlig informasjon",
       "personalInfo.birthYear": "I hvilket år er du født (åååå)?",
       "personalInfo.spouseBirthYear": "I hvilket år er din ektefelle / registrert partner / meldepliktig samboer født (åååå)?",
       "personalInfo.civilStatus": "Sivilstatus",

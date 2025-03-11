@@ -412,10 +412,14 @@ export function TaxForm({ onCalculate }: TaxFormProps) {
         <Input
           type="number"
           {...field}
-          onChange={onChange || ((e) => {
-            const value = e.target.value === '' ? 0 : Number(e.target.value);
+          value={field.value || ''}
+          onChange={(e) => {
+            const value = e.target.value === '' ? '' : Number(e.target.value);
             field.onChange(value);
-          })}
+            if (onChange) {
+              onChange(e);
+            }
+          }}
           min={min}
           max={max}
           step={step}

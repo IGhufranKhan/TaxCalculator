@@ -166,6 +166,41 @@ export function TaxForm({ onCalculate }: TaxFormProps) {
     form.setValue('deductions.parentalDeduction', parentalDeduction);
   }, [numberOfChildren, hasChildren, form]);
 
+  const deductionFields = form.watch([
+    'deductions.standardDeduction',
+    'deductions.unionFee',
+    'deductions.bsu',
+    'deductions.parentalDeduction',
+    'travelExpenses.totalTravelExpenses',
+    'deductions.otherDeductions'
+  ]);
+
+  useEffect(() => {
+    const [
+      standardDeduction,
+      unionFee,
+      bsu,
+      parentalDeduction,
+      travelExpenses,
+      otherDeductions
+    ] = deductionFields.map(value => Number(value) || 0);
+
+    const totalDeductions =
+      standardDeduction +
+      (0.22 * unionFee) +
+      (0.10 * bsu) +
+      (0.22 * parentalDeduction) +
+      travelExpenses +
+      (0.22 * otherDeductions);
+
+    form.setValue('deductions.totalDeductions', Math.round(totalDeductions));
+
+    // Calculate income after deductions
+    const totalIncome = form.getValues('businessIncome.totalIncome');
+    form.setValue('deductions.incomeAfterDeductions', Math.round(totalIncome - totalDeductions));
+  }, [...deductionFields, form.watch('businessIncome.totalIncome')]);
+
+
   const onSubmit = (data: TaxCalculation) => {
     const formattedData = {
       ...data,

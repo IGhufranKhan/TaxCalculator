@@ -29,7 +29,7 @@ interface NumberInputProps {
   max?: string;
   step?: string;
   disabled?: boolean;
-  onChange?: (e: any) => void; 
+  onChange?: (e: any) => void;
 }
 
 interface YesNoSelectProps {
@@ -41,6 +41,7 @@ export function TaxForm({ onCalculate }: TaxFormProps) {
   const { t } = useTranslation();
   const [showResults, setShowResults] = useState(false);
   const [calculationResults, setCalculationResults] = useState<TaxCalculation | null>(null);
+
   const form = useForm<TaxCalculation>({
     resolver: zodResolver(taxCalculationSchema),
     defaultValues: {
@@ -237,21 +238,11 @@ export function TaxForm({ onCalculate }: TaxFormProps) {
     form.setValue('travelExpenses.totalTravelExpenses', Math.round(totalExpenses));
   }, [...travelFields]);
 
-  const onSubmit = (data: TaxCalculation) => {
-    const formattedData = {
-      ...data,
-      income: Object.entries(data.income).reduce((acc: any, [key, value]) => {
-        acc[key] = Number(value) || 0;
-        return acc;
-      }, {}),
-      financial: Object.entries(data.financial).reduce((acc: any, [key, value]) => {
-        acc[key] = Number(value) || 0;
-        return acc;
-      }, {})
-    };
-    setCalculationResults(formattedData);
+  const handleCalculate = (data: TaxCalculation) => {
+    console.log('Calculating with data:', data);
+    setCalculationResults(data);
     setShowResults(true);
-    onCalculate(formattedData);
+    onCalculate(data);
   };
 
   const NumberInput = ({ field, label, min = "0", max, step = "1", disabled = false, onChange }: NumberInputProps) => (
@@ -460,7 +451,7 @@ export function TaxForm({ onCalculate }: TaxFormProps) {
 
   return (
     <Form {...form}>
-      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
+      <form onSubmit={form.handleSubmit(handleCalculate)} className="space-y-8">
         <Card className="glass-card border-0">
           <CardHeader>
             <CardTitle className="text-2xl font-semibold text-gray-900">
@@ -1160,7 +1151,10 @@ export function TaxForm({ onCalculate }: TaxFormProps) {
 
 
         <div className="space-y-8">
-          <Button type="submit" className="w-full text-lg py-6 bg-blue-600 hover:bg-blue-700 text-white">
+          <Button 
+            type="submit" 
+            className="w-full text-lg py-6 bg-blue-600 hover:bg-blue-700 text-white"
+          >
             Calculate
           </Button>
 
@@ -1173,5 +1167,4 @@ export function TaxForm({ onCalculate }: TaxFormProps) {
       </form>
     </Form>
   );
-
 }

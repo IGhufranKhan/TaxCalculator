@@ -32,10 +32,62 @@ interface NumberInputProps {
   onChange?: (e: any) => void;
 }
 
-interface YesNoSelectProps {
-  field: any;
-  label: string;
-}
+const NumberInput = ({ field, label, min = "0", max, step = "1", disabled = false }: NumberInputProps) => {
+  // Keep a local state for the input value
+  const [localValue, setLocalValue] = useState(() => {
+    const value = field.value;
+    return value === 0 ? '' : value?.toString() || '';
+  });
+
+  // Handle changes without losing focus
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const newValue = e.target.value;
+    setLocalValue(newValue);
+    // Don't update form state while typing
+  };
+
+  // Update form state only when input loses focus
+  const handleBlur = () => {
+    const numericValue = localValue === '' ? 0 : parseFloat(localValue);
+    field.onChange(numericValue);
+  };
+
+  return (
+    <FormItem>
+      <FormLabel>{label}</FormLabel>
+      <FormControl>
+        <Input
+          type="number"
+          value={localValue}
+          onChange={handleChange}
+          onBlur={handleBlur}
+          min={min}
+          max={max}
+          step={step}
+          disabled={disabled}
+        />
+      </FormControl>
+      <FormMessage />
+    </FormItem>
+  );
+};
+
+const YesNoSelect = ({ field, label }: YesNoSelectProps) => (
+    <FormItem>
+      <FormLabel>{label}</FormLabel>
+      <Select onValueChange={(value) => field.onChange(value === 'yes')} defaultValue={field.value ? 'yes' : 'no'}>
+        <SelectTrigger>
+          <SelectValue />
+        </SelectTrigger>
+        <SelectContent>
+          <SelectItem value="yes">Yes</SelectItem>
+          <SelectItem value="no">No</SelectItem>
+        </SelectContent>
+      </Select>
+      <FormMessage />
+    </FormItem>
+  );
+
 
 export function TaxForm({ onCalculate }: TaxFormProps) {
   const { t } = useTranslation();
@@ -404,57 +456,6 @@ export function TaxForm({ onCalculate }: TaxFormProps) {
     form.watch('businessIncome.otherBusinessIncome'),
     form.watch('businessIncome.fishingAgricultureIncome')
   ]);
-
-const NumberInput = ({ field, label, min = "0", max, step = "1", disabled = false, onChange }: NumberInputProps) => {
-  const [inputValue, setInputValue] = useState(field.value?.toString() || '');
-
-  return (
-    <FormItem>
-      <FormLabel>{label}</FormLabel>
-      <FormControl>
-        <Input
-          type="number"
-          value={inputValue}
-          onChange={(e) => {
-            const newValue = e.target.value;
-            setInputValue(newValue);
-            field.onChange(newValue === '' ? '' : Number(newValue));
-            if (onChange) {
-              onChange(e);
-            }
-          }}
-          onBlur={(e) => {
-            const value = e.target.value === '' ? 0 : Number(e.target.value);
-            field.onChange(value);
-            setInputValue(value.toString());
-          }}
-          min={min}
-          max={max}
-          step={step}
-          disabled={disabled}
-        />
-      </FormControl>
-      <FormMessage />
-    </FormItem>
-  );
-};
-
-  const YesNoSelect = ({ field, label }: YesNoSelectProps) => (
-    <FormItem>
-      <FormLabel>{label}</FormLabel>
-      <Select onValueChange={(value) => field.onChange(value === 'yes')} defaultValue={field.value ? 'yes' : 'no'}>
-        <SelectTrigger>
-          <SelectValue />
-        </SelectTrigger>
-        <SelectContent>
-          <SelectItem value="yes">Yes</SelectItem>
-          <SelectItem value="no">No</SelectItem>
-        </SelectContent>
-      </Select>
-      <FormMessage />
-    </FormItem>
-  );
-
 
   return (
     <Form {...form}>

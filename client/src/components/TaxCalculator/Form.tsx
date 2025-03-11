@@ -122,8 +122,11 @@ export function TaxForm({ onCalculate }: TaxFormProps) {
 
   const hasRegularEmployment = form.watch('personalInfo.hasRegularEmployment');
   const hasBeenOnSickLeave = form.watch('personalInfo.hasBeenOnSickLeave');
+  const hasChildren = form.watch('personalInfo.hasChildren');
+  const hasShares = form.watch('personalInfo.hasShares');
+  const hasOwnHome = form.watch('personalInfo.hasOwnHome');
+  const hasCarOrBoat = form.watch('personalInfo.hasCarOrBoat');
 
-  // Watch income fields for minimum deduction calculation
   const relevantIncomeFields = form.watch([
     'income.salary',
     'income.disabilityPension',
@@ -134,7 +137,6 @@ export function TaxForm({ onCalculate }: TaxFormProps) {
     'income.otherIncome'
   ]);
 
-  // Watch additional income fields for total income calculation
   const additionalIncomeFields = form.watch([
     'income.employerBenefits',
     'income.dividend'
@@ -147,14 +149,12 @@ export function TaxForm({ onCalculate }: TaxFormProps) {
     'businessIncome.businessLoss'
   ]);
 
-  // Calculate minimum deduction
   useEffect(() => {
     const totalRelevantIncome = relevantIncomeFields.reduce((sum, value) => sum + (Number(value) || 0), 0);
     const minimumDeduction = totalRelevantIncome < 200000 ? totalRelevantIncome * 0.46 : 92000;
     form.setValue('deductions.standardDeduction', minimumDeduction);
   }, [...relevantIncomeFields]);
 
-  // Calculate total income
   useEffect(() => {
     const totalIncome = [
       ...relevantIncomeFields,
@@ -165,42 +165,33 @@ export function TaxForm({ onCalculate }: TaxFormProps) {
     form.setValue('businessIncome.totalIncome', totalIncome);
   }, [...relevantIncomeFields, ...additionalIncomeFields, ...businessIncomeFields]);
 
-  const hasChildren = form.watch('personalInfo.hasChildren');
   const numberOfChildren = form.watch('deductions.numberOfChildren');
 
-  // Calculate parental deduction
   useEffect(() => {
     const children = Number(numberOfChildren) || 0;
     let parentalDeduction = 0;
 
     if (hasChildren && children > 0) {
-      parentalDeduction = 25000; // First child
+      parentalDeduction = 25000; 
       if (children > 1) {
-        parentalDeduction += (children - 1) * 15000; // Additional children
+        parentalDeduction += (children - 1) * 15000; 
       }
     }
 
     form.setValue('deductions.parentalDeduction', parentalDeduction);
   }, [numberOfChildren, hasChildren, form]);
 
-  // Watch travel expense fields for calculation
   const travelFields = form.watch([
     'travelExpenses.tripsPerYear',
     'travelExpenses.kilometersPerTrip',
     'travelExpenses.homeVisits',
   ]);
 
-  // Calculate total travel expenses
   useEffect(() => {
     const [trips, kilometers, homeVisits] = travelFields.map(v => Number(v) || 0);
 
-    // Calculate commuter expenses
     const commuterExpenses = Math.max(0, (trips * kilometers * 1.83) - 14950);
-
-    // Calculate home visit expenses
     const homeVisitExpenses = Math.max(0, homeVisits * 1.83 - 3300);
-
-    // Sum and cap at 97,000
     const totalExpenses = Math.min(97000, commuterExpenses + homeVisitExpenses);
 
     form.setValue('travelExpenses.totalTravelExpenses', totalExpenses);
@@ -258,14 +249,10 @@ export function TaxForm({ onCalculate }: TaxFormProps) {
     </FormItem>
   );
 
-  const hasShares = form.watch('personalInfo.hasShares');
-  const hasOwnHome = form.watch('personalInfo.hasOwnHome');
-  const hasCarOrBoat = form.watch('personalInfo.hasCarOrBoat');
 
   return (
     <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
-        {/* Personal Info Card remains the same */}
         <Card className="glass-card border-0">
           <CardHeader>
             <CardTitle className="text-2xl font-semibold text-gray-900">
@@ -391,7 +378,6 @@ export function TaxForm({ onCalculate }: TaxFormProps) {
           </CardContent>
         </Card>
 
-        {/* Income Card remains the same */}
         <Card className="glass-card border-0">
           <CardHeader>
             <CardTitle className="text-2xl font-semibold text-gray-900">
@@ -406,48 +392,57 @@ export function TaxForm({ onCalculate }: TaxFormProps) {
                 <NumberInput field={field} label={t('calculator.form.income.salary')} min="0" />
               )}
             />
-            <FormField
-              control={form.control}
-              name="income.disabilityPension"
-              render={({ field }) => (
-                <NumberInput field={field} label={t('calculator.form.income.disabilityPension')} min="0" />
-              )}
-            />
-            <FormField
-              control={form.control}
-              name="income.workAssessmentAllowance"
-              render={({ field }) => (
-                <NumberInput field={field} label={t('calculator.form.income.workAssessmentAllowance')} min="0" />
-              )}
-            />
-            <FormField
-              control={form.control}
-              name="income.unemploymentBenefits"
-              render={({ field }) => (
-                <NumberInput field={field} label={t('calculator.form.income.unemploymentBenefits')} min="0" />
-              )}
-            />
-            <FormField
-              control={form.control}
-              name="income.maternityBenefits"
-              render={({ field }) => (
-                <NumberInput field={field} label={t('calculator.form.income.maternityBenefits')} min="0" />
-              )}
-            />
-            <FormField
-              control={form.control}
-              name="income.sicknessBenefits"
-              render={({ field }) => (
-                <NumberInput field={field} label={t('calculator.form.income.sicknessBenefits')} min="0" />
-              )}
-            />
-            <FormField
-              control={form.control}
-              name="income.employerBenefits"
-              render={({ field }) => (
-                <NumberInput field={field} label={t('calculator.form.income.employerBenefits')} min="0" />
-              )}
-            />
+
+            {!hasRegularEmployment && hasBeenOnSickLeave && (
+              <>
+                <FormField
+                  control={form.control}
+                  name="income.disabilityPension"
+                  render={({ field }) => (
+                    <NumberInput field={field} label={t('calculator.form.income.disabilityPension')} min="0" />
+                  )}
+                />
+                <FormField
+                  control={form.control}
+                  name="income.workAssessmentAllowance"
+                  render={({ field }) => (
+                    <NumberInput field={field} label={t('calculator.form.income.workAssessmentAllowance')} min="0" />
+                  )}
+                />
+                <FormField
+                  control={form.control}
+                  name="income.unemploymentBenefits"
+                  render={({ field }) => (
+                    <NumberInput field={field} label={t('calculator.form.income.unemploymentBenefits')} min="0" />
+                  )}
+                />
+                <FormField
+                  control={form.control}
+                  name="income.maternityBenefits"
+                  render={({ field }) => (
+                    <NumberInput field={field} label={t('calculator.form.income.maternityBenefits')} min="0" />
+                  )}
+                />
+                <FormField
+                  control={form.control}
+                  name="income.sicknessBenefits"
+                  render={({ field }) => (
+                    <NumberInput field={field} label={t('calculator.form.income.sicknessBenefits')} min="0" />
+                  )}
+                />
+              </>
+            )}
+
+            {hasRegularEmployment && (
+              <FormField
+                control={form.control}
+                name="income.employerBenefits"
+                render={({ field }) => (
+                  <NumberInput field={field} label={t('calculator.form.income.employerBenefits')} min="0" />
+                )}
+              />
+            )}
+
             <FormField
               control={form.control}
               name="income.dividend"
@@ -465,7 +460,6 @@ export function TaxForm({ onCalculate }: TaxFormProps) {
           </CardContent>
         </Card>
 
-        {/* Business Income Card remains the same */}
         <Card className="glass-card border-0">
           <CardHeader>
             <CardTitle className="text-2xl font-semibold text-gray-900">
@@ -505,7 +499,6 @@ export function TaxForm({ onCalculate }: TaxFormProps) {
         </Card>
 
 
-        {/* Deductions Card remains the same */}
         <Card className="glass-card border-0">
           <CardHeader>
             <CardTitle className="text-2xl font-semibold text-gray-900">
@@ -629,7 +622,6 @@ export function TaxForm({ onCalculate }: TaxFormProps) {
           </CardContent>
         </Card>
 
-        {/* Financial Card remains the same */}
         <Card className="glass-card border-0">
           <CardHeader>
             <CardTitle className="text-2xl font-semibold text-gray-900">
@@ -649,6 +641,7 @@ export function TaxForm({ onCalculate }: TaxFormProps) {
                   />
                 )}
               />
+
               {hasShares && (
                 <FormField
                   control={form.control}
@@ -662,6 +655,7 @@ export function TaxForm({ onCalculate }: TaxFormProps) {
                   )}
                 />
               )}
+
               {hasOwnHome && (
                 <>
                   <FormField
@@ -688,6 +682,7 @@ export function TaxForm({ onCalculate }: TaxFormProps) {
                   />
                 </>
               )}
+
               {hasCarOrBoat && (
                 <>
                   <FormField
@@ -714,6 +709,7 @@ export function TaxForm({ onCalculate }: TaxFormProps) {
                   />
                 </>
               )}
+
               <FormField
                 control={form.control}
                 name="financial.totalAssets"
@@ -916,7 +912,6 @@ export function TaxForm({ onCalculate }: TaxFormProps) {
           </CardContent>
         </Card>
 
-        {/* Submit Button remains the same */}
         <Button type="submit" className="w-full text-lg py-6 bg-primary hover:bg-primary/90">
           {t('calculator.form.calculate')}
         </Button>

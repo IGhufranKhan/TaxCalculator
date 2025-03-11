@@ -32,6 +32,12 @@ interface NumberInputProps {
   onChange?: (e: any) => void;
 }
 
+interface YesNoSelectProps {
+  field: any;
+  label: string;
+}
+
+// Improved NumberInput component with local state management
 const NumberInput = ({ field, label, min = "0", max, step = "1", disabled = false }: NumberInputProps) => {
   // Keep a local state for the input value
   const [localValue, setLocalValue] = useState(() => {
@@ -51,6 +57,12 @@ const NumberInput = ({ field, label, min = "0", max, step = "1", disabled = fals
     const numericValue = localValue === '' ? 0 : parseFloat(localValue);
     field.onChange(numericValue);
   };
+
+  // Update local value when field value changes externally
+  useEffect(() => {
+    const value = field.value;
+    setLocalValue(value === 0 ? '' : value?.toString() || '');
+  }, [field.value]);
 
   return (
     <FormItem>
@@ -73,33 +85,30 @@ const NumberInput = ({ field, label, min = "0", max, step = "1", disabled = fals
 };
 
 const YesNoSelect = ({ field, label }: YesNoSelectProps) => (
-    <FormItem>
-      <FormLabel>{label}</FormLabel>
-      <Select onValueChange={(value) => field.onChange(value === 'yes')} defaultValue={field.value ? 'yes' : 'no'}>
-        <SelectTrigger>
-          <SelectValue />
-        </SelectTrigger>
-        <SelectContent>
-          <SelectItem value="yes">Yes</SelectItem>
-          <SelectItem value="no">No</SelectItem>
-        </SelectContent>
-      </Select>
-      <FormMessage />
-    </FormItem>
-  );
-
+  <FormItem>
+    <FormLabel>{label}</FormLabel>
+    <Select onValueChange={(value) => field.onChange(value === 'yes')} defaultValue={field.value ? 'yes' : 'no'}>
+      <SelectTrigger>
+        <SelectValue />
+      </SelectTrigger>
+      <SelectContent>
+        <SelectItem value="yes">Yes</SelectItem>
+        <SelectItem value="no">No</SelectItem>
+      </SelectContent>
+    </Select>
+    <FormMessage />
+  </FormItem>
+);
 
 export function TaxForm({ onCalculate }: TaxFormProps) {
   const { t } = useTranslation();
   const [showResults, setShowResults] = useState(false);
-  const [calculationResults, setCalculationResults] = useState<TaxCalculation | null>(null);
 
   const form = useForm<TaxCalculation>({
     resolver: zodResolver(taxCalculationSchema),
     defaultValues: {
       personalInfo: {
         birthYear: new Date().getFullYear() - 30,
-        spouseBirthYear: undefined,
         civilStatus: CivilStatus.SINGLE,
         hasChildren: false,
         finnmarkDeduction: false,
@@ -108,8 +117,7 @@ export function TaxForm({ onCalculate }: TaxFormProps) {
         hasOwnHome: false,
         hasStudentLoans: false,
         hasCarOrBoat: false,
-        hasShares: false,
-        hasBillån: false
+        hasShares: false
       },
       income: {
         salary: 0,
@@ -177,6 +185,16 @@ export function TaxForm({ onCalculate }: TaxFormProps) {
     }
   });
 
+  // Watch form fields
+  const hasRegularEmployment = form.watch('personalInfo.hasRegularEmployment');
+  const hasBeenOnSickLeave = form.watch('personalInfo.hasBeenOnSickLeave');
+  const hasChildren = form.watch('personalInfo.hasChildren');
+  const hasShares = form.watch('personalInfo.hasShares');
+  const hasOwnHome = form.watch('personalInfo.hasOwnHome');
+  const hasCarOrBoat = form.watch('personalInfo.hasCarOrBoat');
+  const hasStudentLoans = form.watch('personalInfo.hasStudentLoans');
+  const numberOfChildren = form.watch('deductions.numberOfChildren');
+
   // Watch income fields for total income calculation
   const incomeFields = form.watch([
     'income.salary',
@@ -213,9 +231,6 @@ export function TaxForm({ onCalculate }: TaxFormProps) {
     const minimumDeduction = totalRelevantIncome < 200000 ? totalRelevantIncome * 0.46 : 92000;
     form.setValue('deductions.standardDeduction', minimumDeduction);
   }, [...incomeFields]);
-
-  const hasChildren = form.watch('personalInfo.hasChildren');
-  const numberOfChildren = form.watch('deductions.numberOfChildren');
 
   useEffect(() => {
     const children = Number(numberOfChildren) || 0;
@@ -265,7 +280,6 @@ export function TaxForm({ onCalculate }: TaxFormProps) {
     form.setValue('deductions.incomeAfterDeductions', Math.round(totalIncome - totalDeductions));
   }, [...deductionFields, form.watch('businessIncome.totalIncome'), form.watch('travelExpenses.totalTravelExpenses')]);
 
-
   const travelFields = form.watch([
     'travelExpenses.tripsPerYear',
     'travelExpenses.kilometersPerTrip',
@@ -289,14 +303,6 @@ export function TaxForm({ onCalculate }: TaxFormProps) {
 
     form.setValue('travelExpenses.totalTravelExpenses', Math.round(totalExpenses));
   }, [...travelFields]);
-
-  const hasRegularEmployment = form.watch('personalInfo.hasRegularEmployment');
-  const hasBeenOnSickLeave = form.watch('personalInfo.hasBeenOnSickLeave');
-  const hasShares = form.watch('personalInfo.hasShares');
-  const hasOwnHome = form.watch('personalInfo.hasOwnHome');
-  const hasCarOrBoat = form.watch('personalInfo.hasCarOrBoat');
-  const hasBillån = form.watch('personalInfo.hasBillån');
-  const hasStudentLoans = form.watch('personalInfo.hasStudentLoans');
 
   useEffect(() => {
     const financialFields = [
@@ -326,8 +332,7 @@ export function TaxForm({ onCalculate }: TaxFormProps) {
   useEffect(() => {
     const loanFields = [
       ...(hasOwnHome ? ['financial.totalMortgage'] : []),
-      ...(form.watch('personalInfo.hasBillån') ? ['financial.carLoan'] : []),
-      ...(form.watch('personalInfo.hasStudentLoans') ? ['financial.studentLoan'] : []),
+      ...(hasStudentLoans ? ['financial.studentLoan'] : []),
       'financial.consumerLoan',
       'financial.otherLoans'
     ];
@@ -339,16 +344,14 @@ export function TaxForm({ onCalculate }: TaxFormProps) {
     form.setValue('financial.totalDebt', Math.round(totalDebt));
   }, [
     form.watch('financial.totalMortgage'),
-    form.watch('financial.carLoan'),
     form.watch('financial.studentLoan'),
     form.watch('financial.consumerLoan'),
     form.watch('financial.otherLoans'),
     hasOwnHome,
-    form.watch('personalInfo.hasBillån'),
-    form.watch('personalInfo.hasStudentLoans')
+    hasStudentLoans
   ]);
 
-  // Add these calculations in the useEffect hook
+  // Tax calculations
   useEffect(() => {
     const birthYear = form.watch('personalInfo.birthYear');
     const spouseBirthYear = form.watch('personalInfo.spouseBirthYear');
@@ -559,7 +562,7 @@ export function TaxForm({ onCalculate }: TaxFormProps) {
                 <YesNoSelect field={field} label={t('calculator.form.personalInfo.hasShares')} />
               )}
             />
-            <FormField
+             <FormField
               control={form.control}
               name="personalInfo.hasBillån"
               render={({ field }) => (
@@ -986,20 +989,6 @@ export function TaxForm({ onCalculate }: TaxFormProps) {
                 </>
               )}
 
-              {hasBillån && (
-                <FormField
-                  control={form.control}
-                  name="financial.carLoan"
-                  render={({ field }) => (
-                    <NumberInput
-                      field={field}
-                      label="Billån / Car loan"
-                      min="0"
-                    />
-                  )}
-                />
-              )}
-
               {hasStudentLoans && (
                 <FormField
                   control={form.control}
@@ -1164,7 +1153,6 @@ export function TaxForm({ onCalculate }: TaxFormProps) {
               e.preventDefault();
               const data = form.getValues();
               console.log("Calculate clicked with data:", data);
-              setCalculationResults(data);
               setShowResults(true);
             }}
             className="w-full text-lg py-6 bg-blue-600 hover:bg-blue-700 text-white font-semibold"
@@ -1172,8 +1160,8 @@ export function TaxForm({ onCalculate }: TaxFormProps) {
             Calculate
           </Button>
 
-          {showResults && calculationResults && (
-            <TaxSummary data={calculationResults} />
+          {showResults && (
+            <TaxSummary data={form.getValues()} />
           )}
         </div>
       </form>

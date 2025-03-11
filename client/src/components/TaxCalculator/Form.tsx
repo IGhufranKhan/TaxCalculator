@@ -28,6 +28,7 @@ interface NumberInputProps {
   max?: string;
   step?: string;
   disabled?: boolean;
+  onChange?: (e: any) => void; // Added onChange prop
 }
 
 interface YesNoSelectProps {
@@ -51,7 +52,8 @@ export function TaxForm({ onCalculate }: TaxFormProps) {
         hasOwnHome: false,
         hasStudentLoans: false,
         hasCarOrBoat: false,
-        hasShares: false
+        hasShares: false,
+        hasBillån: false // Added hasBillån
       },
       income: {
         salary: 0,
@@ -248,17 +250,17 @@ export function TaxForm({ onCalculate }: TaxFormProps) {
     onCalculate(formattedData);
   };
 
-  const NumberInput = ({ field, label, min = "0", max, step = "1", disabled = false }: NumberInputProps) => (
+  const NumberInput = ({ field, label, min = "0", max, step = "1", disabled = false, onChange }: NumberInputProps) => (
     <FormItem>
       <FormLabel>{label}</FormLabel>
       <FormControl>
         <Input
           type="number"
           {...field}
-          onChange={(e) => {
+          onChange={onChange || ((e) => {
             const value = e.target.value === '' ? 0 : Number(e.target.value);
             field.onChange(value);
-          }}
+          })}
           min={min}
           max={max}
           step={step}
@@ -290,6 +292,9 @@ export function TaxForm({ onCalculate }: TaxFormProps) {
   const hasShares = form.watch('personalInfo.hasShares');
   const hasOwnHome = form.watch('personalInfo.hasOwnHome');
   const hasCarOrBoat = form.watch('personalInfo.hasCarOrBoat');
+  const hasBillån = form.watch('personalInfo.hasBillån'); // Added hasBillån
+  const hasStudentLoans = form.watch('personalInfo.hasStudentLoans'); // Added hasStudentLoans
+
 
   useEffect(() => {
     const financialFields = [
@@ -315,6 +320,33 @@ export function TaxForm({ onCalculate }: TaxFormProps) {
     hasOwnHome,
     hasCarOrBoat
   ]);
+
+  // Add this useEffect after the assets calculation useEffect
+  useEffect(() => {
+    const loanFields = [
+      ...(hasOwnHome ? ['financial.totalMortgage'] : []),
+      ...(form.watch('personalInfo.hasBillån') ? ['financial.carLoan'] : []),
+      ...(form.watch('personalInfo.hasStudentLoans') ? ['financial.studentLoan'] : []),
+      'financial.consumerLoan',
+      'financial.otherLoans'
+    ];
+
+    const totalDebt = loanFields
+      .map(field => Number(form.watch(field)) || 0)
+      .reduce((sum, value) => sum + value, 0);
+
+    form.setValue('financial.totalDebt', Math.round(totalDebt));
+  }, [
+    form.watch('financial.totalMortgage'),
+    form.watch('financial.carLoan'),
+    form.watch('financial.studentLoan'),
+    form.watch('financial.consumerLoan'),
+    form.watch('financial.otherLoans'),
+    hasOwnHome,
+    form.watch('personalInfo.hasBillån'),
+    form.watch('personalInfo.hasStudentLoans')
+  ]);
+
 
   return (
     <Form {...form}>
@@ -416,6 +448,13 @@ export function TaxForm({ onCalculate }: TaxFormProps) {
               name="personalInfo.hasShares"
               render={({ field }) => (
                 <YesNoSelect field={field} label={t('calculator.form.personalInfo.hasShares')} />
+              )}
+            />
+            <FormField
+              control={form.control}
+              name="personalInfo.hasBillån"
+              render={({ field }) => (
+                <YesNoSelect field={field} label="Har du billån?" />
               )}
             />
           </CardContent>
@@ -799,83 +838,106 @@ export function TaxForm({ onCalculate }: TaxFormProps) {
 
               <Separator className="my-6" />
               <h3 className="text-lg font-medium mb-4">
-                {t('calculator.form.financial.loans')}
+                Lån / Loans
               </h3>
-              <FormField
-                control={form.control}
-                name="financial.mortgageShare"
-                render={({ field }) => (
-                  <NumberInput
-                    field={field}
-                    label={t('calculator.form.financial.mortgageShare')}
-                    min="0"
-                    max="100"
+              {hasOwnHome && (
+                <>
+                  <FormField
+                    control={form.control}
+                    name="financial.mortgageShare"
+                    render={({ field }) => (
+                      <NumberInput
+                        field={field}
+                        label="Boliglånsandel / Home equity percentage"
+                        min="0"
+                        max="100"
+                        onChange={(e) => {
+                          const value = e.target.value === '' ? 0 : Number(e.target.value);
+                          field.onChange(value);
+                          // Update total mortgage based on share
+                          const totalMortgage = form.getValues('financial.totalMortgage');
+                          if (totalMortgage !== undefined) {
+                            form.setValue('financial.totalMortgage', totalMortgage * (value / 100));
+                          }
+                        }}
+                      />
+                    )}
                   />
-                )}
-              />
-              <FormField
-                control={form.control}
-                name="financial.totalMortgage"
-                render={({ field }) => (
-                  <NumberInput
-                    field={field}
-                    label={t('calculator.form.financial.totalMortgage')}
-                    min="0"
+                  <FormField
+                    control={form.control}
+                    name="financial.totalMortgage"
+                    render={({ field }) => (
+                      <NumberInput
+                        field={field}
+                        label="Total boliglån inkludert fellesgjeld / Total home loan including joint debt"
+                        min="0"
+                      />
+                    )}
                   />
-                )}
-              />
-              <FormField
-                control={form.control}
-                name="financial.carLoan"
-                render={({ field }) => (
-                  <NumberInput
-                    field={field}
-                    label={t('calculator.form.financial.carLoan')}
-                    min="0"
-                  />
-                )}
-              />
-              <FormField
-                control={form.control}
-                name="financial.studentLoan"
-                render={({ field }) => (
-                  <NumberInput
-                    field={field}
-                    label={t('calculator.form.financial.studentLoan')}
-                    min="0"
-                  />
-                )}
-              />
+                </>
+              )}
+
+              {hasBillån && (
+                <FormField
+                  control={form.control}
+                  name="financial.carLoan"
+                  render={({ field }) => (
+                    <NumberInput
+                      field={field}
+                      label="Billån / Car loan"
+                      min="0"
+                    />
+                  )}
+                />
+              )}
+
+              {hasStudentLoans && (
+                <FormField
+                  control={form.control}
+                  name="financial.studentLoan"
+                  render={({ field }) => (
+                    <NumberInput
+                      field={field}
+                      label="Studielån / Student loans"
+                      min="0"
+                    />
+                  )}
+                />
+              )}
+
               <FormField
                 control={form.control}
                 name="financial.consumerLoan"
                 render={({ field }) => (
                   <NumberInput
                     field={field}
-                    label={t('calculator.form.financial.consumerLoan')}
+                    label="Forbrukslån / Consumer loans"
                     min="0"
                   />
                 )}
               />
+
               <FormField
                 control={form.control}
                 name="financial.otherLoans"
                 render={({ field }) => (
                   <NumberInput
                     field={field}
-                    label={t('calculator.form.financial.otherLoans')}
+                    label="Andre lån / Other loans"
                     min="0"
                   />
                 )}
               />
+
               <FormField
                 control={form.control}
                 name="financial.totalDebt"
                 render={({ field }) => (
                   <NumberInput
                     field={field}
-                    label={t('calculator.form.financial.totalDebt')}
+                    label="Sum gjeld / Total debt"
                     min="0"
+                    disabled
                   />
                 )}
               />
@@ -900,8 +962,7 @@ export function TaxForm({ onCalculate }: TaxFormProps) {
                   <NumberInput
                     field={field}
                     label={t('calculator.form.financial.interestExpenses')}
-                  />
-                )}
+                  />                )}
               />
               <FormField
                 control={form.control}
@@ -967,7 +1028,7 @@ export function TaxForm({ onCalculate }: TaxFormProps) {
                 render={({ field }) => (
                   <NumberInput
                     field={field}
-                    label                    label={t('calculator.form.financial.totalTax')}
+                    label={t('calculator.form.financial.totalTax')}
                     min="0"
                   />
                 )}

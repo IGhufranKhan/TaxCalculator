@@ -405,34 +405,39 @@ export function TaxForm({ onCalculate }: TaxFormProps) {
     form.watch('businessIncome.fishingAgricultureIncome')
   ]);
 
-const NumberInput = ({ field, label, min = "0", max, step = "1", disabled = false, onChange }: NumberInputProps) => (
-  <FormItem>
-    <FormLabel>{label}</FormLabel>
-    <FormControl>
-      <Input
-        type="number"
-        {...field}
-        value={field.value === 0 ? '' : field.value}
-        onChange={(e) => {
-          const value = e.target.value === '' ? '' : Number(e.target.value);
-          field.onChange(value);
-          if (onChange) {
-            onChange(e);
-          }
-        }}
-        onBlur={(e) => {
-          const value = e.target.value === '' ? 0 : Number(e.target.value);
-          field.onChange(value);
-        }}
-        min={min}
-        max={max}
-        step={step}
-        disabled={disabled}
-      />
-    </FormControl>
-    <FormMessage />
-  </FormItem>
-);
+const NumberInput = ({ field, label, min = "0", max, step = "1", disabled = false, onChange }: NumberInputProps) => {
+  const [inputValue, setInputValue] = useState(field.value?.toString() || '');
+
+  return (
+    <FormItem>
+      <FormLabel>{label}</FormLabel>
+      <FormControl>
+        <Input
+          type="number"
+          value={inputValue}
+          onChange={(e) => {
+            const newValue = e.target.value;
+            setInputValue(newValue);
+            field.onChange(newValue === '' ? '' : Number(newValue));
+            if (onChange) {
+              onChange(e);
+            }
+          }}
+          onBlur={(e) => {
+            const value = e.target.value === '' ? 0 : Number(e.target.value);
+            field.onChange(value);
+            setInputValue(value.toString());
+          }}
+          min={min}
+          max={max}
+          step={step}
+          disabled={disabled}
+        />
+      </FormControl>
+      <FormMessage />
+    </FormItem>
+  );
+};
 
   const YesNoSelect = ({ field, label }: YesNoSelectProps) => (
     <FormItem>
@@ -841,7 +846,7 @@ const NumberInput = ({ field, label, min = "0", max, step = "1", disabled = fals
         <Card className="glass-card border-0">
           <CardHeader>
             <CardTitle className="text-2xl font-semibold text-gray-900">
-              Bank, lån, finans og forsikring / Bank, loan, finance and insurance
+              Bank, lån, finans og forsikring / Bank, loan, financeand insurance
             </CardTitle>
           </CardHeader>
           <CardContent>
@@ -861,7 +866,7 @@ const NumberInput = ({ field, label, min = "0", max, step = "1", disabled = fals
               {hasShares && (
                 <FormField
                   control={form.control}
-                                    name="financial.investmentValue"
+                  name="financial.investmentValue"
                   render={({ field }) => (
                     <NumberInput
                       field={field}

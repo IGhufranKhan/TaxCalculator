@@ -113,8 +113,8 @@ export function TaxForm({ onCalculate }: TaxFormProps) {
     }
   });
 
-  // Watch income fields for minimum deduction calculation
-  const relevantIncomeFields = form.watch([
+  // Watch income fields for total income calculation
+  const incomeFields = form.watch([
     'income.salary',
     'income.disabilityPension',
     'income.workAssessmentAllowance',
@@ -126,12 +126,29 @@ export function TaxForm({ onCalculate }: TaxFormProps) {
     'income.otherIncome'
   ]);
 
+  const businessIncomeFields = form.watch([
+    'businessIncome.fishingAgricultureIncome',
+    'businessIncome.otherBusinessIncome',
+    'businessIncome.businessProfit',
+    'businessIncome.businessLoss'
+  ]);
+
+  // Calculate total income
+  useEffect(() => {
+    const totalIncome = [
+      ...incomeFields,
+      ...businessIncomeFields
+    ].reduce((sum, value) => sum + (Number(value) || 0), 0);
+
+    form.setValue('businessIncome.totalIncome', totalIncome);
+  }, [...incomeFields, ...businessIncomeFields]);
+
   // Calculate minimum deduction
   useEffect(() => {
-    const totalRelevantIncome = relevantIncomeFields.reduce((sum, value) => sum + (Number(value) || 0), 0);
+    const totalRelevantIncome = incomeFields.reduce((sum, value) => sum + (Number(value) || 0), 0);
     const minimumDeduction = totalRelevantIncome < 200000 ? totalRelevantIncome * 0.46 : 92000;
     form.setValue('deductions.standardDeduction', minimumDeduction);
-  }, [...relevantIncomeFields]);
+  }, [...incomeFields]);
 
   const hasChildren = form.watch('personalInfo.hasChildren');
   const numberOfChildren = form.watch('deductions.numberOfChildren');

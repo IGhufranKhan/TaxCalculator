@@ -17,6 +17,13 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
 import { TaxSummary } from "./TaxSummary";
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from "@/components/ui/tooltip";
+import { HelpCircle } from "lucide-react";
 
 interface TaxFormProps {
   onCalculate: (data: TaxCalculation) => void;
@@ -36,6 +43,66 @@ interface YesNoSelectProps {
   field: any;
   label: string;
 }
+
+const LabelWithTooltip = ({ label, tooltip }: { label: string; tooltip: string }) => (
+  <div className="flex items-center gap-2">
+    <span>{label}</span>
+    <TooltipProvider>
+      <Tooltip>
+        <TooltipTrigger asChild>
+          <HelpCircle className="h-4 w-4 text-gray-500 cursor-help" />
+        </TooltipTrigger>
+        <TooltipContent>
+          <p className="max-w-xs">{tooltip}</p>
+        </TooltipContent>
+      </Tooltip>
+    </TooltipProvider>
+  </div>
+);
+
+const NumberInput = ({ field, label, tooltip, min = "0", max, step = "1", disabled = false, onChange }: NumberInputProps & { tooltip?: string }) => (
+  <FormItem>
+    <FormLabel>
+      {tooltip ? (
+        <LabelWithTooltip label={label} tooltip={tooltip} />
+      ) : (
+        label
+      )}
+    </FormLabel>
+    <FormControl>
+      <Input
+        type="number"
+        {...field}
+        onChange={onChange || ((e) => {
+          const value = e.target.value === '' ? 0 : Number(e.target.value);
+          field.onChange(value);
+        })}
+        min={min}
+        max={max}
+        step={step}
+        disabled={disabled}
+      />
+    </FormControl>
+    <FormMessage />
+  </FormItem>
+);
+
+const YesNoSelect = ({ field, label }: YesNoSelectProps) => (
+  <FormItem>
+    <FormLabel>{label}</FormLabel>
+    <Select onValueChange={(value) => field.onChange(value === 'yes')} defaultValue={field.value ? 'yes' : 'no'}>
+      <SelectTrigger>
+        <SelectValue />
+      </SelectTrigger>
+      <SelectContent>
+        <SelectItem value="yes">Yes</SelectItem>
+        <SelectItem value="no">No</SelectItem>
+      </SelectContent>
+    </Select>
+    <FormMessage />
+  </FormItem>
+);
+
 
 export function TaxForm({ onCalculate }: TaxFormProps) {
   const { t } = useTranslation();
@@ -405,9 +472,15 @@ export function TaxForm({ onCalculate }: TaxFormProps) {
     form.watch('businessIncome.fishingAgricultureIncome')
   ]);
 
-  const NumberInput = ({ field, label, min = "0", max, step = "1", disabled = false, onChange }: NumberInputProps) => (
+  const NumberInput = ({ field, label, tooltip, min = "0", max, step = "1", disabled = false, onChange }: NumberInputProps & { tooltip?: string }) => (
     <FormItem>
-      <FormLabel>{label}</FormLabel>
+      <FormLabel>
+        {tooltip ? (
+          <LabelWithTooltip label={label} tooltip={tooltip} />
+        ) : (
+          label
+        )}
+      </FormLabel>
       <FormControl>
         <Input
           type="number"
@@ -659,6 +732,7 @@ export function TaxForm({ onCalculate }: TaxFormProps) {
                   <NumberInput
                     field={field}
                     label={t(`calculator.form.businessIncome.${fieldName}`)}
+                    tooltip={fieldName === 'fishingAgricultureIncome' ? "Income from personal work related to fishing, agriculture, or forestry, which is taxed according to specific rules for self-employed individuals in these industries." : undefined}
                   />
                 )}
               />

@@ -44,6 +44,7 @@ export function TaxForm({ onCalculate }: TaxFormProps) {
         birthYear: new Date().getFullYear() - 30,
         spouseBirthYear: undefined,
         civilStatus: CivilStatus.SINGLE,
+        hasChildren: false,
         finnmarkDeduction: false,
         hasRegularEmployment: false,
         hasBeenOnSickLeave: false,
@@ -199,6 +200,13 @@ export function TaxForm({ onCalculate }: TaxFormProps) {
             </CardTitle>
           </CardHeader>
           <CardContent className="grid grid-cols-1 gap-4 md:grid-cols-2">
+            <FormField
+              control={form.control}
+              name="personalInfo.hasChildren"
+              render={({ field }) => (
+                <YesNoSelect field={field} label={t('calculator.form.personalInfo.hasChildren')} />
+              )}
+            />
             <FormField
               control={form.control}
               name="personalInfo.birthYear"

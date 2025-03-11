@@ -70,7 +70,10 @@ export function TaxForm({ onCalculate }: TaxFormProps) {
         numberOfChildren: 0,
         otherDeductions: 0,
         totalDeductions: 0,
-        incomeAfterDeductions: 0
+        incomeAfterDeductions: 0,
+        unionFee: 0,
+        ips: 0,
+        bsu: 0
       },
       period: TaxPeriod.ANNUAL,
       location: "Norway",
@@ -436,100 +439,70 @@ export function TaxForm({ onCalculate }: TaxFormProps) {
         </Card>
 
         <Card className="glass-card border-0">
-          <CardHeader>
-            <CardTitle className="text-2xl font-semibold text-gray-900">
-              {t('calculator.form.deductions')}
-            </CardTitle>
-          </CardHeader>
-          <CardContent className="space-y-6">
-            <FormField
-              control={form.control}
-              name="deductions.standardDeduction"
-              render={({ field }) => (
-                <NumberInput field={field} label={t('calculator.form.deductions.standardDeduction')} min="0" disabled />
-              )}
-            />
-            {hasChildren && (
-              <>
-                <FormField
-                  control={form.control}
-                  name="deductions.numberOfChildren"
-                  render={({ field }) => (
-                    <NumberInput
-                      field={field}
-                      label={t('calculator.form.deductions.numberOfChildren')}
-                      min="0"
-                      step="1"
-                    />
-                  )}
-                />
-                <FormField
-                  control={form.control}
-                  name="deductions.parentalDeduction"
-                  render={({ field }) => (
-                    <NumberInput
-                      field={field}
-                      label={t('calculator.form.deductions.parentalDeduction')}
-                      min="0"
-                      disabled
-                    />
-                  )}
-                />
-              </>
-            )}
-            <FormField
-              control={form.control}
-              name="deductions.otherDeductions"
-              render={({ field }) => (
-                <NumberInput field={field} label={t('calculator.form.deductions.otherDeductions')} min="0" />
-              )}
-            />
-            <FormField
-              control={form.control}
-              name="deductions.totalDeductions"
-              render={({ field }) => (
-                <NumberInput field={field} label={t('calculator.form.deductions.totalDeductions')} min="0" disabled />
-              )}
-            />
-            <FormField
-              control={form.control}
-              name="deductions.incomeAfterDeductions"
-              render={({ field }) => (
-                <NumberInput field={field} label={t('calculator.form.deductions.incomeAfterDeductions')} min="0" disabled />
-              )}
-            />
-          </CardContent>
-        </Card>
-
-        <Card className="glass-card border-0">
-          <CardHeader>
-            <CardTitle className="text-2xl font-semibold text-gray-900">
-              {t('calculator.form.travelExpenses')}
-            </CardTitle>
-          </CardHeader>
-          <CardContent className="grid grid-cols-1 gap-4 md:grid-cols-2">
-            {[
-              'tripsPerYear',
-              'kilometersPerTrip',
-              'homeVisits',
-              'tollAndFerry',
-              'totalTravelExpenses'
-            ].map((fieldName) => (
+            <CardHeader>
+              <CardTitle className="text-2xl font-semibold text-gray-900">
+                {t('calculator.form.deductions')}
+              </CardTitle>
+            </CardHeader>
+            <CardContent className="space-y-6">
               <FormField
-                key={fieldName}
                 control={form.control}
-                name={`travelExpenses.${fieldName}` as keyof TaxCalculation['travelExpenses']}
+                name="deductions.standardDeduction"
                 render={({ field }) => (
-                  <NumberInput
-                    field={field}
-                    label={t(`calculator.form.travelExpenses.${fieldName}`)}
-                    min={fieldName === 'tollAndFerry' ? '3300' : '0'}
-                  />
+                  <NumberInput field={field} label={t('calculator.form.deductions.standardDeduction')} min="0" disabled />
                 )}
               />
-            ))}
-          </CardContent>
-        </Card>
+              <FormField
+                control={form.control}
+                name="deductions.unionFee"
+                render={({ field }) => (
+                  <NumberInput field={field} label={t('calculator.form.deductions.unionFee')} min="0" />
+                )}
+              />
+              <FormField
+                control={form.control}
+                name="deductions.ips"
+                render={({ field }) => (
+                  <NumberInput field={field} label={t('calculator.form.deductions.ips')} min="0" />
+                )}
+              />
+              <FormField
+                control={form.control}
+                name="deductions.bsu"
+                render={({ field }) => (
+                  <NumberInput field={field} label={t('calculator.form.deductions.bsu')} min="0" />
+                )}
+              />
+              {hasChildren && (
+                <>
+                  <FormField
+                    control={form.control}
+                    name="deductions.numberOfChildren"
+                    render={({ field }) => (
+                      <NumberInput
+                        field={field}
+                        label={t('calculator.form.deductions.numberOfChildren')}
+                        min="0"
+                        step="1"
+                      />
+                    )}
+                  />
+                  <FormField
+                    control={form.control}
+                    name="deductions.parentalDeduction"
+                    render={({ field }) => (
+                      <NumberInput
+                        field={field}
+                        label={t('calculator.form.deductions.parentalDeduction')}
+                        min="0"
+                        disabled
+                      />
+                    )}
+                  />
+                </>
+              )}
+            </CardContent>
+          </Card>
 
         <Card className="glass-card border-0">
           <CardHeader>

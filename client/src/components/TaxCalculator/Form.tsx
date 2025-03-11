@@ -76,13 +76,6 @@ export function TaxForm({ onCalculate }: TaxFormProps) {
         totalDeductions: 0,
         incomeAfterDeductions: 0
       },
-      travelExpenses: {
-        tripsPerYear: 0,
-        kilometersPerTrip: 0,
-        homeVisits: 0,
-        tollAndFerry: 3300,
-        totalTravelExpenses: 0
-      },
       period: TaxPeriod.ANNUAL,
       location: "Norway",
       businessIncome: {
@@ -115,10 +108,30 @@ export function TaxForm({ onCalculate }: TaxFormProps) {
         bracketTax: 0,
         wealthTax: 0,
         totalTax: 0,
-        withholdingPercentage: 0,
+        withholdingPercentage: 0
       }
     }
   });
+
+  // Watch income fields for minimum deduction calculation
+  const relevantIncomeFields = form.watch([
+    'income.salary',
+    'income.disabilityPension',
+    'income.workAssessmentAllowance',
+    'income.unemploymentBenefits',
+    'income.maternityBenefits',
+    'income.sicknessBenefits',
+    'income.employerBenefits',
+    'income.dividend',
+    'income.otherIncome'
+  ]);
+
+  // Calculate minimum deduction
+  useEffect(() => {
+    const totalRelevantIncome = relevantIncomeFields.reduce((sum, value) => sum + (Number(value) || 0), 0);
+    const minimumDeduction = totalRelevantIncome < 200000 ? totalRelevantIncome * 0.46 : 92000;
+    form.setValue('deductions.standardDeduction', minimumDeduction);
+  }, [...relevantIncomeFields]);
 
   const hasChildren = form.watch('personalInfo.hasChildren');
   const numberOfChildren = form.watch('deductions.numberOfChildren');
@@ -377,7 +390,7 @@ export function TaxForm({ onCalculate }: TaxFormProps) {
               control={form.control}
               name="deductions.standardDeduction"
               render={({ field }) => (
-                <NumberInput field={field} label={t('calculator.form.deductions.standardDeduction')} min="0" />
+                <NumberInput field={field} label={t('calculator.form.deductions.standardDeduction')} min="0" disabled />
               )}
             />
             <FormField

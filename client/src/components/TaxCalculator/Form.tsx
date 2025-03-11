@@ -639,7 +639,16 @@ export function TaxForm({ onCalculate }: TaxFormProps) {
               control={form.control}
               name="income.salary"
               render={({ field }) => (
-                <NumberInput field={field} label={t('calculator.form.income.salary')} min="0" />
+                <NumberInput
+                  field={field}
+                  label={t('calculator.form.income.salary')}
+                  min="0"
+                  tooltip="Her legger du inn lønn fra arbeidsgiver, før skatt (bruttobeløp). Dette kan for eksmepel være:
+- Fast lønn/timelønn/bonus
+- Overtid
+- Feriepenger
+- Tips"
+                />
               )}
             />
 
@@ -1219,7 +1228,7 @@ export function TaxForm({ onCalculate }: TaxFormProps) {
         </Card>
 
         <div className="space-y-8">
-          <Button 
+          <Button
             onClick={(e) => {
               e.preventDefault();
               const data = form.getValues();

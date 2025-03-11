@@ -172,7 +172,6 @@ export function TaxForm({ onCalculate }: TaxFormProps) {
     'deductions.ips',
     'deductions.bsu',
     'deductions.parentalDeduction',
-    'travelExpenses.totalTravelExpenses',
     'deductions.otherDeductions'
   ]);
 
@@ -183,7 +182,6 @@ export function TaxForm({ onCalculate }: TaxFormProps) {
       ips,
       bsu,
       parentalDeduction,
-      travelExpenses,
       otherDeductions
     ] = deductionFields.map(value => Number(value) || 0);
 
@@ -192,7 +190,7 @@ export function TaxForm({ onCalculate }: TaxFormProps) {
       (0.22 * (unionFee + ips)) + // Combined unionFee and IPS with 22%
       (0.10 * bsu) +
       (0.22 * parentalDeduction) +
-      travelExpenses +
+      (Number(form.watch('travelExpenses.totalTravelExpenses')) || 0) +
       (0.22 * otherDeductions);
 
     form.setValue('deductions.totalDeductions', Math.round(totalDeductions));
@@ -200,8 +198,24 @@ export function TaxForm({ onCalculate }: TaxFormProps) {
     // Calculate income after deductions
     const totalIncome = form.getValues('businessIncome.totalIncome');
     form.setValue('deductions.incomeAfterDeductions', Math.round(totalIncome - totalDeductions));
-  }, [...deductionFields, form.watch('businessIncome.totalIncome')]);
+  }, [...deductionFields, form.watch('businessIncome.totalIncome'), form.watch('travelExpenses.totalTravelExpenses')]);
 
+
+  const travelFields = form.watch([
+    'travelExpenses.tripsPerYear',
+    'travelExpenses.kilometersPerTrip',
+    'travelExpenses.homeVisits',
+  ]);
+
+  useEffect(() => {
+    const [trips, kilometers, homeVisits] = travelFields.map(v => Number(v) || 0);
+
+    const commuterExpenses = Math.max(0, (trips * kilometers * 1.83) - 14950);
+    const homeVisitExpenses = Math.max(0, homeVisits - 3300);
+    const totalExpenses = Math.min(97000, commuterExpenses + homeVisitExpenses);
+
+    form.setValue('travelExpenses.totalTravelExpenses', Math.round(totalExpenses));
+  }, [...travelFields]);
 
   const onSubmit = (data: TaxCalculation) => {
     const formattedData = {
@@ -552,8 +566,7 @@ export function TaxForm({ onCalculate }: TaxFormProps) {
               'tripsPerYear',
               'kilometersPerTrip',
               'homeVisits',
-              'tollAndFerry',
-              'totalTravelExpenses'
+              'tollAndFerry'
             ].map((fieldName) => (
               <FormField
                 key={fieldName}
@@ -568,6 +581,19 @@ export function TaxForm({ onCalculate }: TaxFormProps) {
                 )}
               />
             ))}
+            <FormField
+                key={'totalTravelExpenses'}
+                control={form.control}
+                name={`travelExpenses.totalTravelExpenses` as keyof TaxCalculation['travelExpenses']}
+                render={({ field }) => (
+                  <NumberInput
+                    field={field}
+                    label={t(`calculator.form.travelExpenses.totalTravelExpenses`)}
+                    min="0"
+                    disabled
+                  />
+                )}
+              />
           </CardContent>
         </Card>
 

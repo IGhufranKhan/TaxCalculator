@@ -57,7 +57,7 @@ export function TaxForm({ onCalculate }: TaxFormProps) {
         hasStudentLoans: false,
         hasCarOrBoat: false,
         hasShares: false,
-        hasBillån: false 
+        hasBillån: false
       },
       income: {
         salary: 0,
@@ -170,9 +170,9 @@ export function TaxForm({ onCalculate }: TaxFormProps) {
     let parentalDeduction = 0;
 
     if (hasChildren && children > 0) {
-      parentalDeduction = 25000; 
+      parentalDeduction = 25000;
       if (children > 1) {
-        parentalDeduction += (children - 1) * 15000; 
+        parentalDeduction += (children - 1) * 15000;
       }
     }
 
@@ -200,7 +200,7 @@ export function TaxForm({ onCalculate }: TaxFormProps) {
 
     const totalDeductions =
       standardDeduction +
-      (0.22 * (unionFee + ips)) + 
+      (0.22 * (unionFee + ips)) +
       (0.10 * bsu) +
       (0.22 * parentalDeduction) +
       (Number(form.watch('travelExpenses.totalTravelExpenses')) || 0) +
@@ -239,7 +239,7 @@ export function TaxForm({ onCalculate }: TaxFormProps) {
   }, [...travelFields]);
 
   const handleCalculate = (data: TaxCalculation) => {
-    console.log('Calculating with data:', data);
+    console.log('Form submitted:', data);
     setCalculationResults(data);
     setShowResults(true);
     onCalculate(data);
@@ -287,8 +287,8 @@ export function TaxForm({ onCalculate }: TaxFormProps) {
   const hasShares = form.watch('personalInfo.hasShares');
   const hasOwnHome = form.watch('personalInfo.hasOwnHome');
   const hasCarOrBoat = form.watch('personalInfo.hasCarOrBoat');
-  const hasBillån = form.watch('personalInfo.hasBillån'); 
-  const hasStudentLoans = form.watch('personalInfo.hasStudentLoans'); 
+  const hasBillån = form.watch('personalInfo.hasBillån');
+  const hasStudentLoans = form.watch('personalInfo.hasStudentLoans');
 
   useEffect(() => {
     const financialFields = [
@@ -358,16 +358,16 @@ export function TaxForm({ onCalculate }: TaxFormProps) {
       const businessRate = 0.11;
       const fishingRate = 0.077;
 
-      trygdeavgift = 
-        (form.watch('income.salary') + 
-         form.watch('income.disabilityPension') +
-         form.watch('income.workAssessmentAllowance') +
-         form.watch('income.unemploymentBenefits') +
-         form.watch('income.maternityBenefits') +
-         form.watch('income.sicknessBenefits') +
-         form.watch('income.employerBenefits') +
-         form.watch('income.dividend') +
-         form.watch('income.otherIncome')) * regularRate +
+      trygdeavgift =
+        (form.watch('income.salary') +
+          form.watch('income.disabilityPension') +
+          form.watch('income.workAssessmentAllowance') +
+          form.watch('income.unemploymentBenefits') +
+          form.watch('income.maternityBenefits') +
+          form.watch('income.sicknessBenefits') +
+          form.watch('income.employerBenefits') +
+          form.watch('income.dividend') +
+          form.watch('income.otherIncome')) * regularRate +
         (form.watch('businessIncome.otherBusinessIncome')) * businessRate +
         (form.watch('businessIncome.fishingAgricultureIncome')) * fishingRate;
     }
@@ -413,13 +413,13 @@ export function TaxForm({ onCalculate }: TaxFormProps) {
     form.setValue('financial.wealthTax', Math.round(wealthTax));
 
     // Calculate Sum skatt (Total tax)
-    const dividendTax = 
+    const dividendTax =
       (form.watch('income.dividend') + form.watch('income.otherIncome')) * 0.22;
-    const totalTax = 
-      trygdeavgift + 
-      generalIncomeTax + 
-      trinnskatt + 
-      wealthTax + 
+    const totalTax =
+      trygdeavgift +
+      generalIncomeTax +
+      trinnskatt +
+      wealthTax +
       dividendTax;
     form.setValue('financial.totalTax', Math.round(totalTax));
 
@@ -428,7 +428,7 @@ export function TaxForm({ onCalculate }: TaxFormProps) {
     if (totalIncome > 0) {
       withholdingPercentage = (totalTax / totalIncome) * 100;
     }
-    form.setValue('financial.withholdingPercentage', 
+    form.setValue('financial.withholdingPercentage',
       Number(withholdingPercentage.toFixed(2)));
   }, [
     form.watch('personalInfo.birthYear'),
@@ -844,7 +844,8 @@ export function TaxForm({ onCalculate }: TaxFormProps) {
           </CardHeader>
           <CardContent>
             <div className="space-y-6">
-              <FormField                control={form.control}
+              <FormField
+                control={form.control}
                 name="financial.totalBankBalance"
                 render={({ field }) => (
                   <NumberInput
@@ -1151,8 +1152,8 @@ export function TaxForm({ onCalculate }: TaxFormProps) {
 
 
         <div className="space-y-8">
-          <Button 
-            type="submit" 
+          <Button
+            type="submit"
             className="w-full text-lg py-6 bg-blue-600 hover:bg-blue-700 text-white"
           >
             Calculate

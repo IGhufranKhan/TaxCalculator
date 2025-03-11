@@ -51,7 +51,6 @@ export function TaxForm({ onCalculate }: TaxFormProps) {
         hasOwnHome: false,
         hasStudentLoans: false,
         hasCarOrBoat: false,
-        hasSecondHome: false,
         hasShares: false
       },
       income: {
@@ -315,13 +314,6 @@ export function TaxForm({ onCalculate }: TaxFormProps) {
               name="personalInfo.hasCarOrBoat"
               render={({ field }) => (
                 <YesNoSelect field={field} label={t('calculator.form.personalInfo.hasCarOrBoat')} />
-              )}
-            />
-            <FormField
-              control={form.control}
-              name="personalInfo.hasSecondHome"
-              render={({ field }) => (
-                <YesNoSelect field={field} label={t('calculator.form.personalInfo.hasSecondHome')} />
               )}
             />
             <FormField

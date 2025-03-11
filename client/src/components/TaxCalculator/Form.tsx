@@ -562,7 +562,7 @@ export function TaxForm({ onCalculate }: TaxFormProps) {
                 <YesNoSelect field={field} label={t('calculator.form.personalInfo.hasShares')} />
               )}
             />
-             <FormField
+            <FormField
               control={form.control}
               name="personalInfo.hasBillån"
               render={({ field }) => (
@@ -871,7 +871,7 @@ export function TaxForm({ onCalculate }: TaxFormProps) {
                 <FormField
                   control={form.control}
                   name="financial.investmentValue"
-                  render={({ field }) => (
+                  render={({ field }) =>(
                     <NumberInput
                       field={field}
                       label="Verdi Fond / Aksjer / Krypto / Value of funds, stocks, and crypto"

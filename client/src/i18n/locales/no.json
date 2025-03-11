@@ -1,0 +1,10 @@
+{
+  "tooltips": {
+    "salary": "Her legger du inn lønn fra arbeidsgiver, før skatt (bruttobeløp). Dette kan for eksmepel være:\n- Fast lønn/timelønn/bonus\n- Overtid\n- Feriepenger\n- Tips",
+    "fishingIncome": "Personinntekt annen næring er inntekt fra personlig arbeid knyttet til fiske, landbruk eller skogbruk, som beskattes etter særregler for selvstendig næringsdrivende i disse næringene.",
+    "regularIncome": "Her legger du inn inntekt fra annet personlig arbeid som beskattes etter vanlige regler. Skal ha fylt 70 år for å sette en godtgjørelse.",
+    "disabilityPension": "Trygdeytelser for personer som har fått sin inntektsevne varig nedsatt med minst 50%. Dette kan være fra NAV, andre forsikringer eller pensjonsfond.",
+    "unemploymentBenefits": "Dagpenger under arbeidsløshet, inkludert tiltakspenger og andre ytelser knyttet til arbeidsledighet.",
+    "parentalBenefits": "Foreldrepenger og svangerskapspenger fra NAV, inkludert foreldrepenger ved adopsjon."
+  }
+}

@@ -642,12 +642,8 @@ export function TaxForm({ onCalculate }: TaxFormProps) {
                 <NumberInput
                   field={field}
                   label={t('calculator.form.income.salary')}
+                  tooltip={t('tooltips.salary')}
                   min="0"
-                  tooltip="Her legger du inn lønn fra arbeidsgiver, før skatt (bruttobeløp). Dette kan for eksmepel være:
-- Fast lønn/timelønn/bonus
-- Overtid
-- Feriepenger
-- Tips"
                 />
               )}
             />
@@ -658,7 +654,7 @@ export function TaxForm({ onCalculate }: TaxFormProps) {
                   control={form.control}
                   name="income.disabilityPension"
                   render={({ field }) => (
-                    <NumberInput field={field} label={t('calculator.form.income.disabilityPension')} min="0" />
+                    <NumberInput field={field} label={t('calculator.form.income.disabilityPension')} tooltip={t('tooltips.disabilityPension')} min="0" />
                   )}
                 />
                 <FormField
@@ -672,14 +668,14 @@ export function TaxForm({ onCalculate }: TaxFormProps) {
                   control={form.control}
                   name="income.unemploymentBenefits"
                   render={({ field }) => (
-                    <NumberInput field={field} label={t('calculator.form.income.unemploymentBenefits')} min="0" />
+                    <NumberInput field={field} label={t('calculator.form.income.unemploymentBenefits')} tooltip={t('tooltips.unemploymentBenefits')} min="0" />
                   )}
                 />
                 <FormField
                   control={form.control}
                   name="income.maternityBenefits"
                   render={({ field }) => (
-                    <NumberInput field={field} label={t('calculator.form.income.maternityBenefits')} min="0" />
+                    <NumberInput field={field} label={t('calculator.form.income.maternityBenefits')} tooltip={t('tooltips.parentalBenefits')} min="0" />
                   )}
                 />
                 <FormField
@@ -741,7 +737,7 @@ export function TaxForm({ onCalculate }: TaxFormProps) {
                   <NumberInput
                     field={field}
                     label={t(`calculator.form.businessIncome.${fieldName}`)}
-                    tooltip={fieldName === 'fishingAgricultureIncome' ? "Income from personal work related to fishing, agriculture, or forestry, which is taxed according to specific rules for self-employed individuals in these industries." : undefined}
+                    tooltip={fieldName === 'fishingAgricultureIncome' ? t('tooltips.fishingIncome') : undefined}
                   />
                 )}
               />
@@ -851,8 +847,7 @@ export function TaxForm({ onCalculate }: TaxFormProps) {
                 <NumberInput
                   field={field}
                   label="Besøksreiser til hjemmet (reisekostnader til egen eller ektefelles bolig ved pendling) / Travel expenses for home visits (commuting to own or spouse's residence)"
-                  min="0"
-                />
+                  min="0" />
               )}
             />
             <FormField
@@ -911,7 +906,6 @@ export function TaxForm({ onCalculate }: TaxFormProps) {
             />
           </CardContent>
         </Card>
-
 
         <Card className="glass-card border-0">
           <CardHeader>

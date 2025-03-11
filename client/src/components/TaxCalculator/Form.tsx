@@ -853,8 +853,7 @@ export function TaxForm({ onCalculate }: TaxFormProps) {
           </CardHeader>
           <CardContent>
             <div className="space-y-6">
-              <FormField
-                control={form.control}
+              <FormField                control={form.control}
                 name="financial.totalBankBalance"
                 render={({ field }) => (
                   <NumberInput
@@ -1160,8 +1159,8 @@ export function TaxForm({ onCalculate }: TaxFormProps) {
         </Card>
 
 
-        <Button type="submit" className="w-full text-lg py-6 bg-primary hover:bg-primary/90">
-          {t('calculator.form.calculate')}
+        <Button type="submit" className="w-full text-lg py-6 bg-blue-600 hover:bg-blue-700 text-white">
+          Calculate
         </Button>
         {showResults && calculationResults && (
           <TaxSummary data={calculationResults} />

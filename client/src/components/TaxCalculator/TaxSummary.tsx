@@ -5,8 +5,8 @@ interface TaxSummaryProps {
 }
 
 export function TaxSummary({ data }: TaxSummaryProps) {
-  const formatCurrency = (value: number) => {
-    return `${value.toLocaleString("no-NO")} kr`;
+  const formatCurrency = (value: number | undefined) => {
+    return `${(value || 0).toLocaleString("no-NO")} kr`;
   };
 
   const formatPercentage = (value: number) => {
@@ -14,7 +14,7 @@ export function TaxSummary({ data }: TaxSummaryProps) {
   };
 
   const calculateMarginalRate = () => {
-    const income = data.businessIncome.totalIncome;
+    const income = data.businessIncome?.totalIncome || 0;
     if (income <= 217400) return 0;
     if (income <= 306050) return 1.7;
     if (income <= 697150) return 4.0;
@@ -24,9 +24,10 @@ export function TaxSummary({ data }: TaxSummaryProps) {
   };
 
   const calculateAverageRate = () => {
-    const totalIncome = data.businessIncome.totalIncome;
+    const totalIncome = data.businessIncome?.totalIncome || 0;
+    const totalTax = data.financial?.totalTax || 0;
     if (!totalIncome) return 0;
-    return (data.financial.totalTax / totalIncome) * 100;
+    return (totalTax / totalIncome) * 100;
   };
 
   return (
@@ -36,27 +37,31 @@ export function TaxSummary({ data }: TaxSummaryProps) {
       <div className="space-y-4">
         <div className="flex justify-between items-center">
           <span className="font-semibold text-blue-900">Total Income</span>
-          <span className="text-lg">{formatCurrency(data.businessIncome.totalIncome)}</span>
+          <span className="text-lg">{formatCurrency(data.businessIncome?.totalIncome)}</span>
         </div>
 
         <div className="flex justify-between items-center text-gray-600">
           <span>Total Deductions</span>
-          <span>{formatCurrency(data.deductions.totalDeductions)}</span>
+          <span>{formatCurrency(data.deductions?.totalDeductions)}</span>
         </div>
 
         <div className="flex justify-between items-center text-gray-600">
           <span>Income After Deductions</span>
-          <span>{formatCurrency(data.deductions.incomeAfterDeductions)}</span>
+          <span>{formatCurrency(data.deductions?.incomeAfterDeductions)}</span>
         </div>
 
         <div className="flex justify-between items-center font-semibold text-blue-900">
           <span>Total Tax</span>
-          <span className="text-lg">{formatCurrency(data.financial.totalTax)}</span>
+          <span className="text-lg">{formatCurrency(data.financial?.totalTax)}</span>
         </div>
 
         <div className="flex justify-between items-center font-bold text-blue-900 text-xl">
           <span>Net Income</span>
-          <span>{formatCurrency(data.businessIncome.totalIncome - data.financial.totalTax)}</span>
+          <span>
+            {formatCurrency(
+              (data.businessIncome?.totalIncome || 0) - (data.financial?.totalTax || 0)
+            )}
+          </span>
         </div>
 
         <div className="flex justify-between items-center text-gray-600 mt-4">

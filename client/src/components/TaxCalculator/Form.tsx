@@ -17,13 +17,6 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
 import { TaxSummary } from "./TaxSummary";
-import {
-  Tooltip,
-  TooltipContent,
-  TooltipProvider,
-  TooltipTrigger,
-} from "@/components/ui/tooltip";
-import { HelpCircle } from "lucide-react";
 
 interface TaxFormProps {
   onCalculate: (data: TaxCalculation) => void;
@@ -37,74 +30,12 @@ interface NumberInputProps {
   step?: string;
   disabled?: boolean;
   onChange?: (e: any) => void;
-  tooltip?: string;
 }
 
 interface YesNoSelectProps {
   field: any;
   label: string;
 }
-
-const LabelWithTooltip = ({ label, tooltip }: { label: string; tooltip?: string }) => (
-  <div className="flex items-center gap-2">
-    <span>{label}</span>
-    {tooltip && (
-      <TooltipProvider>
-        <Tooltip>
-          <TooltipTrigger asChild>
-            <HelpCircle className="h-4 w-4 text-gray-500 cursor-help" />
-          </TooltipTrigger>
-          <TooltipContent className="bg-white p-4 max-w-sm rounded-lg shadow-lg border border-gray-200">
-            <p className="text-sm text-gray-700 whitespace-pre-line">{tooltip}</p>
-          </TooltipContent>
-        </Tooltip>
-      </TooltipProvider>
-    )}
-  </div>
-);
-
-const NumberInput = ({ field, label, tooltip, min = "0", max, step = "1", disabled = false, onChange }: NumberInputProps) => (
-  <FormItem>
-    <FormLabel>
-      {tooltip ? (
-        <LabelWithTooltip label={label} tooltip={tooltip} />
-      ) : (
-        label
-      )}
-    </FormLabel>
-    <FormControl>
-      <Input
-        type="number"
-        {...field}
-        onChange={onChange || ((e) => {
-          const value = e.target.value === '' ? 0 : Number(e.target.value);
-          field.onChange(value);
-        })}
-        min={min}
-        max={max}
-        step={step}
-        disabled={disabled}
-      />
-    </FormControl>
-    <FormMessage />
-  </FormItem>
-);
-
-const YesNoSelect = ({ field, label }: YesNoSelectProps) => (
-  <FormItem>
-    <FormLabel>{label}</FormLabel>
-    <Select onValueChange={(value) => field.onChange(value === 'yes')} defaultValue={field.value ? 'yes' : 'no'}>
-      <SelectTrigger>
-        <SelectValue />
-      </SelectTrigger>
-      <SelectContent>
-        <SelectItem value="yes">Yes</SelectItem>
-        <SelectItem value="no">No</SelectItem>
-      </SelectContent>
-    </Select>
-    <FormMessage />
-  </FormItem>
-);
 
 export function TaxForm({ onCalculate }: TaxFormProps) {
   const { t } = useTranslation();
@@ -125,7 +56,8 @@ export function TaxForm({ onCalculate }: TaxFormProps) {
         hasOwnHome: false,
         hasStudentLoans: false,
         hasCarOrBoat: false,
-        hasShares: false
+        hasShares: false,
+        hasBillån: false
       },
       income: {
         salary: 0,
@@ -193,16 +125,6 @@ export function TaxForm({ onCalculate }: TaxFormProps) {
     }
   });
 
-  // Watch form fields
-  const hasRegularEmployment = form.watch('personalInfo.hasRegularEmployment');
-  const hasBeenOnSickLeave = form.watch('personalInfo.hasBeenOnSickLeave');
-  const hasChildren = form.watch('personalInfo.hasChildren');
-  const hasShares = form.watch('personalInfo.hasShares');
-  const hasOwnHome = form.watch('personalInfo.hasOwnHome');
-  const hasCarOrBoat = form.watch('personalInfo.hasCarOrBoat');
-  const hasStudentLoans = form.watch('personalInfo.hasStudentLoans');
-  const numberOfChildren = form.watch('deductions.numberOfChildren');
-
   // Watch income fields for total income calculation
   const incomeFields = form.watch([
     'income.salary',
@@ -240,6 +162,9 @@ export function TaxForm({ onCalculate }: TaxFormProps) {
     form.setValue('deductions.standardDeduction', minimumDeduction);
   }, [...incomeFields]);
 
+  const hasChildren = form.watch('personalInfo.hasChildren');
+  const numberOfChildren = form.watch('deductions.numberOfChildren');
+
   useEffect(() => {
     const children = Number(numberOfChildren) || 0;
     let parentalDeduction = 0;
@@ -253,6 +178,41 @@ export function TaxForm({ onCalculate }: TaxFormProps) {
 
     form.setValue('deductions.parentalDeduction', parentalDeduction);
   }, [numberOfChildren, hasChildren, form]);
+
+  const deductionFields = form.watch([
+    'deductions.standardDeduction',
+    'deductions.unionFee',
+    'deductions.ips',
+    'deductions.bsu',
+    'deductions.parentalDeduction',
+    'deductions.otherDeductions'
+  ]);
+
+  useEffect(() => {
+    const [
+      standardDeduction,
+      unionFee,
+      ips,
+      bsu,
+      parentalDeduction,
+      otherDeductions
+    ] = deductionFields.map(value => Number(value) || 0);
+
+    const totalDeductions =
+      standardDeduction +
+      (0.22 * (unionFee + ips)) +
+      (0.10 * bsu) +
+      (0.22 * parentalDeduction) +
+      (Number(form.watch('travelExpenses.totalTravelExpenses')) || 0) +
+      (0.22 * otherDeductions);
+
+    form.setValue('deductions.totalDeductions', Math.round(totalDeductions));
+
+    // Calculate income after deductions
+    const totalIncome = form.getValues('businessIncome.totalIncome');
+    form.setValue('deductions.incomeAfterDeductions', Math.round(totalIncome - totalDeductions));
+  }, [...deductionFields, form.watch('businessIncome.totalIncome'), form.watch('travelExpenses.totalTravelExpenses')]);
+
 
   const travelFields = form.watch([
     'travelExpenses.tripsPerYear',
@@ -278,6 +238,65 @@ export function TaxForm({ onCalculate }: TaxFormProps) {
     form.setValue('travelExpenses.totalTravelExpenses', Math.round(totalExpenses));
   }, [...travelFields]);
 
+  const hasRegularEmployment = form.watch('personalInfo.hasRegularEmployment');
+  const hasBeenOnSickLeave = form.watch('personalInfo.hasBeenOnSickLeave');
+  const hasShares = form.watch('personalInfo.hasShares');
+  const hasOwnHome = form.watch('personalInfo.hasOwnHome');
+  const hasCarOrBoat = form.watch('personalInfo.hasCarOrBoat');
+  const hasBillån = form.watch('personalInfo.hasBillån');
+  const hasStudentLoans = form.watch('personalInfo.hasStudentLoans');
+
+  useEffect(() => {
+    const financialFields = [
+      'financial.totalBankBalance',
+      ...(hasShares ? ['financial.investmentValue'] : []),
+      ...(hasOwnHome ? ['financial.primaryResidenceValue', 'financial.secondaryResidenceValue'] : []),
+      ...(hasCarOrBoat ? ['financial.vehicleValue', 'financial.boatValue'] : [])
+    ];
+
+    const totalAssets = financialFields
+      .map(field => Number(form.watch(field)) || 0)
+      .reduce((sum, value) => sum + value, 0);
+
+    form.setValue('financial.totalAssets', Math.round(totalAssets));
+  }, [
+    form.watch('financial.totalBankBalance'),
+    form.watch('financial.investmentValue'),
+    form.watch('financial.primaryResidenceValue'),
+    form.watch('financial.secondaryResidenceValue'),
+    form.watch('financial.vehicleValue'),
+    form.watch('financial.boatValue'),
+    hasShares,
+    hasOwnHome,
+    hasCarOrBoat
+  ]);
+
+  useEffect(() => {
+    const loanFields = [
+      ...(hasOwnHome ? ['financial.totalMortgage'] : []),
+      ...(form.watch('personalInfo.hasBillån') ? ['financial.carLoan'] : []),
+      ...(form.watch('personalInfo.hasStudentLoans') ? ['financial.studentLoan'] : []),
+      'financial.consumerLoan',
+      'financial.otherLoans'
+    ];
+
+    const totalDebt = loanFields
+      .map(field => Number(form.watch(field)) || 0)
+      .reduce((sum, value) => sum + value, 0);
+
+    form.setValue('financial.totalDebt', Math.round(totalDebt));
+  }, [
+    form.watch('financial.totalMortgage'),
+    form.watch('financial.carLoan'),
+    form.watch('financial.studentLoan'),
+    form.watch('financial.consumerLoan'),
+    form.watch('financial.otherLoans'),
+    hasOwnHome,
+    form.watch('personalInfo.hasBillån'),
+    form.watch('personalInfo.hasStudentLoans')
+  ]);
+
+  // Add these calculations in the useEffect hook
   useEffect(() => {
     const birthYear = form.watch('personalInfo.birthYear');
     const spouseBirthYear = form.watch('personalInfo.spouseBirthYear');
@@ -386,52 +405,43 @@ export function TaxForm({ onCalculate }: TaxFormProps) {
     form.watch('businessIncome.fishingAgricultureIncome')
   ]);
 
-  useEffect(() => {
-    const financialFields = [
-      'financial.totalBankBalance',
-      ...(hasShares ? ['financial.investmentValue'] : []),
-      ...(hasOwnHome ? ['financial.primaryResidenceValue', 'financial.secondaryResidenceValue'] : []),
-      ...(hasCarOrBoat ? ['financial.vehicleValue', 'financial.boatValue'] : [])
-    ];
+  const NumberInput = ({ field, label, min = "0", max, step = "1", disabled = false, onChange }: NumberInputProps) => (
+    <FormItem>
+      <FormLabel>{label}</FormLabel>
+      <FormControl>
+        <Input
+          type="number"
+          {...field}
+          onChange={onChange || ((e) => {
+            const value = e.target.value === '' ? 0 : Number(e.target.value);
+            field.onChange(value);
+          })}
+          min={min}
+          max={max}
+          step={step}
+          disabled={disabled}
+        />
+      </FormControl>
+      <FormMessage />
+    </FormItem>
+  );
 
-    const totalAssets = financialFields
-      .map(field => Number(form.watch(field)) || 0)
-      .reduce((sum, value) => sum + value, 0);
+  const YesNoSelect = ({ field, label }: YesNoSelectProps) => (
+    <FormItem>
+      <FormLabel>{label}</FormLabel>
+      <Select onValueChange={(value) => field.onChange(value === 'yes')} defaultValue={field.value ? 'yes' : 'no'}>
+        <SelectTrigger>
+          <SelectValue />
+        </SelectTrigger>
+        <SelectContent>
+          <SelectItem value="yes">Yes</SelectItem>
+          <SelectItem value="no">No</SelectItem>
+        </SelectContent>
+      </Select>
+      <FormMessage />
+    </FormItem>
+  );
 
-    form.setValue('financial.totalAssets', Math.round(totalAssets));
-  }, [
-    form.watch('financial.totalBankBalance'),
-    form.watch('financial.investmentValue'),
-    form.watch('financial.primaryResidenceValue'),
-    form.watch('financial.secondaryResidenceValue'),
-    form.watch('financial.vehicleValue'),
-    form.watch('financial.boatValue'),
-    hasShares,
-    hasOwnHome,
-    hasCarOrBoat
-  ]);
-
-  useEffect(() => {
-    const loanFields = [
-      ...(hasOwnHome ? ['financial.totalMortgage'] : []),
-      ...(hasStudentLoans ? ['financial.studentLoan'] : []),
-      'financial.consumerLoan',
-      'financial.otherLoans'
-    ];
-
-    const totalDebt = loanFields
-      .map(field => Number(form.watch(field)) || 0)
-      .reduce((sum, value) => sum + value, 0);
-
-    form.setValue('financial.totalDebt', Math.round(totalDebt));
-  }, [
-    form.watch('financial.totalMortgage'),
-    form.watch('financial.studentLoan'),
-    form.watch('financial.consumerLoan'),
-    form.watch('financial.otherLoans'),
-    hasOwnHome,
-    hasStudentLoans
-  ]);
 
   return (
     <Form {...form}>
@@ -535,6 +545,13 @@ export function TaxForm({ onCalculate }: TaxFormProps) {
                 <YesNoSelect field={field} label={t('calculator.form.personalInfo.hasShares')} />
               )}
             />
+            <FormField
+              control={form.control}
+              name="personalInfo.hasBillån"
+              render={({ field }) => (
+                <YesNoSelect field={field} label="Har du billån?" />
+              )}
+            />
           </CardContent>
         </Card>
 
@@ -549,16 +566,7 @@ export function TaxForm({ onCalculate }: TaxFormProps) {
               control={form.control}
               name="income.salary"
               render={({ field }) => (
-                <NumberInput
-                  field={field}
-                  label={t('calculator.form.income.salary')}
-                  tooltip="Her legger du inn lønn fra arbeidsgiver, før skatt (bruttobeløp). Dette kan for eksmepel være:
-- Fast lønn/timelønn/bonus
-- Overtid
-- Feriepenger
-- Tips"
-                  min="0"
-                />
+                <NumberInput field={field} label={t('calculator.form.income.salary')} min="0" />
               )}
             />
 
@@ -658,6 +666,71 @@ export function TaxForm({ onCalculate }: TaxFormProps) {
           </CardContent>
         </Card>
 
+        <Card className="glass-card border-0">
+          <CardHeader>
+            <CardTitle className="text-2xl font-semibold text-gray-900">
+              {t('calculator.form.deductions')}
+            </CardTitle>
+          </CardHeader>
+          <CardContent className="space-y-6">
+            <FormField
+              control={form.control}
+              name="deductions.standardDeduction"
+              render={({ field }) => (
+                <NumberInput field={field} label={t('calculator.form.deductions.standardDeduction')} min="0" disabled />
+              )}
+            />
+            <FormField
+              control={form.control}
+              name="deductions.unionFee"
+              render={({ field }) => (
+                <NumberInput field={field} label={t('calculator.form.deductions.unionFee')} min="0" max="8000" />
+              )}
+            />
+            <FormField
+              control={form.control}
+              name="deductions.ips"
+              render={({ field }) => (
+                <NumberInput field={field} label={t('calculator.form.deductions.ips')} min="0" max="15000" />
+              )}
+            />
+            <FormField
+              control={form.control}
+              name="deductions.bsu"
+              render={({ field }) => (
+                <NumberInput field={field} label={t('calculator.form.deductions.bsu')} min="0" max="27500" />
+              )}
+            />
+            {hasChildren && (
+              <>
+                <FormField
+                  control={form.control}
+                  name="deductions.numberOfChildren"
+                  render={({ field }) => (
+                    <NumberInput
+                      field={field}
+                      label={t('calculator.form.deductions.numberOfChildren')}
+                      min="0"
+                      step="1"
+                    />
+                  )}
+                />
+                <FormField
+                  control={form.control}
+                  name="deductions.parentalDeduction"
+                  render={({ field }) => (
+                    <NumberInput
+                      field={field}
+                      label={t('calculator.form.deductions.parentalDeduction')}
+                      min="0"
+                      disabled
+                    />
+                  )}
+                />
+              </>
+            )}
+          </CardContent>
+        </Card>
 
         <Card className="glass-card border-0">
           <CardHeader>
@@ -720,6 +793,37 @@ export function TaxForm({ onCalculate }: TaxFormProps) {
                   min="0"
                   disabled
                 />
+              )}
+            />
+          </CardContent>
+        </Card>
+
+        <Card className="glass-card border-0">
+          <CardHeader>
+            <CardTitle className="text-2xl font-semibold text-gray-900">
+              {t('calculator.form.deductions.otherDeductions')}
+            </CardTitle>
+          </CardHeader>
+          <CardContent className="space-y-6">
+            <FormField
+              control={form.control}
+              name="deductions.otherDeductions"
+              render={({ field }) => (
+                <NumberInput field={field} label={t('calculator.form.deductions.otherDeductions')} min="0" />
+              )}
+            />
+            <FormField
+              control={form.control}
+              name="deductions.totalDeductions"
+              render={({ field }) => (
+                <NumberInput field={field} label={t('calculator.form.deductions.totalDeductions')} min="0" disabled />
+              )}
+            />
+            <FormField
+              control={form.control}
+              name="deductions.incomeAfterDeductions"
+              render={({ field }) => (
+                <NumberInput field={field} label={t('calculator.form.deductions.incomeAfterDeductions')} min="0" disabled />
               )}
             />
           </CardContent>
@@ -868,6 +972,20 @@ export function TaxForm({ onCalculate }: TaxFormProps) {
                 </>
               )}
 
+              {hasBillån && (
+                <FormField
+                  control={form.control}
+                  name="financial.carLoan"
+                  render={({ field }) => (
+                    <NumberInput
+                      field={field}
+                      label="Billån / Car loan"
+                      min="0"
+                    />
+                  )}
+                />
+              )}
+
               {hasStudentLoans && (
                 <FormField
                   control={form.control}
@@ -888,7 +1006,8 @@ export function TaxForm({ onCalculate }: TaxFormProps) {
                 render={({ field }) => (
                   <NumberInput
                     field={field}
-                    label="Forbrukslån / Consumer loans                    min="0"
+                    label="Forbrukslån / Consumer loans"
+                    min="0"
                   />
                 )}
               />
@@ -1026,20 +1145,21 @@ export function TaxForm({ onCalculate }: TaxFormProps) {
         </Card>
 
         <div className="space-y-8">
-          <Button
+          <Button 
             onClick={(e) => {
               e.preventDefault();
               const data = form.getValues();
-              onCalculate(data);
+              console.log("Calculate clicked with data:", data);
+              setCalculationResults(data);
               setShowResults(true);
             }}
             className="w-full text-lg py-6 bg-blue-600 hover:bg-blue-700 text-white font-semibold"
           >
-            {t('calculator.form.calculate')}
+            Calculate
           </Button>
 
-          {showResults && (
-            <TaxSummary data={form.getValues()} />
+          {showResults && calculationResults && (
+            <TaxSummary data={calculationResults} />
           )}
         </div>
       </form>

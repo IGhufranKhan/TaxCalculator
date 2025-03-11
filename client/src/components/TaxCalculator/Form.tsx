@@ -53,8 +53,8 @@ const LabelWithTooltip = ({ label, tooltip }: { label: string; tooltip: string }
         <TooltipTrigger asChild>
           <HelpCircle className="h-4 w-4 text-gray-500 cursor-help" />
         </TooltipTrigger>
-        <TooltipContent>
-          <p className="max-w-xs">{tooltip}</p>
+        <TooltipContent className="bg-white p-4 max-w-sm rounded-lg shadow-lg border border-gray-200">
+          <p className="text-sm text-gray-700 whitespace-pre-line">{tooltip}</p>
         </TooltipContent>
       </Tooltip>
     </TooltipProvider>
@@ -837,7 +837,7 @@ export function TaxForm({ onCalculate }: TaxFormProps) {
 
         <Card className="glass-card border-0">
           <CardHeader>
-            <CardTitle className="text-2xl font-semibold text-gray-900">
+            <CardTitle className="text-2xlfont-semibold text-gray-900">
               Arbeids- og pendlerreiser / reiseutgifter / Work-related and commuting travel / travel expenditures
             </CardTitle>
           </CardHeader>

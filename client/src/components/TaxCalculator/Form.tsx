@@ -217,6 +217,108 @@ export function TaxForm() {
                 />
               )}
             />
+            {!hasRegularEmployment && hasBeenOnSickLeave && (
+              <>
+                <FormField
+                  control={form.control}
+                  name="income.disabilityPension"
+                  render={({ field }) => (
+                    <NumberInput
+                      field={field}
+                      label={t('calculator.form.income.disabilityPension')}
+                      tooltip={t('tooltips.disabilityPension')}
+                      min="0"
+                    />
+                  )}
+                />
+                <FormField
+                  control={form.control}
+                  name="income.workAssessmentAllowance"
+                  render={({ field }) => (
+                    <NumberInput
+                      field={field}
+                      label={t('calculator.form.income.workAssessmentAllowance')}
+                      tooltip={t('tooltips.workAssessmentAllowance')}
+                      min="0"
+                    />
+                  )}
+                />
+                <FormField
+                  control={form.control}
+                  name="income.unemploymentBenefits"
+                  render={({ field }) => (
+                    <NumberInput
+                      field={field}
+                      label={t('calculator.form.income.unemploymentBenefits')}
+                      tooltip={t('tooltips.unemploymentBenefits')}
+                      min="0"
+                    />
+                  )}
+                />
+                <FormField
+                  control={form.control}
+                  name="income.maternityBenefits"
+                  render={({ field }) => (
+                    <NumberInput
+                      field={field}
+                      label={t('calculator.form.income.maternityBenefits')}
+                      tooltip={t('tooltips.maternityBenefits')}
+                      min="0"
+                    />
+                  )}
+                />
+                <FormField
+                  control={form.control}
+                  name="income.sicknessBenefits"
+                  render={({ field }) => (
+                    <NumberInput
+                      field={field}
+                      label={t('calculator.form.income.sicknessBenefits')}
+                      tooltip={t('tooltips.sicknessBenefits')}
+                      min="0"
+                    />
+                  )}
+                />
+              </>
+            )}
+            {hasRegularEmployment && (
+              <FormField
+                control={form.control}
+                name="income.employerBenefits"
+                render={({ field }) => (
+                  <NumberInput
+                    field={field}
+                    label={t('calculator.form.income.employerBenefits')}
+                    tooltip={t('tooltips.employerBenefits')}
+                    min="0"
+                  />
+                )}
+              />
+            )}
+            <FormField
+              control={form.control}
+              name="income.dividend"
+              render={({ field }) => (
+                <NumberInput
+                  field={field}
+                  label={t('calculator.form.income.dividend')}
+                  tooltip={t('tooltips.dividend')}
+                  min="0"
+                />
+              )}
+            />
+            <FormField
+              control={form.control}
+              name="income.otherIncome"
+              render={({ field }) => (
+                <NumberInput
+                  field={field}
+                  label={t('calculator.form.income.otherIncome')}
+                  tooltip={t('tooltips.otherIncome')}
+                  min="0"
+                />
+              )}
+            />
           </CardContent>
         </Card>
       </form>

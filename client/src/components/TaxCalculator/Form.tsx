@@ -387,7 +387,7 @@ export function TaxForm({ onCalculate }: TaxFormProps) {
               {t('calculator.form.deductions')}
             </CardTitle>
           </CardHeader>
-          <CardContent className="grid grid-cols-1 gap-4 md:grid-cols-2">
+          <CardContent className="space-y-6">
             <FormField
               control={form.control}
               name="deductions.standardDeduction"
@@ -416,13 +416,34 @@ export function TaxForm({ onCalculate }: TaxFormProps) {
                 <NumberInput field={field} label={t('calculator.form.deductions.bsu')} min="0" />
               )}
             />
-            <FormField
-              control={form.control}
-              name="deductions.parentalDeduction"
-              render={({ field }) => (
-                <NumberInput field={field} label={t('calculator.form.deductions.parentalDeduction')} min="0" />
-              )}
-            />
+            {hasChildren && (
+              <>
+                <FormField
+                  control={form.control}
+                  name="deductions.numberOfChildren"
+                  render={({ field }) => (
+                    <NumberInput
+                      field={field}
+                      label={t('calculator.form.deductions.numberOfChildren')}
+                      min="0"
+                      step="1"
+                    />
+                  )}
+                />
+                <FormField
+                  control={form.control}
+                  name="deductions.parentalDeduction"
+                  render={({ field }) => (
+                    <NumberInput
+                      field={field}
+                      label={t('calculator.form.deductions.parentalDeduction')}
+                      min="0"
+                      disabled
+                    />
+                  )}
+                />
+              </>
+            )}
             <FormField
               control={form.control}
               name="deductions.otherDeductions"

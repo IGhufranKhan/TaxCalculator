@@ -31,18 +31,18 @@ export function TaxSummary({ data }: TaxSummaryProps) {
   };
 
   return (
-    <div className="mt-8 p-6 rounded-xl border border-blue-500 bg-white">
+    <div className="mt-8 p-6 rounded-xl border border-blue-100 bg-white shadow-sm">
       <h2 className="text-2xl font-bold text-blue-600 mb-6">Withholding</h2>
 
       <div className="space-y-4">
         <div className="flex justify-between items-center">
           <span className="font-semibold text-blue-900">Total Income</span>
-          <span className="text-lg">{formatCurrency(data.businessIncome?.totalIncome)}</span>
+          <span className="text-lg text-blue-900">{formatCurrency(data.businessIncome?.totalIncome)}</span>
         </div>
 
         <div className="flex justify-between items-center text-gray-600">
           <span>Total Deductions</span>
-          <span>{formatCurrency(data.deductions?.totalDeductions)}</span>
+          <span>- {formatCurrency(data.deductions?.totalDeductions)}</span>
         </div>
 
         <div className="flex justify-between items-center text-gray-600">
@@ -55,13 +55,11 @@ export function TaxSummary({ data }: TaxSummaryProps) {
           <span className="text-lg">{formatCurrency(data.financial?.totalTax)}</span>
         </div>
 
-        <div className="flex justify-between items-center font-bold text-blue-900 text-xl">
+        <div className="flex justify-between items-center font-bold text-blue-900 text-xl mt-2">
           <span>Net Income</span>
-          <span>
-            {formatCurrency(
-              (data.businessIncome?.totalIncome || 0) - (data.financial?.totalTax || 0)
-            )}
-          </span>
+          <span>{formatCurrency(
+            (data.businessIncome?.totalIncome || 0) - (data.financial?.totalTax || 0)
+          )}</span>
         </div>
 
         <div className="flex justify-between items-center text-gray-600 mt-4">

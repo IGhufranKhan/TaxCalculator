@@ -238,8 +238,27 @@ export function TaxForm({ onCalculate }: TaxFormProps) {
     form.setValue('travelExpenses.totalTravelExpenses', Math.round(totalExpenses));
   }, [...travelFields]);
 
-  const handleCalculate = (data: TaxCalculation) => {
-    console.log('Form submitted:', data);
+  const handleCalculate = (formData: TaxCalculation) => {
+    console.log('Form submitted:', formData);
+
+    // Ensure we have all the calculated values
+    const data = {
+      ...formData,
+      businessIncome: {
+        ...formData.businessIncome,
+        totalIncome: form.getValues('businessIncome.totalIncome'),
+      },
+      financial: {
+        ...formData.financial,
+        totalTax: form.getValues('financial.totalTax'),
+      },
+      deductions: {
+        ...formData.deductions,
+        totalDeductions: form.getValues('deductions.totalDeductions'),
+        incomeAfterDeductions: form.getValues('deductions.incomeAfterDeductions'),
+      }
+    };
+
     setCalculationResults(data);
     setShowResults(true);
     onCalculate(data);
@@ -1152,17 +1171,19 @@ export function TaxForm({ onCalculate }: TaxFormProps) {
 
 
         <div className="space-y-8">
-          <Button
-            type="submit"
-            className="w-full text-lg py-6 bg-blue-600 hover:bg-blue-700 text-white"
+          <Button 
+            type="submit" 
+            className="w-full text-lg py-6 bg-blue-600 hover:bg-blue-700 text-white font-semibold"
+            onClick={(e) => {
+              e.preventDefault();
+              form.handleSubmit(handleCalculate)(e);
+            }}
           >
             Calculate
           </Button>
 
           {showResults && calculationResults && (
-            <div className="mt-8">
-              <TaxSummary data={calculationResults} />
-            </div>
+            <TaxSummary data={calculationResults} />
           )}
         </div>
       </form>

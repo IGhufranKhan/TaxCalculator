@@ -573,7 +573,7 @@ export function TaxForm({ onCalculate }: TaxFormProps) {
         <Card className="glass-card border-0">
           <CardHeader>
             <CardTitle className="text-2xl font-semibold text-gray-900">
-              Work and commuter travel
+              Arbeids- og pendlerreiser / reiseutgifter / Work-related and commuting travel / travel expenditures
             </CardTitle>
           </CardHeader>
           <CardContent className="grid grid-cols-1 gap-4 md:grid-cols-2">
@@ -583,7 +583,7 @@ export function TaxForm({ onCalculate }: TaxFormProps) {
               render={({ field }) => (
                 <NumberInput
                   field={field}
-                  label="Antall reiser per år / Number of trips per year"
+                  label={t('calculator.form.travelExpenses.tripsPerYear')}
                   min="0"
                 />
               )}
@@ -594,7 +594,7 @@ export function TaxForm({ onCalculate }: TaxFormProps) {
               render={({ field }) => (
                 <NumberInput
                   field={field}
-                  label="Kilometer tur/retur per reise / Distance in kilometers (round trip) per travel"
+                  label={t('calculator.form.travelExpenses.kilometersPerTrip')}
                   min="0"
                 />
               )}
@@ -605,7 +605,7 @@ export function TaxForm({ onCalculate }: TaxFormProps) {
               render={({ field }) => (
                 <NumberInput
                   field={field}
-                  label="Besøksreiser til hjemmet (reisekostnader til egen eller ektefelles bolig ved pendling) / Travel expenses for home visits (commuting to own or spouse's residence)"
+                  label={t('calculator.form.travelExpenses.homeVisits')}
                   min="0"
                 />
               )}
@@ -616,7 +616,7 @@ export function TaxForm({ onCalculate }: TaxFormProps) {
               render={({ field }) => (
                 <NumberInput
                   field={field}
-                  label="Bompenger og fergeutgifter (over 3 300 kr i løpet av året) / Road tolls and ferry costs (exceeding 3,300 NOK annually)"
+                  label={t('calculator.form.travelExpenses.tollAndFerry')}
                   min="0"
                 />
               )}
@@ -627,7 +627,7 @@ export function TaxForm({ onCalculate }: TaxFormProps) {
               render={({ field }) => (
                 <NumberInput
                   field={field}
-                  label="Sum reiseutgifter / Total travel expenses"
+                  label={t('calculator.form.travelExpenses.totalTravelExpenses')}
                   min="0"
                   disabled
                 />

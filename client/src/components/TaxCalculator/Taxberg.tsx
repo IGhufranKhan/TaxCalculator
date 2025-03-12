@@ -9,30 +9,81 @@ interface TaxbergProps {
 
 export function Taxberg({ breakdown }: TaxbergProps) {
   const { t } = useTranslation();
-  const employerTax = 70500; // This should come from calculation
+  const employerTax = 70500; // Fixed employer tax amount
 
   return (
-    <Card className="p-6 bg-sky-50">
+    <Card className="p-6 bg-[#E0F7FF]">
       <h2 className="text-2xl font-bold mb-4">The Taxberg</h2>
-      <div className="relative h-[500px]">
+
+      {/* Cloud images */}
+      <div className="absolute top-8 left-8">
+        <img src="/cloud1.svg" alt="" className="w-16 opacity-80" />
+      </div>
+      <div className="absolute top-6 right-12">
+        <img src="/cloud2.svg" alt="" className="w-20 opacity-80" />
+      </div>
+
+      <div className="relative h-[600px]">
+        {/* Net pay section */}
+        <div className="absolute top-[10%] left-1/2 -translate-x-1/2 text-center">
+          <p className="text-3xl font-bold">{formatCurrency(breakdown.netPay)} kr</p>
+          <p className="text-lg">Net pay</p>
+        </div>
+
+        {/* Tax you pay section */}
+        <div className="absolute top-[40%] left-1/2 -translate-x-1/2 text-center">
+          <p className="text-2xl font-bold">{formatCurrency(breakdown.totalTax)} kr</p>
+          <p className="text-lg">Tax you pay</p>
+        </div>
+
+        {/* Employer tax section */}
+        <div className="absolute top-[60%] left-[70%] text-center">
+          <p className="text-xl font-bold">{formatCurrency(employerTax)} kr</p>
+          <p className="text-lg">Tax the employer pays</p>
+        </div>
+
+        {/* Tax totals section */}
+        <div className="absolute bottom-[30%] left-0 w-full">
+          <div className="flex justify-between items-center px-8">
+            <div>
+              <p className="text-xl font-bold">Total tax paid</p>
+              <p className="text-2xl font-bold">{formatCurrency(breakdown.totalTax + employerTax)} kr</p>
+            </div>
+            <div>
+              <p className="text-xl font-bold">Real tax rate</p>
+              <p className="text-2xl font-bold">{(breakdown.averageTaxRate).toFixed(1)}%</p>
+            </div>
+          </div>
+        </div>
+
+        {/* Explanatory text */}
+        <div className="absolute bottom-4 left-4 right-4 bg-white/80 rounded-lg p-4">
+          <p className="text-sm">
+            Did you know your employer also pays tax on your salary? It costs the employer {formatCurrency(employerTax)} kr to pay you {formatCurrency(breakdown.netPay)} kr. In other words, every time you spend 10 kr of your hard-earned money, 3.88 kr goes to the government.
+          </p>
+        </div>
+
         {/* Iceberg SVG */}
         <svg
-          className="w-full h-full"
-          viewBox="0 0 400 500"
-          fill="none"
-          xmlns="http://www.w3.org/2000/svg"
+          className="w-full h-full absolute inset-0 z-0"
+          viewBox="0 0 400 600"
+          preserveAspectRatio="xMidYMid meet"
         >
-          {/* Above water - visible part */}
+          {/* Water background */}
+          <rect x="0" y="300" width="400" height="300" fill="#003366" opacity="0.8" />
+
+          {/* Above water iceberg */}
           <path
-            d="M50,150 L200,50 L350,150 L300,300 L100,300 Z"
-            fill="#a5d8ff"
+            d="M100,150 L200,50 L300,150 L250,300 L150,300 Z"
+            fill="#E8F4FF"
             className="drop-shadow-lg"
           />
-          {/* Below water - submerged part */}
+
+          {/* Below water iceberg */}
           <path
-            d="M100,300 L50,500 L350,500 L300,300 Z"
-            fill="#4dabf7"
-            className="opacity-80"
+            d="M150,300 L50,550 L350,550 L250,300 Z"
+            fill="#4B9FE1"
+            opacity="0.8"
           />
 
           {/* Norwegian flag */}
@@ -42,38 +93,6 @@ export function Taxberg({ breakdown }: TaxbergProps) {
             <rect x="0" y="13" width="40" height="4" fill="#fff"/>
           </g>
         </svg>
-
-        {/* Text Overlays */}
-        <div className="absolute top-[10%] left-1/2 -translate-x-1/2 text-center">
-          <p className="text-3xl font-bold">{formatCurrency(breakdown.netPay)} kr</p>
-          <p className="text-lg text-gray-600">Net pay</p>
-        </div>
-
-        <div className="absolute top-[40%] left-1/2 -translate-x-1/2 text-center w-full px-4">
-          <p className="text-2xl font-bold">{formatCurrency(breakdown.totalTax)} kr</p>
-          <p className="text-lg text-gray-600">Tax you pay</p>
-        </div>
-
-        <div className="absolute bottom-[40%] left-1/2 -translate-x-1/2 text-center w-full px-4">
-          <p className="text-xl font-bold">{formatCurrency(employerTax)} kr</p>
-          <p className="text-md text-gray-600">Tax the employer pays</p>
-        </div>
-
-        <div className="absolute bottom-[20%] left-1/2 -translate-x-1/2 text-center w-full px-4">
-          <p className="text-xl font-bold">{formatCurrency(breakdown.totalTax + employerTax)} kr</p>
-          <p className="text-md text-gray-600">Total tax paid</p>
-        </div>
-
-        <div className="absolute bottom-4 left-1/2 -translate-x-1/2 text-center w-full px-4">
-          <div className="bg-white/80 rounded-lg p-4 max-w-md mx-auto">
-            <p className="text-xl font-semibold">
-              Real tax rate: {(breakdown.averageTaxRate).toFixed(1)}%
-            </p>
-            <p className="text-sm text-gray-600 mt-2">
-              Did you know your employer also pays tax on your salary? It costs the employer {formatCurrency(employerTax)} kr to pay you {formatCurrency(breakdown.netPay)} kr. In other words, every time you spend 10 kr of your hard-earned money, 3.88 kr goes to the government.
-            </p>
-          </div>
-        </div>
       </div>
     </Card>
   );

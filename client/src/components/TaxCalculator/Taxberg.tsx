@@ -9,6 +9,7 @@ interface TaxbergProps {
 
 export function Taxberg({ breakdown }: TaxbergProps) {
   const { t } = useTranslation();
+  const employerTax = 70500; // This should come from calculation
 
   return (
     <Card className="p-6 bg-sky-50">
@@ -44,31 +45,23 @@ export function Taxberg({ breakdown }: TaxbergProps) {
 
         {/* Text Overlays */}
         <div className="absolute top-[10%] left-1/2 -translate-x-1/2 text-center">
-          <p className="text-3xl font-bold">{formatCurrency(breakdown.netPay)}</p>
+          <p className="text-3xl font-bold">{formatCurrency(breakdown.netPay)} kr</p>
           <p className="text-lg text-gray-600">Net pay</p>
         </div>
 
         <div className="absolute top-[40%] left-1/2 -translate-x-1/2 text-center w-full px-4">
-          <p className="text-2xl font-bold">{formatCurrency(breakdown.totalTax)}</p>
+          <p className="text-2xl font-bold">{formatCurrency(breakdown.totalTax)} kr</p>
           <p className="text-lg text-gray-600">Tax you pay</p>
         </div>
 
-        <div className="absolute bottom-[30%] left-1/2 -translate-x-1/2 text-center w-full px-4">
-          <p className="text-xl font-bold">{formatCurrency(breakdown.wealthTax || 0)}</p>
-          <p className="text-md text-gray-600">Wealth Tax (Formueskatt)</p>
-          <p className="text-sm text-gray-500 mt-2">
-            W = Total Assets - Total Debt
-            {breakdown.wealthTax > 0 && (
-              <>
-                <br />
-                Municipal: 0.7% over 1.76M
-                <br />
-                State: 0.3% (1.76M-20.7M)
-                <br />
-                + 0.4% over 20.7M
-              </>
-            )}
-          </p>
+        <div className="absolute bottom-[40%] left-1/2 -translate-x-1/2 text-center w-full px-4">
+          <p className="text-xl font-bold">{formatCurrency(employerTax)} kr</p>
+          <p className="text-md text-gray-600">Tax the employer pays</p>
+        </div>
+
+        <div className="absolute bottom-[20%] left-1/2 -translate-x-1/2 text-center w-full px-4">
+          <p className="text-xl font-bold">{formatCurrency(breakdown.totalTax + employerTax)} kr</p>
+          <p className="text-md text-gray-600">Total tax paid</p>
         </div>
 
         <div className="absolute bottom-4 left-1/2 -translate-x-1/2 text-center w-full px-4">
@@ -77,7 +70,7 @@ export function Taxberg({ breakdown }: TaxbergProps) {
               Real tax rate: {(breakdown.averageTaxRate).toFixed(1)}%
             </p>
             <p className="text-sm text-gray-600 mt-2">
-              Total tax paid: {formatCurrency(breakdown.totalTax)}
+              Did you know your employer also pays tax on your salary? It costs the employer {formatCurrency(employerTax)} kr to pay you {formatCurrency(breakdown.netPay)} kr. In other words, every time you spend 10 kr of your hard-earned money, 3.88 kr goes to the government.
             </p>
           </div>
         </div>

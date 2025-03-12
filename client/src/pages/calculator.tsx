@@ -9,10 +9,6 @@ import type { TaxBreakdown as TaxBreakdownType, TaxCalculation } from "@shared/s
 import { annualizeAmount } from "@/components/TaxCalculator/utils";
 import { useToast } from "@/hooks/use-toast";
 
-const formatCurrency = (num: number) => num.toFixed(0);
-const formatPercentage = (num: number) => (num * 100).toFixed(1) + "%";
-
-
 export default function Calculator() {
   const { t } = useTranslation();
   const { toast } = useToast();
@@ -106,44 +102,42 @@ export default function Calculator() {
             <img src={"/UI Image for Tax Calculator.png"} alt="Tax Calculator" className="w-full" />
 
             {/* Text overlays */}
-            {breakdown && (
-              <div className="absolute inset-0 flex flex-col">
-                {/* Net Income */}
-                <div className="absolute top-[10%] left-1/2 -translate-x-1/2 text-center">
-                  <p className="text-3xl font-bold text-[#4B4AFF]">{formatCurrency(breakdown.netPay)} kr</p>
-                  <p className="text-lg">Net pay</p>
-                </div>
+            <div className="absolute inset-0 flex flex-col">
+              {/* Net Income */}
+              <div className="absolute top-[10%] left-1/2 -translate-x-1/2 text-center">
+                <p className="text-3xl font-bold text-[#4B4AFF]">342,235 kr</p>
+                <p className="text-lg">Net pay</p>
+              </div>
 
-                {/* Tax you pay */}
-                <div className="absolute top-[45%] left-1/2 -translate-x-1/2 text-center">
-                  <p className="text-2xl font-bold text-[#4B4AFF]">{formatCurrency(breakdown.totalTax)} kr</p>
-                  <p className="text-lg">Tax you pay</p>
-                </div>
+              {/* Tax you pay */}
+              <div className="absolute top-[45%] left-1/2 -translate-x-1/2 text-center">
+                <p className="text-2xl font-bold text-[#4B4AFF]">157,765 kr</p>
+                <p className="text-lg">Tax you pay</p>
+              </div>
 
-                {/* Employer tax */}
-                <div className="absolute top-[65%] right-[20%] text-center">
-                  <p className="text-xl font-bold text-[#4B4AFF]">70,500 kr</p>
-                  <p className="text-lg">Tax the employer pays</p>
-                </div>
+              {/* Employer tax */}
+              <div className="absolute top-[65%] right-[20%] text-center">
+                <p className="text-xl font-bold text-[#4B4AFF]">70,500 kr</p>
+                <p className="text-lg">Tax the employer pays</p>
+              </div>
 
-                {/* Bottom stats */}
-                <div className="absolute bottom-32 w-full px-8 flex justify-between text-white">
-                  <div>
-                    <p className="text-lg">Total tax paid</p>
-                    <p className="text-3xl font-bold">{formatCurrency(breakdown.totalTax + 70500)} kr</p>
-                  </div>
-                  <div>
-                    <p className="text-lg">Real tax rate</p>
-                    <p className="text-3xl font-bold">{formatPercentage(breakdown.averageTaxRate)}</p>
-                  </div>
+              {/* Bottom stats */}
+              <div className="absolute bottom-32 w-full px-8 flex justify-between text-white">
+                <div>
+                  <p className="text-lg">Total tax paid</p>
+                  <p className="text-3xl font-bold">228,265 kr</p>
                 </div>
-
-                {/* Explanatory text */}
-                <div className="absolute bottom-4 left-4 right-4 text-white">
-                  <p>Did you know your employer also pays tax on your salary? It costs the employer 70,500 kr to pay you {formatCurrency(breakdown.netPay)} kr. In other words, every time you spend 10 kr of your hard-earned money, {((breakdown.totalTax + 70500) / breakdown.netPay * 10).toFixed(2)} kr goes to the government.</p>
+                <div>
+                  <p className="text-lg">Real tax rate</p>
+                  <p className="text-3xl font-bold">31.6%</p>
                 </div>
               </div>
-            )}
+
+              {/* Explanatory text */}
+              <div className="absolute bottom-4 left-4 right-4 text-white">
+                <p>Did you know your employer also pays tax on your salary? It costs the employer 70,500 kr to pay you 500,000 kr. In other words, every time you spend 10 kr of your hard-earned money, 3.88 kr goes to the government.</p>
+              </div>
+            </div>
           </div>
         </div>
       </div>

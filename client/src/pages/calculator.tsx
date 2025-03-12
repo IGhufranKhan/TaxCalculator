@@ -97,8 +97,47 @@ export default function Calculator() {
             </div>
           ) : null}
 
-          <div className="mt-12">
-            <img src={"/UI Image for Tax Calculator.png"} alt="Tax Calculator" />
+          <div className="mt-12 relative">
+            {/* Base image */}
+            <img src={"/UI Image for Tax Calculator.png"} alt="Tax Calculator" className="w-full" />
+
+            {/* Text overlays */}
+            <div className="absolute inset-0 flex flex-col">
+              {/* Net Income */}
+              <div className="absolute top-[10%] left-1/2 -translate-x-1/2 text-center">
+                <p className="text-3xl font-bold text-[#4B4AFF]">376,402 kr</p>
+                <p className="text-lg">Net pay</p>
+              </div>
+
+              {/* Tax you pay */}
+              <div className="absolute top-[45%] left-1/2 -translate-x-1/2 text-center">
+                <p className="text-2xl font-bold text-[#4B4AFF]">123,598 kr</p>
+                <p className="text-lg">Tax you pay</p>
+              </div>
+
+              {/* Employer tax */}
+              <div className="absolute top-[65%] right-[20%] text-center">
+                <p className="text-xl font-bold text-[#4B4AFF]">70,500 kr</p>
+                <p className="text-lg">Tax the employer pays</p>
+              </div>
+
+              {/* Bottom stats */}
+              <div className="absolute bottom-32 w-full px-8 flex justify-between text-white">
+                <div>
+                  <p className="text-lg">Total tax paid</p>
+                  <p className="text-3xl font-bold">194,098 kr</p>
+                </div>
+                <div>
+                  <p className="text-lg">Real tax rate</p>
+                  <p className="text-3xl font-bold">34.0%</p>
+                </div>
+              </div>
+
+              {/* Explanatory text */}
+              <div className="absolute bottom-4 left-4 right-4 text-white">
+                <p>Did you know your employer also pays tax on your salary? It costs the employer 70,500 kr to pay you 500,000 kr. In other words, every time you spend 10 kr of your hard-earned money, 3.88 kr goes to the government.</p>
+              </div>
+            </div>
           </div>
         </div>
       </div>

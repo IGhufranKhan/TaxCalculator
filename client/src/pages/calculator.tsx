@@ -105,13 +105,13 @@ export default function Calculator() {
             <div className="absolute inset-0 flex flex-col">
               {/* Net Income */}
               <div className="absolute top-[10%] left-1/2 -translate-x-1/2 text-center">
-                <p className="text-3xl font-bold text-[#4B4AFF]">376,402 kr</p>
+                <p className="text-3xl font-bold text-[#4B4AFF]">342,235 kr</p>
                 <p className="text-lg">Net pay</p>
               </div>
 
               {/* Tax you pay */}
               <div className="absolute top-[45%] left-1/2 -translate-x-1/2 text-center">
-                <p className="text-2xl font-bold text-[#4B4AFF]">123,598 kr</p>
+                <p className="text-2xl font-bold text-[#4B4AFF]">157,765 kr</p>
                 <p className="text-lg">Tax you pay</p>
               </div>
 
@@ -125,11 +125,11 @@ export default function Calculator() {
               <div className="absolute bottom-32 w-full px-8 flex justify-between text-white">
                 <div>
                   <p className="text-lg">Total tax paid</p>
-                  <p className="text-3xl font-bold">194,098 kr</p>
+                  <p className="text-3xl font-bold">228,265 kr</p>
                 </div>
                 <div>
                   <p className="text-lg">Real tax rate</p>
-                  <p className="text-3xl font-bold">34.0%</p>
+                  <p className="text-3xl font-bold">31.6%</p>
                 </div>
               </div>
 

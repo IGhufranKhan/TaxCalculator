@@ -12,44 +12,74 @@ export function Taxberg({ breakdown }: TaxbergProps) {
 
   return (
     <Card className="p-6 bg-sky-50">
-      <div className="relative h-[400px]">
+      <h2 className="text-2xl font-bold mb-4">The Taxberg</h2>
+      <div className="relative h-[500px]">
         {/* Iceberg SVG */}
         <svg
           className="w-full h-full"
-          viewBox="0 0 400 400"
+          viewBox="0 0 400 500"
           fill="none"
           xmlns="http://www.w3.org/2000/svg"
         >
+          {/* Above water - visible part */}
           <path
-            d="M200,50 L300,150 L250,300 L150,300 L100,150 Z"
+            d="M50,150 L200,50 L350,150 L300,300 L100,300 Z"
             fill="#a5d8ff"
             className="drop-shadow-lg"
           />
+          {/* Below water - submerged part */}
           <path
-            d="M150,300 L100,400 L300,400 L250,300 Z"
+            d="M100,300 L50,500 L350,500 L300,300 Z"
             fill="#4dabf7"
             className="opacity-80"
           />
+
+          {/* Norwegian flag */}
+          <g transform="translate(180, 30)">
+            <rect x="0" y="0" width="40" height="30" fill="#ED2939"/>
+            <rect x="12" y="0" width="4" height="30" fill="#fff"/>
+            <rect x="0" y="13" width="40" height="4" fill="#fff"/>
+          </g>
         </svg>
 
         {/* Text Overlays */}
-        <div className="absolute top-[20%] left-1/2 -translate-x-1/2 text-center">
-          <p className="text-2xl font-bold">{formatCurrency(breakdown.netPay)}</p>
-          <p className="text-sm text-muted-foreground">Net pay</p>
+        <div className="absolute top-[10%] left-1/2 -translate-x-1/2 text-center">
+          <p className="text-3xl font-bold">{formatCurrency(breakdown.netPay)}</p>
+          <p className="text-lg text-gray-600">Net pay</p>
         </div>
 
-        <div className="absolute bottom-[30%] left-1/2 -translate-x-1/2 text-center">
+        <div className="absolute top-[40%] left-1/2 -translate-x-1/2 text-center w-full px-4">
           <p className="text-2xl font-bold">{formatCurrency(breakdown.totalTax)}</p>
-          <p className="text-sm text-muted-foreground">Total tax paid</p>
+          <p className="text-lg text-gray-600">Tax you pay</p>
+        </div>
+
+        <div className="absolute bottom-[30%] left-1/2 -translate-x-1/2 text-center w-full px-4">
+          <p className="text-xl font-bold">{formatCurrency(breakdown.wealthTax || 0)}</p>
+          <p className="text-md text-gray-600">Wealth Tax (Formueskatt)</p>
+          <p className="text-sm text-gray-500 mt-2">
+            W = Total Assets - Total Debt
+            {breakdown.wealthTax > 0 && (
+              <>
+                <br />
+                Municipal: 0.7% over 1.76M
+                <br />
+                State: 0.3% (1.76M-20.7M)
+                <br />
+                + 0.4% over 20.7M
+              </>
+            )}
+          </p>
         </div>
 
         <div className="absolute bottom-4 left-1/2 -translate-x-1/2 text-center w-full px-4">
-          <p className="text-lg font-semibold">
-            Real tax rate: {(breakdown.averageTaxRate).toFixed(1)}%
-          </p>
-          <p className="text-sm text-muted-foreground mt-2">
-            Tax with you and the employer both paying tax. What used to be 34.7% turns out to be 34.0%, meaning we pay more in tax now than what was reserved at first.
-          </p>
+          <div className="bg-white/80 rounded-lg p-4 max-w-md mx-auto">
+            <p className="text-xl font-semibold">
+              Real tax rate: {(breakdown.averageTaxRate).toFixed(1)}%
+            </p>
+            <p className="text-sm text-gray-600 mt-2">
+              Total tax paid: {formatCurrency(breakdown.totalTax)}
+            </p>
+          </div>
         </div>
       </div>
     </Card>

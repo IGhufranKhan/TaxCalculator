@@ -135,9 +135,43 @@ export default function Calculator() {
                 <div className="flex items-center justify-center h-32">
                   <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600"></div>
                 </div>
-              ) : breakdown ? (
-                <TaxBreakdown breakdown={breakdown} />
-              ) : null}
+              ) : (
+                <div className="bg-white p-6 rounded-lg shadow-lg">
+                  <h2 className="text-lg font-bold mb-4">Tax calculation</h2>
+
+                  <div className="space-y-4">
+                    <div className="space-y-2">
+                      <label className="text-gray-600">Social security contribution</label>
+                      <input type="text" className="w-full p-2 border rounded" disabled />
+                    </div>
+
+                    <div className="space-y-2">
+                      <label className="text-gray-600">Tax on general income</label>
+                      <input type="text" className="w-full p-2 border rounded" disabled />
+                    </div>
+
+                    <div className="space-y-2">
+                      <label className="text-gray-600">Bracket tax</label>
+                      <input type="text" className="w-full p-2 border rounded" disabled />
+                    </div>
+
+                    <div className="space-y-2">
+                      <label className="text-gray-600">Wealth tax</label>
+                      <input type="text" className="w-full p-2 border rounded" disabled />
+                    </div>
+
+                    <div className="space-y-2">
+                      <label className="text-gray-600">Total tax</label>
+                      <input type="text" className="w-full p-2 border rounded" disabled />
+                    </div>
+
+                    <div className="space-y-2">
+                      <label className="text-gray-600">Withholding tax percentage</label>
+                      <input type="text" className="w-full p-2 border rounded" disabled />
+                    </div>
+                  </div>
+                </div>
+              )}
             </div>
           </div>
         </div>

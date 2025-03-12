@@ -140,16 +140,16 @@ export const taxCalculationSchema = z.object({
 export type TaxCalculation = z.infer<typeof taxCalculationSchema>;
 export type PersonalInfo = z.infer<typeof personalInfoSchema>;
 export type WorkIncome = z.infer<typeof workIncomeSchema>;
+export type BankLoan = z.infer<typeof bankLoanSchema>;
+export type Property = z.infer<typeof propertySchema>;
 export type BusinessIncome = z.infer<typeof businessIncomeSchema>;
 export type Deductions = z.infer<typeof deductionsSchema>;
 export type TravelExpenses = z.infer<typeof travelExpensesSchema>;
 export type Financial = z.infer<typeof financialSchema>;
 
-// Add grossPay to TaxBreakdown interface
 export interface TaxBreakdown {
   // Base calculation
   totalIncome: number;
-  grossPay: number; // Added grossPay
   bracketTax: number;
   insuranceContribution: number;
   commonTax: number;
@@ -163,7 +163,7 @@ export interface TaxBreakdown {
   // Special calculations
   parentalBenefitDeduction: number;
   disabilityDeduction: number;
-  wealthTax: number;
+  wealthTax: number; // Added wealthTax
 
   // Final calculations
   totalDeductions: number;

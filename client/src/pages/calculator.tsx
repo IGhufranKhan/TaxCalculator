@@ -58,85 +58,86 @@ export default function Calculator() {
       </div>
 
       <div className="container mx-auto px-4 py-12">
-        <div className="max-w-4xl mx-auto">
-          <header className="flex items-center justify-between py-6 bg-white">
-            {/* Left Section: Text */}
-            <div className="max-w-lg">
-              <h1 className="text-4xl font-bold leading-tight text-gray-900">
-                Calculate <br />
-                <span className="relative text-blue-600">
-                  Your <span className="bg-blue-300 px-2 py-1 rounded">Taxes</span>
-                </span>
-                <br />
-                Hassle-free.
-              </h1>
-              <p className="mt-4 text-gray-600 text-lg">
-                An easy-to-use tax calculator designed for Norway. Quick, accurate, and free.
-              </p>
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+          {/* Left Content (2 columns wide) */}
+          <div className="lg:col-span-2">
+            <header className="flex items-center justify-between py-6 bg-white">
+              <div className="max-w-lg">
+                <h1 className="text-4xl font-bold leading-tight text-gray-900">
+                  Calculate <br />
+                  <span className="relative text-blue-600">
+                    Your <span className="bg-blue-300 px-2 py-1 rounded">Taxes</span>
+                  </span>
+                  <br />
+                  Hassle-free.
+                </h1>
+                <p className="mt-4 text-gray-600 text-lg">
+                  An easy-to-use tax calculator designed for Norway. Quick, accurate, and free.
+                </p>
+              </div>
+            </header>
+
+            <div className="mb-8">
+              <h2 className="text-2xl font-bold leading-tight text-gray-900">Tax Calculator</h2>
+              <p className="text-gray-600 text-lg">Calculate your taxes easily through our tax calculator designed specifically for Norway. </p>
+              <TaxForm onCalculate={handleCalculate} />
             </div>
 
-            {/* Right Section: Image */}
-            <div className="max-w-sm">
-              <img src={import.meta.env.BASE_URL + "Frame.png"} alt="Tax Calculator" />
-            </div>
-          </header>
+            {/* Taxberg Visualization */}
+            <div className="mt-12 relative">
+              {/* Base image */}
+              <img src={"/UI Image for Tax Calculator.png"} alt="Tax Calculator" className="w-full" />
 
-          <div className="mb-8">
-            <h2 className="text-2xl font-bold leading-tight text-gray-900">Tax Calculator</h2>
-            <p className="text-gray-600 text-lg">Calculate your taxes easily through our tax calculator designed specifically for Norway. </p>
-            <TaxForm onCalculate={handleCalculate} />
+              {/* Text overlays */}
+              <div className="absolute inset-0 flex flex-col">
+                {/* Net Income */}
+                <div className="absolute top-[10%] left-1/2 -translate-x-1/2 text-center">
+                  <p className="text-3xl font-bold text-[#4B4AFF]">342,235 kr</p>
+                  <p className="text-lg">Net pay</p>
+                </div>
+
+                {/* Tax you pay */}
+                <div className="absolute top-[45%] left-1/2 -translate-x-1/2 text-center">
+                  <p className="text-2xl font-bold text-[#4B4AFF]">157,765 kr</p>
+                  <p className="text-lg">Tax you pay</p>
+                </div>
+
+                {/* Employer tax */}
+                <div className="absolute top-[65%] right-[20%] text-center">
+                  <p className="text-xl font-bold text-[#4B4AFF]">70,500 kr</p>
+                  <p className="text-lg">Tax the employer pays</p>
+                </div>
+
+                {/* Bottom stats */}
+                <div className="absolute bottom-32 w-full px-8 flex justify-between text-white">
+                  <div>
+                    <p className="text-lg">Total tax paid</p>
+                    <p className="text-3xl font-bold">228,265 kr</p>
+                  </div>
+                  <div>
+                    <p className="text-lg">Real tax rate</p>
+                    <p className="text-3xl font-bold">31.6%</p>
+                  </div>
+                </div>
+
+                {/* Explanatory text */}
+                <div className="absolute bottom-4 left-4 right-4 text-white">
+                  <p>Did you know your employer also pays tax on your salary? It costs the employer 70,500 kr to pay you 500,000 kr. In other words, every time you spend 10 kr of your hard-earned money, 3.88 kr goes to the government.</p>
+                </div>
+              </div>
+            </div>
           </div>
 
-          {isLoading ? (
-            <div className="flex items-center justify-center h-32">
-              <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600"></div>
-            </div>
-          ) : breakdown ? (
-            <div>
-              <TaxBreakdown breakdown={breakdown} />
-            </div>
-          ) : null}
-
-          <div className="mt-12 relative">
-            {/* Base image */}
-            <img src={"/UI Image for Tax Calculator.png"} alt="Tax Calculator" className="w-full" />
-
-            {/* Text overlays */}
-            <div className="absolute inset-0 flex flex-col">
-              {/* Net Income */}
-              <div className="absolute top-[10%] left-1/2 -translate-x-1/2 text-center">
-                <p className="text-3xl font-bold text-[#4B4AFF]">342,235 kr</p>
-                <p className="text-lg">Net pay</p>
-              </div>
-
-              {/* Tax you pay */}
-              <div className="absolute top-[45%] left-1/2 -translate-x-1/2 text-center">
-                <p className="text-2xl font-bold text-[#4B4AFF]">157,765 kr</p>
-                <p className="text-lg">Tax you pay</p>
-              </div>
-
-              {/* Employer tax */}
-              <div className="absolute top-[65%] right-[20%] text-center">
-                <p className="text-xl font-bold text-[#4B4AFF]">70,500 kr</p>
-                <p className="text-lg">Tax the employer pays</p>
-              </div>
-
-              {/* Bottom stats */}
-              <div className="absolute bottom-32 w-full px-8 flex justify-between text-white">
-                <div>
-                  <p className="text-lg">Total tax paid</p>
-                  <p className="text-3xl font-bold">228,265 kr</p>
+          {/* Right Column (Tax Breakdown - Sticky) */}
+          <div className="lg:col-span-1">
+            <div className="sticky top-4">
+              {isLoading ? (
+                <div className="flex items-center justify-center h-32">
+                  <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600"></div>
                 </div>
-                <div>
-                  <p className="text-lg">Real tax rate</p>
-                  <p className="text-3xl font-bold">31.6%</p>
-                </div>
-              </div>
-
-              {/* Explanatory text */}
-              <div className="absolute bottom-4 left-4 right-4 text-white">
-                <p>Did you know your employer also pays tax on your salary? It costs the employer 70,500 kr to pay you 500,000 kr. In other words, every time you spend 10 kr of your hard-earned money, 3.88 kr goes to the government.</p>
-              </div>
+              ) : breakdown ? (
+                <TaxBreakdown breakdown={breakdown} />
+              ) : null}
             </div>
           </div>
         </div>

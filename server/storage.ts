@@ -15,10 +15,10 @@ export function calculateTax(data: TaxCalculation): TaxBreakdown {
     // Calculate total income
     const totalIncome = Math.round(
       (data.income.salary || 0) +
-      (data.income.businessIncome || 0) +
-      (data.income.freelanceIncome || 0) +
-      (data.income.overtimePay || 0) +
-      (data.income.bonuses || 0)
+      (data.businessIncome.fishingAgricultureIncome || 0) +
+      (data.businessIncome.otherBusinessIncome || 0) +
+      (data.income.dividend || 0) +
+      (data.income.otherIncome || 0)
     );
 
     // Basic calculations
@@ -34,9 +34,30 @@ export function calculateTax(data: TaxCalculation): TaxBreakdown {
     const parentalBenefitDeduction = 0;
     const disabilityDeduction = 0;
 
+    // Calculate Wealth Tax (Formueskatt)
+    const totalAssets = (data.financial.totalAssets || 0);
+    const totalDebt = (data.financial.totalDebt || 0);
+    const W = totalAssets - totalDebt;
+
+    let wealthTax = 0;
+    if (W > 1760000) {
+      // Municipal tax (0.7%)
+      const municipalTax = (W - 1760000) * 0.007;
+
+      // State tax (0.3% up to 20.7M, then 0.4%)
+      let stateTax = 0;
+      if (W <= 20700000) {
+        stateTax = (W - 1760000) * 0.003;
+      } else {
+        stateTax = (20700000 - 1760000) * 0.003 + (W - 20700000) * 0.004;
+      }
+
+      wealthTax = Math.round(municipalTax + stateTax);
+    }
+
     // Total tax calculation
     const totalDeductions = standardDeduction;
-    const totalTax = Math.max(0, bracketTax + insuranceContribution + commonTax - totalDeductions);
+    const totalTax = Math.max(0, bracketTax + insuranceContribution + commonTax + wealthTax - totalDeductions);
     const netPay = totalIncome - totalTax;
 
     // Tax rates
@@ -54,6 +75,7 @@ export function calculateTax(data: TaxCalculation): TaxBreakdown {
       propertyDeduction,
       parentalBenefitDeduction,
       disabilityDeduction,
+      wealthTax,
       totalDeductions,
       totalTax,
       netPay,
@@ -73,6 +95,7 @@ export function calculateTax(data: TaxCalculation): TaxBreakdown {
       propertyDeduction: 0,
       parentalBenefitDeduction: 0,
       disabilityDeduction: 0,
+      wealthTax: 0,
       totalDeductions: 0,
       totalTax: 0,
       netPay: 0,
@@ -80,27 +103,4 @@ export function calculateTax(data: TaxCalculation): TaxBreakdown {
       averageTaxRate: 0
     };
   }
-}
-
-function calculateWealthTax(netWealth: number): number {
-  if (!netWealth || isNaN(netWealth)) return 0;
-
-  let municipalTax = 0;
-  let stateTax = 0;
-
-  // Municipal tax (kommuneskatt)
-  if (netWealth > 1760000) {
-    municipalTax = (netWealth - 1760000) * 0.007;
-  }
-
-  // State tax (statsskatt)
-  if (netWealth > 1760000) {
-    if (netWealth <= 20700000) {
-      stateTax = (netWealth - 1760000) * 0.003;
-    } else {
-      stateTax = (20700000 - 1760000) * 0.003 + (netWealth - 20700000) * 0.004;
-    }
-  }
-
-  return municipalTax + stateTax;
 }
